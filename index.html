@@ -3,909 +3,1143 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TelePrompter — Rolagem guiada por voz</title>
-<meta name="description" content="Teleprompter profissional com reconhecimento de fala para criadores de conteúdo. Gratuito, open source, roda no browser.">
-<meta property="og:title" content="TelePrompter — Rolagem guiada por voz">
-<meta property="og:description" content="O teleprompter que acompanha sua voz. Sem apps, sem assinaturas.">
-<meta property="og:type" content="website">
+<title>TelePrompter</title>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg:       #000;
-    --bg2:      #0a0a0a;
-    --bg3:      #111;
-    --border:   rgba(255,255,255,0.07);
-    --text:     #fff;
-    --muted:    rgba(255,255,255,0.45);
-    --faint:    rgba(255,255,255,0.18);
-    --accent:   #fff;
-    --green:    #22c55e;
-    --amber:    #f59e0b;
-  }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  a { color: inherit; text-decoration: none; }
-
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 clamp(1.5rem, 5vw, 4rem);
-    height: 56px;
-    background: rgba(0,0,0,0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .nav-logo {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 15px; font-weight: 600; letter-spacing: 0.01em;
-  }
-
-  .logo-icon {
-    width: 28px; height: 28px;
-    border: 1.5px solid rgba(255,255,255,0.8);
-    border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  .logo-lines {
-    display: flex; flex-direction: column; gap: 3px;
-    padding: 5px 4px;
-  }
-
-  .logo-lines span {
-    display: block; background: #fff; border-radius: 1px;
-    height: 2px;
-  }
-  .logo-lines span:nth-child(1) { width: 14px; opacity: 1; }
-  .logo-lines span:nth-child(2) { width: 10px; opacity: 0.5; }
-  .logo-lines span:nth-child(3) { width: 12px; opacity: 0.25; }
-
-  .nav-links { display: flex; align-items: center; gap: 8px; }
-
-  .nav-links a {
-    font-size: 13px; color: var(--muted);
-    padding: 6px 12px; border-radius: 6px;
-    transition: color 0.15s, background 0.15s;
-  }
-  .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
-
-  .btn-nav {
-    font-size: 13px; font-weight: 500;
-    padding: 7px 16px; border-radius: 7px;
-    border: 1px solid rgba(255,255,255,0.25);
-    color: var(--text); background: transparent;
-    cursor: pointer; transition: background 0.15s, border-color 0.15s;
-    display: inline-flex; align-items: center; gap: 6px;
-  }
-  .btn-nav:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.45); }
-
-  /* ── HERO ── */
-  .hero {
-    min-height: 100vh;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    text-align: center;
-    padding: 7rem clamp(1.5rem, 5vw, 4rem) 5rem;
-    position: relative; overflow: hidden;
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-    background:
-      radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,255,255,0.04) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .badge {
-    display: inline-flex; align-items: center; gap: 7px;
-    font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--muted); border: 1px solid var(--border);
-    padding: 5px 14px; border-radius: 100px; margin-bottom: 2.5rem;
-  }
-
-  .badge-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 8px var(--green);
-    animation: pulse 2s ease infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-
-  h1 {
-    font-size: clamp(2.8rem, 7vw, 5.5rem);
-    font-weight: 700; letter-spacing: -0.03em; line-height: 1.08;
-    max-width: 14ch; margin: 0 auto 1.5rem;
-  }
-
-  h1 em {
-    font-style: normal;
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(255,255,255,0.5);
-  }
-
-  .hero-sub {
-    font-size: clamp(1rem, 2.5vw, 1.2rem);
-    color: var(--muted); max-width: 48ch;
-    margin: 0 auto 3rem; line-height: 1.7;
-  }
-
-  .hero-cta {
-    display: flex; flex-wrap: wrap;
-    gap: 12px; justify-content: center; margin-bottom: 4rem;
-  }
-
-  .btn-primary {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: 15px; font-weight: 600; letter-spacing: 0.01em;
-    padding: 13px 28px; border-radius: 10px;
-    background: #fff; color: #000; border: none; cursor: pointer;
-    transition: opacity 0.15s, transform 0.1s;
-  }
-  .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-  .btn-primary:active { transform: translateY(0); }
-
-  .btn-secondary {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: 15px; font-weight: 500;
-    padding: 13px 28px; border-radius: 10px;
-    background: transparent; color: var(--text);
-    border: 1px solid rgba(255,255,255,0.18); cursor: pointer;
-    transition: background 0.15s, border-color 0.15s, transform 0.1s;
-  }
-  .btn-secondary:hover {
-    background: rgba(255,255,255,0.06);
-    border-color: rgba(255,255,255,0.35);
-    transform: translateY(-1px);
-  }
-
-  /* Preview simulado */
-  .hero-preview {
-    width: 100%; max-width: 680px;
-    background: #000;
-    border: 1px solid var(--border);
-    border-radius: 16px; overflow: hidden;
-    position: relative;
-  }
-
-  .preview-bar {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    background: rgba(255,255,255,0.02);
-  }
-
-  .preview-dots { display: flex; gap: 6px; }
-  .preview-dots span {
-    width: 10px; height: 10px; border-radius: 50%;
-    background: rgba(255,255,255,0.12);
-  }
-
-  .preview-status {
-    display: flex; align-items: center; gap: 6px;
-    font-size: 11px; color: var(--green);
-  }
-  .preview-status::before {
-    content: ''; width: 6px; height: 6px; border-radius: 50%;
-    background: var(--green);
-    animation: pulse 2s ease infinite;
-  }
-
-  .preview-speed {
-    font-size: 11px; color: var(--muted);
-  }
-
-  .preview-text {
-    padding: 2.5rem 2rem 3rem;
-    display: flex; flex-direction: column;
-    align-items: center; gap: 1.2rem;
-    min-height: 220px;
-  }
-
-  .preview-line {
-    text-align: center; font-size: clamp(14px, 3vw, 20px);
-    font-weight: 400; line-height: 1.5; transition: all 0.3s;
-  }
-  .preview-line.dim  { color: rgba(255,255,255,0.18); }
-  .preview-line.dim2 { color: rgba(255,255,255,0.1); }
-  .preview-line.active {
-    color: #fff; font-weight: 700;
-    transform: scale(1.04);
-    text-shadow: 0 0 40px rgba(255,255,255,0.15);
-  }
-
-  .preview-guide {
-    position: absolute; left: 0; right: 0;
-    height: 1px; background: rgba(255,255,255,0.06);
-    top: calc(56px + 2.5rem + 110px);
-    pointer-events: none;
-  }
-
-  .preview-rail {
-    position: absolute; right: 0; top: 56px; bottom: 0; width: 3px;
-    background: rgba(255,255,255,0.04);
-  }
-  .preview-rail-fill {
-    position: absolute; top: 0; left: 0; right: 0;
-    height: 40%; background: rgba(255,255,255,0.25);
-    border-radius: 2px;
-  }
-
-  /* ── STATS ── */
-  .stats {
-    display: flex; flex-wrap: wrap; justify-content: center;
-    gap: 0;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    background: var(--bg2);
-  }
-
-  .stat {
-    flex: 1; min-width: 160px;
-    padding: 2rem 2.5rem; text-align: center;
-    border-right: 1px solid var(--border);
-  }
-  .stat:last-child { border-right: none; }
-
-  .stat-num {
-    font-size: 2rem; font-weight: 700;
-    letter-spacing: -0.04em; margin-bottom: 4px;
-  }
-  .stat-label { font-size: 13px; color: var(--muted); }
-
-  /* ── SECTION ── */
-  section {
-    padding: 6rem clamp(1.5rem, 5vw, 4rem);
-    max-width: 1100px; margin: 0 auto;
-  }
-
-  .section-label {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
-    text-transform: uppercase; color: var(--muted);
-    margin-bottom: 1rem;
-  }
-
-  h2 {
-    font-size: clamp(1.8rem, 4vw, 2.8rem);
-    font-weight: 700; letter-spacing: -0.03em;
-    line-height: 1.15; margin-bottom: 1.25rem;
-  }
-
-  .section-sub {
-    font-size: 1.05rem; color: var(--muted);
-    max-width: 54ch; line-height: 1.7;
-  }
-
-  /* ── FEATURES GRID ── */
-  .features {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 16px; overflow: hidden;
-    margin-top: 3.5rem;
-  }
-
-  .feature {
-    background: var(--bg);
-    padding: 2rem 1.75rem;
-    transition: background 0.2s;
-  }
-  .feature:hover { background: var(--bg3); }
-
-  .feature-icon {
-    width: 40px; height: 40px; border-radius: 10px;
-    border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 1.25rem;
-  }
-
-  .feature h3 {
-    font-size: 15px; font-weight: 600; margin-bottom: 8px;
-  }
-  .feature p { font-size: 14px; color: var(--muted); line-height: 1.6; }
-
-  /* ── ALGORITHM ── */
-  .algo-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem; margin-top: 3.5rem;
-    align-items: start;
-  }
-
-  @media (max-width: 680px) { .algo-grid { grid-template-columns: 1fr; } }
-
-  .algo-steps { display: flex; flex-direction: column; gap: 0; }
-
-  .algo-step {
-    display: flex; gap: 1.25rem;
-    padding: 1.25rem 0; border-bottom: 1px solid var(--border);
-  }
-  .algo-step:last-child { border-bottom: none; }
-
-  .step-num {
-    font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
-    color: var(--muted); min-width: 28px; padding-top: 2px;
-  }
-
-  .step-body h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-  .step-body p  { font-size: 13px; color: var(--muted); line-height: 1.6; }
-
-  .algo-visual {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 12px; padding: 1.5rem;
-    font-family: 'SF Mono', 'Fira Code', monospace;
-    font-size: 12px; line-height: 1.9;
-    color: var(--muted);
-    position: sticky; top: 80px;
-  }
-
-  .algo-visual .hl  { color: #fff; }
-  .algo-visual .hl2 { color: rgba(255,255,255,0.6); }
-  .algo-visual .ok  { color: var(--green); }
-  .algo-visual .warn { color: var(--amber); }
-
-  /* ── TECH STACK ── */
-  .stack-grid {
-    display: flex; flex-wrap: wrap; gap: 10px;
-    margin-top: 2.5rem;
-  }
-
-  .stack-tag {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: 13px; font-weight: 500;
-    padding: 8px 16px; border-radius: 8px;
-    border: 1px solid var(--border);
-    background: var(--bg2);
-    color: var(--muted);
-    transition: border-color 0.15s, color 0.15s;
-  }
-  .stack-tag:hover { border-color: rgba(255,255,255,0.25); color: var(--text); }
-
-  .stack-dot {
-    width: 7px; height: 7px; border-radius: 50%;
-  }
-
-  /* ── KEYBOARD ── */
-  .shortcuts {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 12px; margin-top: 2.5rem;
-  }
-
-  .shortcut {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 16px; border-radius: 10px;
-    background: var(--bg2); border: 1px solid var(--border);
-  }
-
-  .shortcut-desc { font-size: 13px; color: var(--muted); }
-
-  .kbd {
-    display: inline-flex; gap: 4px;
-  }
-
-  kbd {
-    display: inline-block;
-    font-family: 'SF Mono', 'Fira Code', monospace;
-    font-size: 11px; font-weight: 600;
-    padding: 3px 8px; border-radius: 5px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.14);
-    color: var(--text);
-    line-height: 1.6;
-  }
-
-  /* ── SETUP ── */
-  .setup-steps {
-    display: flex; flex-direction: column; gap: 0;
-    margin-top: 2.5rem;
-    border: 1px solid var(--border);
-    border-radius: 14px; overflow: hidden;
-  }
-
-  .setup-step {
-    display: flex; gap: 1.5rem; align-items: flex-start;
-    padding: 1.5rem 2rem;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg);
-    transition: background 0.15s;
-  }
-  .setup-step:last-child { border-bottom: none; }
-  .setup-step:hover { background: var(--bg3); }
-
-  .setup-num {
-    width: 28px; height: 28px; min-width: 28px;
-    border-radius: 50%; background: rgba(255,255,255,0.06);
-    border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 700; color: var(--muted);
-  }
-
-  .setup-step h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
-  .setup-step p  { font-size: 13px; color: var(--muted); }
-
-  pre {
-    margin-top: 10px;
-    padding: 10px 14px; border-radius: 7px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border);
-    font-family: 'SF Mono', 'Fira Code', monospace;
-    font-size: 12px; color: rgba(255,255,255,0.7);
-    overflow-x: auto; line-height: 1.7;
-  }
-
-  /* ── CTA FINAL ── */
-  .cta-final {
-    text-align: center;
-    padding: 7rem clamp(1.5rem, 5vw, 4rem);
-    border-top: 1px solid var(--border);
-  }
-
-  .cta-final h2 { margin-bottom: 1.25rem; }
-  .cta-final p  { color: var(--muted); max-width: 44ch; margin: 0 auto 2.5rem; }
-
-  /* ── FOOTER ── */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 2rem clamp(1.5rem, 5vw, 4rem);
-    display: flex; flex-wrap: wrap;
-    align-items: center; justify-content: space-between;
-    gap: 1rem;
-    background: var(--bg2);
-  }
-
-  footer p { font-size: 13px; color: var(--muted); }
-
-  .footer-links { display: flex; gap: 20px; }
-  .footer-links a { font-size: 13px; color: var(--muted); transition: color 0.15s; }
-  .footer-links a:hover { color: var(--text); }
-
-  /* ── DIVIDER ── */
-  .divider {
-    height: 1px; background: var(--border);
-    max-width: 100%; margin: 0;
-  }
-
-  /* ── SVG ICONS ── */
-  svg { display: block; }
-
-  /* Mobile */
-  @media (max-width: 600px) {
-    .nav-links a { display: none; }
-    .stat { min-width: 130px; padding: 1.5rem 1rem; }
-    .stat-num { font-size: 1.6rem; }
-  }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#000;--text:#fff;--dim:rgba(255,255,255,0.18);
+  --muted:rgba(255,255,255,0.45);--faint:rgba(255,255,255,0.12);
+  --border:rgba(255,255,255,0.08);--card:#0d0d0d;--accent:#fff;
+  --green:#22c55e;--amber:#f59e0b;--red:#ef4444;
+}
+html,body{height:100%;overflow:hidden}
+body{background:#111;color:#eee;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;-webkit-font-smoothing:antialiased}
+
+/* ── SCREENS ── */
+.screen{position:fixed;inset:0;display:flex;flex-direction:column;transition:opacity .2s}
+.screen.hidden{opacity:0;pointer-events:none}
+
+/* ── EDITOR ── */
+#editor{background:#111}
+.editor-header{
+  display:flex;align-items:center;justify-content:space-between;
+  height:52px;padding:0 16px;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+  background:#0d0d0d;flex-shrink:0;gap:8px;
+}
+.editor-logo{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#fff;white-space:nowrap}
+.logo-mark{width:26px;height:26px;border:1.5px solid rgba(255,255,255,0.5);border-radius:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:5px}
+.logo-mark span{display:block;height:1.5px;background:#fff;border-radius:1px}
+.logo-mark span:nth-child(1){width:12px}
+.logo-mark span:nth-child(2){width:8px;opacity:.5}
+.logo-mark span:nth-child(3){width:10px;opacity:.25}
+
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid rgba(255,255,255,0.18);background:transparent;color:#fff;transition:background .15s,border-color .15s;white-space:nowrap}
+.btn:hover{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.3)}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:#fff;color:#000;border-color:#fff}
+.btn.primary:hover{background:rgba(255,255,255,0.88)}
+.btn.danger{border-color:rgba(239,68,68,.4);color:#ef4444}
+.btn.danger:hover{background:rgba(239,68,68,.1)}
+.btn.icon{padding:7px;border-radius:6px}
+
+/* Sidebar */
+.editor-body{display:flex;flex:1;overflow:hidden}
+.sidebar{width:220px;min-width:220px;border-right:1px solid rgba(255,255,255,0.07);background:#0a0a0a;display:flex;flex-direction:column;transition:width .25s,min-width .25s}
+.sidebar.collapsed{width:0;min-width:0;overflow:hidden}
+.sidebar-head{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0}
+.sidebar-head span{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.script-list{flex:1;overflow-y:auto;padding:4px 0}
+.script-item{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;cursor:pointer;border-left:2px solid transparent;transition:background .12s,border-color .12s;gap:6px}
+.script-item:hover{background:rgba(255,255,255,0.04)}
+.script-item.active{border-left-color:#fff;background:rgba(255,255,255,0.05)}
+.script-item-title{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;color:#ddd}
+.script-item.active .script-item-title{color:#fff}
+.script-item-del{opacity:0;font-size:14px;color:var(--muted);background:none;border:none;cursor:pointer;padding:2px 5px;border-radius:4px;flex-shrink:0;line-height:1}
+.script-item:hover .script-item-del{opacity:1}
+.script-item-del:hover{color:#ef4444;background:rgba(239,68,68,.1)}
+.sidebar-foot{padding:10px 12px;border-top:1px solid rgba(255,255,255,0.07);font-size:11px;color:var(--muted)}
+
+/* Main edit area */
+.editor-main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.title-bar{padding:12px 20px 0;flex-shrink:0}
+.title-input{width:100%;background:transparent;border:none;outline:none;font-size:20px;font-weight:700;color:#fff;padding:4px 0}
+.title-input::placeholder{color:rgba(255,255,255,0.2)}
+.textarea-wrap{flex:1;padding:8px 20px 0;overflow:hidden;display:flex}
+textarea{flex:1;width:100%;background:transparent;border:none;outline:none;resize:none;font-size:15px;line-height:1.75;color:#ccc;font-family:inherit}
+textarea::placeholder{color:rgba(255,255,255,0.18)}
+.status-bar{display:flex;align-items:center;gap:16px;padding:8px 20px;border-top:1px solid rgba(255,255,255,0.07);font-size:12px;color:var(--muted);flex-shrink:0}
+.save-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+.save-dot.saving{background:var(--amber);animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ── SETTINGS ROW ── */
+.settings-row{display:flex;align-items:center;flex-wrap:wrap;gap:10px;padding:8px 16px;border-bottom:1px solid rgba(255,255,255,0.07);background:#0d0d0d;flex-shrink:0}
+.setting{display:flex;align-items:center;gap:6px}
+.setting label{font-size:11px;color:var(--muted);white-space:nowrap}
+.setting input[type=range]{width:72px;accent-color:#fff;cursor:pointer}
+.setting select{background:#1a1a1a;border:1px solid rgba(255,255,255,0.12);color:#fff;font-size:12px;padding:3px 8px;border-radius:5px;cursor:pointer;outline:none}
+.setting-val{font-size:11px;color:#fff;min-width:26px;text-align:right}
+.toggle-btn{font-size:11px;padding:4px 10px;border-radius:5px;cursor:pointer;border:1px solid rgba(255,255,255,0.18);background:transparent;color:var(--muted);transition:all .15s}
+.toggle-btn.on{background:rgba(255,255,255,0.12);color:#fff;border-color:rgba(255,255,255,0.3)}
+
+/* ── TELEPROMPTER ── */
+#teleprompter{background:#000;cursor:none}
+#teleprompter.light{background:#fff}
+#teleprompter.hc{background:#000}
+#teleprompter.cursor-visible{cursor:default}
+
+.tp-scroll{position:absolute;inset:0;overflow-y:scroll;scrollbar-width:none}
+.tp-scroll::-webkit-scrollbar{display:none}
+.tp-content{padding:45vh 0;display:flex;flex-direction:column;align-items:center;gap:0}
+.tp-line{
+  text-align:center;cursor:pointer;
+  transition:opacity .25s, transform .2s, color .2s;
+  padding:2px 0;
+}
+.tp-spacer{height:1em}
+
+/* Reading guide */
+.tp-guide{position:fixed;left:0;right:0;height:1px;background:rgba(255,255,255,0.07);pointer-events:none;z-index:5;transition:opacity .4s}
+#teleprompter.light .tp-guide{background:rgba(0,0,0,0.07)}
+
+/* Progress rail */
+.tp-rail{position:fixed;right:0;top:0;bottom:0;width:3px;z-index:5;pointer-events:none}
+.tp-rail-bg{position:absolute;inset:0;background:rgba(255,255,255,0.05)}
+.tp-rail-fill{position:absolute;top:0;left:0;right:0;background:rgba(255,255,255,0.35);transition:height .3s}
+.tp-rail-marker{position:absolute;left:0;right:0;height:3px;background:#fff;transition:top .3s}
+#teleprompter.light .tp-rail-bg{background:rgba(0,0,0,0.05)}
+#teleprompter.light .tp-rail-fill{background:rgba(0,0,0,0.25)}
+#teleprompter.light .tp-rail-marker{background:#000}
+#teleprompter.hc .tp-rail-marker{background:#ffe600}
+#teleprompter.hc .tp-rail-fill{background:rgba(255,230,0,.3)}
+
+/* Edge faders */
+.tp-fade-top,.tp-fade-bot{position:fixed;left:0;right:0;height:120px;pointer-events:none;z-index:4}
+.tp-fade-top{top:0;background:linear-gradient(to bottom,#000 0%,transparent 100%)}
+.tp-fade-bot{bottom:0;background:linear-gradient(to top,#000 0%,transparent 100%)}
+#teleprompter.light .tp-fade-top{background:linear-gradient(to bottom,#fff 0%,transparent 100%)}
+#teleprompter.light .tp-fade-bot{background:linear-gradient(to top,#fff 0%,transparent 100%)}
+#teleprompter.hc .tp-fade-top{background:linear-gradient(to bottom,#000 0%,transparent 100%)}
+#teleprompter.hc .tp-fade-bot{background:linear-gradient(to top,#000 0%,transparent 100%)}
+
+/* Countdown */
+.tp-countdown{
+  position:fixed;inset:0;z-index:50;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.92);
+  transition:opacity .3s;
+}
+.tp-countdown.hidden{opacity:0;pointer-events:none}
+.cd-num{
+  font-size:clamp(80px,20vw,180px);font-weight:800;line-height:1;
+  animation:cd-pop .35s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes cd-pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+.cd-label{margin-top:16px;font-size:13px;letter-spacing:.25em;text-transform:uppercase;opacity:.4}
+
+/* Control bar */
+.tp-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:20;
+  transition:opacity .4s,transform .4s;
+}
+.tp-bar.hidden{opacity:0;pointer-events:none;transform:translateY(8px)}
+.tp-progress{height:1px;background:rgba(255,255,255,0.1)}
+.tp-progress-fill{height:100%;background:rgba(255,255,255,.5);transition:width .5s}
+.tp-controls{
+  display:flex;align-items:center;gap:6px;
+  padding:10px 16px 12px;
+  background:rgba(0,0,0,.88);
+  backdrop-filter:blur(12px);
+  border-top:1px solid rgba(255,255,255,.07);
+  flex-wrap:wrap;
+}
+#teleprompter.light .tp-progress{background:rgba(0,0,0,.1)}
+#teleprompter.light .tp-progress-fill{background:rgba(0,0,0,.4)}
+#teleprompter.light .tp-controls{background:rgba(255,255,255,.9);border-top-color:rgba(0,0,0,.08)}
+#teleprompter.light .tp-controls .btn{color:#000;border-color:rgba(0,0,0,.18)}
+#teleprompter.light .tp-controls .btn:hover{background:rgba(0,0,0,.07)}
+#teleprompter.light .tp-controls .ctrl-info{color:rgba(0,0,0,.45)}
+#teleprompter.hc .tp-controls{background:rgba(0,0,0,.95);border-top-color:rgba(255,230,0,.15)}
+
+.tp-play-btn{
+  width:48px;height:48px;border-radius:50%;
+  background:#fff;color:#000;border:none;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  font-size:18px;transition:opacity .15s,transform .1s;flex-shrink:0;
+}
+.tp-play-btn:hover{opacity:.88}
+.tp-play-btn:active{transform:scale(.94)}
+#teleprompter.light .tp-play-btn{background:#000;color:#fff}
+#teleprompter.hc .tp-play-btn{background:#ffe600;color:#000}
+
+.speed-display{display:flex;flex-direction:column;align-items:center;gap:2px}
+.speed-bars{display:flex;gap:2px;align-items:flex-end;height:12px}
+.speed-bar-seg{width:3px;border-radius:1px;transition:background .15s}
+.speed-label{font-size:10px;color:var(--muted)}
+
+.ctrl-sep{width:1px;height:20px;background:rgba(255,255,255,.1);margin:0 2px;flex-shrink:0}
+#teleprompter.light .ctrl-sep{background:rgba(0,0,0,.1)}
+.ctrl-info{font-size:11px;color:var(--muted);margin-left:auto;white-space:nowrap}
+
+/* Mic button */
+.mic-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;position:relative}
+.mic-btn{
+  width:36px;height:36px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;border:1px solid transparent;
+  transition:all .2s;background:transparent;font-size:16px;
+}
+.mic-btn.idle{border-color:rgba(255,255,255,.18);color:rgba(255,255,255,.4)}
+.mic-btn.idle:hover{border-color:rgba(255,255,255,.35);color:rgba(255,255,255,.7)}
+.mic-btn.listening{border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.1);color:#22c55e}
+.mic-btn.error{border-color:rgba(239,68,68,.3);color:#ef4444}
+.mic-btn.unsupported{opacity:.3;cursor:not-allowed}
+.mic-label{font-size:9px;letter-spacing:.05em;font-weight:600}
+.mic-label.on{color:#22c55e}
+.mic-label.off{color:var(--muted)}
+.mic-score{
+  position:absolute;bottom:-6px;left:0;right:0;height:2px;
+  border-radius:1px;overflow:hidden;background:rgba(255,255,255,.08)
+}
+.mic-score-fill{height:100%;border-radius:1px;transition:width .3s,background .3s}
+
+/* Confidence toast */
+.conf-toast{
+  position:fixed;top:16px;left:50%;transform:translateX(-50%);
+  z-index:40;padding:8px 16px;border-radius:100px;
+  background:rgba(0,0,0,.9);border:1px solid rgba(255,160,0,.3);
+  font-size:12px;color:rgba(255,200,0,.9);
+  display:flex;align-items:center;gap:8px;
+  transition:opacity .3s;white-space:nowrap;backdrop-filter:blur(8px);
+}
+.conf-toast.hidden{opacity:0;pointer-events:none}
+
+/* Keyboard hint */
+.tp-hint{
+  position:fixed;bottom:0;left:0;right:0;z-index:19;
+  text-align:center;padding:6px;font-size:10px;color:rgba(255,255,255,.2);
+  letter-spacing:.05em;background:rgba(0,0,0,.88);
+  transition:opacity .4s;
+}
+.tp-hint.hidden{opacity:0;pointer-events:none}
+#teleprompter.light .tp-hint{background:rgba(255,255,255,.9);color:rgba(0,0,0,.25)}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">
-    <div class="logo-icon">
-      <div class="logo-lines">
-        <span></span><span></span><span></span>
+<!-- ══════════════════════════════════════
+     TELA 1 — EDITOR
+══════════════════════════════════════ -->
+<div id="editor" class="screen">
+
+  <div class="editor-header">
+    <div class="editor-logo">
+      <div class="logo-mark"><span></span><span></span><span></span></div>
+      TelePrompter
+    </div>
+
+    <!-- Settings inline -->
+    <div class="settings-row" style="flex:1;border:none;padding:0 12px;background:transparent">
+      <div class="setting">
+        <label>Fonte</label>
+        <input type="range" id="s-font" min="28" max="88" step="2" value="52">
+        <span class="setting-val" id="s-font-v">52</span>
+      </div>
+      <div class="setting">
+        <label>Vel.</label>
+        <input type="range" id="s-speed" min="1" max="10" step="1" value="3">
+        <span class="setting-val" id="s-speed-v">3</span>
+      </div>
+      <div class="setting">
+        <label>Espaço</label>
+        <input type="range" id="s-lh" min="1.2" max="3" step="0.1" value="1.9">
+        <span class="setting-val" id="s-lh-v">1.9</span>
+      </div>
+      <div class="setting">
+        <label>Largura</label>
+        <input type="range" id="s-width" min="40" max="100" step="2" value="72">
+        <span class="setting-val" id="s-width-v">72%</span>
+      </div>
+      <div class="setting">
+        <label>Foco</label>
+        <select id="s-focus">
+          <option value="0">Todas</option>
+          <option value="3">3 linhas</option>
+          <option value="5">5 linhas</option>
+          <option value="7">7 linhas</option>
+        </select>
+      </div>
+      <div class="setting">
+        <label>Tema</label>
+        <select id="s-theme">
+          <option value="dark">Escuro</option>
+          <option value="light">Claro</option>
+          <option value="hc">Contraste</option>
+        </select>
+      </div>
+      <div class="setting">
+        <label>Espelhar</label>
+        <button class="toggle-btn" id="s-mirror">OFF</button>
+      </div>
+      <div class="setting">
+        <label>Contagem</label>
+        <select id="s-cd">
+          <option value="0">Off</option>
+          <option value="3" selected>3s</option>
+          <option value="5">5s</option>
+        </select>
       </div>
     </div>
-    TelePrompter
+
+    <button class="btn primary" id="btn-open-tp" onclick="openTeleprompter()">
+      ▶ Iniciar
+    </button>
   </div>
-  <div class="nav-links">
-    <a href="#funcionalidades">Funcionalidades</a>
-    <a href="#como-funciona">Algoritmo</a>
-    <a href="#setup">Instalação</a>
-    <a href="https://github.com/seu-usuario/teleprompter" target="_blank" class="btn-nav">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
-      </svg>
-      GitHub
-    </a>
-  </div>
-</nav>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="badge">
-    <span class="badge-dot"></span>
-    Open source · Roda no browser
-  </div>
-
-  <h1>O teleprompter que ouve <em>você</em></h1>
-
-  <p class="hero-sub">
-    Reconhecimento de fala em tempo real que sincroniza o texto enquanto você fala.
-    Sem apps para instalar. Sem assinatura. Zero servidores.
-  </p>
-
-  <div class="hero-cta">
-    <a href="https://seu-usuario.github.io/teleprompter/app" class="btn-primary">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="5 3 19 12 5 21 5 3"></polygon>
-      </svg>
-      Abrir o app
-    </a>
-    <a href="https://github.com/seu-usuario/teleprompter" target="_blank" class="btn-secondary">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
-      </svg>
-      Ver no GitHub
-    </a>
-  </div>
-
-  <!-- Preview -->
-  <div class="hero-preview">
-    <div class="preview-bar">
-      <div class="preview-dots">
-        <span></span><span></span><span></span>
+  <div class="editor-body">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-head">
+        <span>Roteiros</span>
+        <button class="btn icon" onclick="newScript()" title="Novo roteiro" style="padding:4px 7px;font-size:16px;line-height:1">+</button>
       </div>
-      <div class="preview-status">VOZ ON · escutando</div>
-      <div class="preview-speed">vel. 4</div>
+      <div class="script-list" id="script-list"></div>
+      <div class="sidebar-foot" id="sidebar-foot"></div>
     </div>
-    <div class="preview-text">
-      <p class="preview-line dim2">…e é por isso que a consistência</p>
-      <p class="preview-line dim">supera a intensidade em qualquer</p>
-      <p class="preview-line active">processo de aprendizagem real.</p>
-      <p class="preview-line dim">O que importa não é quanto você</p>
-      <p class="preview-line dim2">estuda em um dia, mas quantos</p>
-    </div>
-    <div class="preview-guide"></div>
-    <div class="preview-rail"><div class="preview-rail-fill"></div></div>
-  </div>
-</div>
 
-<!-- STATS -->
-<div class="stats">
-  <div class="stat">
-    <div class="stat-num">0ms</div>
-    <div class="stat-label">Latência de sincronização</div>
-  </div>
-  <div class="stat">
-    <div class="stat-num">3</div>
-    <div class="stat-label">Temas de exibição</div>
-  </div>
-  <div class="stat">
-    <div class="stat-num">14</div>
-    <div class="stat-label">Atalhos de teclado</div>
-  </div>
-  <div class="stat">
-    <div class="stat-num">100%</div>
-    <div class="stat-label">Client-side · sem backend</div>
-  </div>
-</div>
-
-<!-- FUNCIONALIDADES -->
-<section id="funcionalidades">
-  <p class="section-label">Funcionalidades</p>
-  <h2>Tudo que você precisa<br>para gravar sozinho</h2>
-  <p class="section-sub">Construído especificamente para criadores que gravam sem equipe, com foco em estabilidade e UX durante a gravação real.</p>
-
-  <div class="features">
-
-    <div class="feature">
-      <div class="feature-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.8">
-          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-          <path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/>
-        </svg>
+    <!-- Edit area -->
+    <div class="editor-main">
+      <div class="title-bar">
+        <input class="title-input" id="title-input" placeholder="Título do roteiro…" oninput="onTitleChange()">
       </div>
-      <h3>Rolagem por voz</h3>
-      <p>Sincronização em tempo real usando Web Speech API com algoritmo de matching por bigramas — tolerante a pausas, improvisos e variações de dicção.</p>
-    </div>
-
-    <div class="feature">
-      <div class="feature-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.8">
-          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-          <line x1="8" y1="21" x2="16" y2="21"/>
-          <line x1="12" y1="17" x2="12" y2="21"/>
-        </svg>
+      <div class="textarea-wrap">
+        <textarea id="content-input" placeholder="Escreva seu roteiro aqui…&#10;&#10;Cada linha ou parágrafo vira uma entrada no teleprompter." oninput="onContentChange()"></textarea>
       </div>
-      <h3>Tela cheia real</h3>
-      <p>Modo fullscreen com controles que somem automaticamente após 3s, linha de leitura configurável e gradientes de fade nas bordas.</p>
-    </div>
-
-    <div class="feature">
-      <div class="feature-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.8">
-          <circle cx="12" cy="12" r="10"/>
-          <polyline points="12 6 12 12 16 14"/>
-        </svg>
-      </div>
-      <h3>Contagem regressiva</h3>
-      <p>3s ou 5s antes de iniciar a rolagem. Dá tempo para posicionar a câmera e se preparar sem precisar de um assistente.</p>
-    </div>
-
-    <div class="feature">
-      <div class="feature-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.8">
-          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-          <circle cx="12" cy="12" r="3"/>
-        </svg>
-      </div>
-      <h3>Modo foco</h3>
-      <p>Apenas 3, 5 ou 7 linhas visíveis ao redor da linha ativa. O resto some progressivamente para eliminar distração visual.</p>
-    </div>
-
-    <div class="feature">
-      <div class="feature-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.8">
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
-        </svg>
-      </div>
-      <h3>Alto contraste</h3>
-      <p>Tema amarelo sobre preto para uso com vidro de teleprompter profissional ou em ambientes com iluminação intensa.</p>
-    </div>
-
-    <div class="feature">
-      <div class="feature-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.8">
-          <polyline points="17 1 21 5 17 9"/>
-          <path d="M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4"/>
-          <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
-        </svg>
-      </div>
-      <h3>Espelhamento horizontal</h3>
-      <p>Inverte o texto horizontalmente para uso com sistemas de teleprompter profissional com espelhos semitransparentes.</p>
-    </div>
-
-    <div class="feature">
-      <div class="feature-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.8">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
-          <line x1="16" y1="13" x2="8" y2="13"/>
-          <line x1="16" y1="17" x2="8" y2="17"/>
-          <polyline points="10 9 9 9 8 9"/>
-        </svg>
-      </div>
-      <h3>Editor completo</h3>
-      <p>Múltiplos roteiros, renomear, duplicar, excluir com confirmação, contagem de palavras, tempo estimado de leitura e auto-save.</p>
-    </div>
-
-    <div class="feature">
-      <div class="feature-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.8">
-          <rect x="2" y="2" width="9" height="9"/>
-          <rect x="13" y="2" width="9" height="9"/>
-          <rect x="13" y="13" width="9" height="9"/>
-          <rect x="2" y="13" width="9" height="9"/>
-        </svg>
-      </div>
-      <h3>100% local</h3>
-      <p>Tudo salvo no localStorage. Nenhum dado sai do seu browser. Funciona offline para rolagem manual — voz requer conexão.</p>
-    </div>
-
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ALGORITMO -->
-<section id="como-funciona">
-  <p class="section-label">Como funciona</p>
-  <h2>O algoritmo de sincronização</h2>
-  <p class="section-sub">Quatro camadas independentes transformam áudio bruto em posicionamento preciso no roteiro.</p>
-
-  <div class="algo-grid">
-    <div class="algo-steps">
-
-      <div class="algo-step">
-        <span class="step-num">01</span>
-        <div class="step-body">
-          <h4>Normalização</h4>
-          <p>Remove acentos, pontuação e palavras de preenchimento ("então", "tipo", "né") do transcript e do roteiro antes de comparar.</p>
-        </div>
-      </div>
-
-      <div class="algo-step">
-        <span class="step-num">02</span>
-        <div class="step-body">
-          <h4>Similaridade por bigramas (Dice)</h4>
-          <p>Compara pares consecutivos de palavras em vez de caracteres. Robusto a palavras omitidas, trocadas ou inseridas. Bigramas dos chunks pré-computados — zero alocação durante a gravação.</p>
-        </div>
-      </div>
-
-      <div class="algo-step">
-        <span class="step-num">03</span>
-        <div class="step-body">
-          <h4>Janela móvel com bias de avanço</h4>
-          <p>Busca apenas nas ±N linhas ao redor da posição atual. Linhas à frente recebem +15% no score — modela que o usuário quase sempre avança. Fallback global só quando necessário.</p>
-        </div>
-      </div>
-
-      <div class="algo-step">
-        <span class="step-num">04</span>
-        <div class="step-body">
-          <h4>Filtro de confirmação</h4>
-          <p>Um novo índice só é aceito após aparecer como melhor match por 2 resultados consecutivos. Scores &gt; 0.72 passam direto. Recuos &gt; 3 linhas são bloqueados.</p>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="algo-visual">
-      <div><span class="hl">transcript</span> → normalize()</div>
-      <div style="color:rgba(255,255,255,0.15)">──────────────────</div>
-      <div><span class="hl2">"a ia esta transformando"</span></div>
-      <div>&nbsp;</div>
-      <div><span class="hl">findMatch</span>( transcript, chunks, pos )</div>
-      <div style="color:rgba(255,255,255,0.15)">──────────────────</div>
-      <div>  window <span class="hl2">[pos-4 .. pos+12]</span></div>
-      <div>  score[3] = <span class="ok">0.81</span>  ← bias ×1.15</div>
-      <div>  score[4] = <span class="hl2">0.34</span></div>
-      <div>  score[2] = <span class="hl2">0.12</span></div>
-      <div>&nbsp;</div>
-      <div><span class="hl">applySmoothing</span>( match, state )</div>
-      <div style="color:rgba(255,255,255,0.15)">──────────────────</div>
-      <div>  score ≥ 0.72 → <span class="ok">accept immediately</span></div>
-      <div>  pending[3] count = 2 → <span class="ok">confirm</span></div>
-      <div>  backtrack &gt; 3 → <span class="warn">blocked</span></div>
-      <div>&nbsp;</div>
-      <div><span class="ok">→ scrollToLine(3)</span></div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- TECLADO -->
-<section>
-  <p class="section-label">Controles</p>
-  <h2>Atalhos de teclado</h2>
-  <p class="section-sub">Controle completo sem tirar os olhos do texto.</p>
-
-  <div class="shortcuts">
-    <div class="shortcut">
-      <span class="shortcut-desc">Play / Pause</span>
-      <span class="kbd"><kbd>Espaço</kbd></span>
-    </div>
-    <div class="shortcut">
-      <span class="shortcut-desc">Diminuir velocidade</span>
-      <span class="kbd"><kbd>↑</kbd></span>
-    </div>
-    <div class="shortcut">
-      <span class="shortcut-desc">Aumentar velocidade</span>
-      <span class="kbd"><kbd>↓</kbd></span>
-    </div>
-    <div class="shortcut">
-      <span class="shortcut-desc">Voltar trecho</span>
-      <span class="kbd"><kbd>←</kbd></span>
-    </div>
-    <div class="shortcut">
-      <span class="shortcut-desc">Avançar trecho</span>
-      <span class="kbd"><kbd>→</kbd></span>
-    </div>
-    <div class="shortcut">
-      <span class="shortcut-desc">Tela cheia</span>
-      <span class="kbd"><kbd>F</kbd></span>
-    </div>
-    <div class="shortcut">
-      <span class="shortcut-desc">Reiniciar</span>
-      <span class="kbd"><kbd>R</kbd></span>
-    </div>
-    <div class="shortcut">
-      <span class="shortcut-desc">Toggle microfone</span>
-      <span class="kbd"><kbd>M</kbd></span>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- STACK -->
-<section>
-  <p class="section-label">Stack técnica</p>
-  <h2>Construído com as ferramentas certas</h2>
-  <p class="section-sub">Sem over-engineering. Cada dependência tem um motivo claro de estar aqui.</p>
-
-  <div class="stack-grid">
-    <span class="stack-tag"><span class="stack-dot" style="background:#000;border:1px solid rgba(255,255,255,0.4)"></span>Next.js 15</span>
-    <span class="stack-tag"><span class="stack-dot" style="background:#3178c6"></span>TypeScript</span>
-    <span class="stack-tag"><span class="stack-dot" style="background:#06b6d4"></span>Tailwind CSS</span>
-    <span class="stack-tag"><span class="stack-dot" style="background:#fff;width:7px;height:7px"></span>shadcn/ui</span>
-    <span class="stack-tag"><span class="stack-dot" style="background:#ff4154"></span>Zustand</span>
-    <span class="stack-tag"><span class="stack-dot" style="background:#61dafb"></span>React 19</span>
-    <span class="stack-tag"><span class="stack-dot" style="background:#f0db4f"></span>Web Speech API</span>
-    <span class="stack-tag"><span class="stack-dot" style="background:#00ad9f"></span>Netlify</span>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- SETUP -->
-<section id="setup">
-  <p class="section-label">Instalação</p>
-  <h2>Pronto em 5 minutos</h2>
-  <p class="section-sub">Clone, instale e rode. Sem configuração de backend, sem variáveis de ambiente obrigatórias.</p>
-
-  <div class="setup-steps">
-
-    <div class="setup-step">
-      <div class="setup-num">1</div>
-      <div>
-        <h4>Clone e instale dependências</h4>
-        <pre>git clone https://github.com/seu-usuario/teleprompter
-cd teleprompter
-npm install</pre>
+      <div class="status-bar">
+        <span class="save-dot" id="save-dot"></span>
+        <span id="stat-words">0 palavras</span>
+        <span>·</span>
+        <span id="stat-chars">0 caracteres</span>
+        <span>·</span>
+        <span id="stat-time">~0s</span>
+        <span id="save-label" style="margin-left:auto">Salvo</span>
       </div>
     </div>
-
-    <div class="setup-step">
-      <div class="setup-num">2</div>
-      <div>
-        <h4>Adicione os componentes shadcn/ui</h4>
-        <pre>npx shadcn@latest init
-npx shadcn@latest add button slider label switch \
-  textarea tooltip separator dropdown-menu alert-dialog</pre>
-      </div>
-    </div>
-
-    <div class="setup-step">
-      <div class="setup-num">3</div>
-      <div>
-        <h4>Rode em desenvolvimento</h4>
-        <pre>npm run dev
-# Abra http://localhost:3000</pre>
-      </div>
-    </div>
-
-    <div class="setup-step">
-      <div class="setup-num">4</div>
-      <div>
-        <h4>Deploy no Netlify</h4>
-        <p>Conecte o repositório no painel do Netlify. Build command: <code style="font-family:monospace;font-size:12px;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px">npm run build</code> · Publish directory: <code style="font-family:monospace;font-size:12px;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px">.next</code></p>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- CTA FINAL -->
-<div class="cta-final">
-  <h2>Comece a gravar melhor hoje</h2>
-  <p>Gratuito, open source, sem cadastro.<br>Abre direto no browser.</p>
-  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-    <a href="https://seu-usuario.github.io/teleprompter/app" class="btn-primary">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="5 3 19 12 5 21 5 3"></polygon>
-      </svg>
-      Abrir o app
-    </a>
-    <a href="https://github.com/seu-usuario/teleprompter" target="_blank" class="btn-secondary">
-      Ver código fonte
-    </a>
   </div>
 </div>
 
-<!-- FOOTER -->
-<footer>
-  <p>TelePrompter · Open source · MIT License</p>
-  <div class="footer-links">
-    <a href="https://github.com/seu-usuario/teleprompter" target="_blank">GitHub</a>
-    <a href="https://github.com/seu-usuario/teleprompter/issues" target="_blank">Issues</a>
-    <a href="https://github.com/seu-usuario/teleprompter/blob/main/README.md" target="_blank">Docs</a>
-  </div>
-</footer>
+<!-- ══════════════════════════════════════
+     TELA 2 — TELEPROMPTER
+══════════════════════════════════════ -->
+<div id="teleprompter" class="screen hidden dark">
 
+  <div class="tp-fade-top"></div>
+  <div class="tp-fade-bot"></div>
+
+  <div class="tp-guide" id="tp-guide"></div>
+
+  <div class="tp-rail">
+    <div class="tp-rail-bg"></div>
+    <div class="tp-rail-fill" id="tp-rail-fill"></div>
+    <div class="tp-rail-marker" id="tp-rail-marker"></div>
+  </div>
+
+  <!-- Scroll container -->
+  <div class="tp-scroll" id="tp-scroll"></div>
+
+  <!-- Countdown -->
+  <div class="tp-countdown hidden" id="tp-countdown">
+    <div class="cd-num" id="cd-num">3</div>
+    <div class="cd-label">preparando…</div>
+  </div>
+
+  <!-- Confidence toast -->
+  <div class="conf-toast hidden" id="conf-toast">
+    ◈ Sincronização imprecisa
+  </div>
+
+  <!-- Control bar -->
+  <div class="tp-bar" id="tp-bar">
+    <div class="tp-progress"><div class="tp-progress-fill" id="tp-prog"></div></div>
+    <div class="tp-controls">
+      <!-- Back to editor -->
+      <button class="btn icon" onclick="closeTeleprompter()" title="Voltar (Esc)">←</button>
+      <!-- Restart -->
+      <button class="btn icon" onclick="tpRestart()" title="Reiniciar (R)">↺</button>
+
+      <div class="ctrl-sep"></div>
+
+      <!-- Speed down -->
+      <button class="btn icon" onclick="tpStepSpeed(-1)" title="Menos velocidade (↑)">−</button>
+      <div class="speed-display">
+        <div class="speed-bars" id="speed-bars"></div>
+        <div class="speed-label" id="speed-label">vel. 3</div>
+      </div>
+      <!-- Speed up -->
+      <button class="btn icon" onclick="tpStepSpeed(1)" title="Mais velocidade (↓)">+</button>
+
+      <div class="ctrl-sep"></div>
+
+      <!-- Play/Pause -->
+      <button class="tp-play-btn" id="tp-play-btn" onclick="tpToggle()">▶</button>
+
+      <div class="ctrl-sep"></div>
+
+      <!-- Mic -->
+      <div class="mic-wrap">
+        <button class="mic-btn idle" id="mic-btn" onclick="micToggle()" title="Microfone (M)">🎤</button>
+        <span class="mic-label off" id="mic-label">VOZ</span>
+        <div class="mic-score"><div class="mic-score-fill" id="mic-score-fill"></div></div>
+      </div>
+
+      <div class="ctrl-sep"></div>
+
+      <!-- Recenter -->
+      <button class="btn icon" onclick="tpRecenter()" title="Recentralizar (C)">⊙</button>
+      <!-- Fullscreen -->
+      <button class="btn icon" id="fs-btn" onclick="toggleFullscreen()" title="Tela cheia (F)">⛶</button>
+
+      <span class="ctrl-info" id="ctrl-info">0% · 0/0</span>
+    </div>
+  </div>
+
+  <div class="tp-hint" id="tp-hint">
+    Espaço · Play &nbsp;|&nbsp; ↑↓ · Velocidade &nbsp;|&nbsp; ←→ · Navegar &nbsp;|&nbsp; M · Mic &nbsp;|&nbsp; F · Fullscreen &nbsp;|&nbsp; Esc · Sair
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════
+// STORAGE
+// ══════════════════════════════════════
+const KEY_SCRIPTS  = 'tp:scripts'
+const KEY_ACTIVE   = 'tp:active'
+const KEY_SETTINGS = 'tp:settings'
+
+function load(k,def){try{const v=localStorage.getItem(k);return v?JSON.parse(v):def}catch{return def}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
+
+// ══════════════════════════════════════
+// STATE
+// ══════════════════════════════════════
+let scripts  = load(KEY_SCRIPTS, [{id:'demo',title:'Roteiro de Exemplo',content:'Bem-vindo ao TelePrompter.\n\nEste é um roteiro de demonstração para você testar todas as funcionalidades.\n\nA rolagem automática por voz detecta o que você está falando e sincroniza o texto em tempo real.\n\nMesmo se você pausar, improvisar ou pular um trecho, o sistema se reposiciona automaticamente.\n\nUse as teclas de seta para navegar manualmente. A barra de espaço pausa e retoma.\n\nConfigure fonte, velocidade e espaçamento conforme sua preferência.\n\nAtive o espelhamento se estiver usando um vidro refletor.\n\nBoa gravação!',createdAt:Date.now(),updatedAt:Date.now()}])
+let activeId = load(KEY_ACTIVE, scripts[0]?.id)
+let settings = load(KEY_SETTINGS, {fontSize:52,lineHeight:1.9,speed:3,blockWidth:72,focusLines:0,theme:'dark',mirrored:false,countdown:3})
+
+function getActive(){return scripts.find(s=>s.id===activeId)||scripts[0]}
+
+function genId(){return Date.now()+'-'+Math.random().toString(36).slice(2,7)}
+
+function persistAll(){
+  save(KEY_SCRIPTS,scripts)
+  save(KEY_ACTIVE,activeId)
+  save(KEY_SETTINGS,settings)
+}
+
+// ══════════════════════════════════════
+// EDITOR UI
+// ══════════════════════════════════════
+function renderSidebar(){
+  const list=document.getElementById('script-list')
+  list.innerHTML=''
+  ;[...scripts].sort((a,b)=>b.updatedAt-a.updatedAt).forEach(sc=>{
+    const div=document.createElement('div')
+    div.className='script-item'+(sc.id===activeId?' active':'')
+    div.innerHTML=`<span class="script-item-title">${esc(sc.title||'Sem título')}</span><button class="script-item-del" onclick="deleteScript('${sc.id}',event)" title="Excluir">✕</button>`
+    div.addEventListener('click',()=>selectScript(sc.id))
+    list.appendChild(div)
+  })
+  document.getElementById('sidebar-foot').textContent=scripts.length+' roteiro'+(scripts.length!==1?'s':'')
+}
+
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function loadActiveToEditor(){
+  const sc=getActive()
+  if(!sc)return
+  document.getElementById('title-input').value=sc.title||''
+  document.getElementById('content-input').value=sc.content||''
+  updateStats()
+}
+
+function selectScript(id){
+  flushSave()
+  activeId=id
+  save(KEY_ACTIVE,id)
+  renderSidebar()
+  loadActiveToEditor()
+}
+
+function newScript(){
+  const sc={id:genId(),title:'Novo Roteiro',content:'',createdAt:Date.now(),updatedAt:Date.now()}
+  scripts.push(sc)
+  activeId=sc.id
+  persistAll()
+  renderSidebar()
+  loadActiveToEditor()
+  setTimeout(()=>document.getElementById('title-input').focus(),50)
+}
+
+function deleteScript(id,e){
+  e.stopPropagation()
+  if(scripts.length<=1){alert('Precisa ter pelo menos um roteiro.');return}
+  if(!confirm('Excluir este roteiro?'))return
+  scripts=scripts.filter(s=>s.id!==id)
+  if(activeId===id)activeId=scripts[0].id
+  persistAll()
+  renderSidebar()
+  loadActiveToEditor()
+}
+
+// Auto-save
+let saveTimer=null
+function onContentChange(){
+  const sc=getActive();if(!sc)return
+  sc.content=document.getElementById('content-input').value
+  sc.updatedAt=Date.now()
+  setSaving(true)
+  clearTimeout(saveTimer)
+  saveTimer=setTimeout(()=>{persistAll();setSaving(false)},600)
+  updateStats()
+}
+
+function onTitleChange(){
+  const sc=getActive();if(!sc)return
+  sc.title=document.getElementById('title-input').value
+  sc.updatedAt=Date.now()
+  setSaving(true)
+  clearTimeout(saveTimer)
+  saveTimer=setTimeout(()=>{persistAll();setSaving(false);renderSidebar()},800)
+}
+
+function flushSave(){
+  clearTimeout(saveTimer)
+  const sc=getActive();if(!sc)return
+  sc.content=document.getElementById('content-input').value
+  sc.title=document.getElementById('title-input').value
+  persistAll()
+  setSaving(false)
+}
+
+function setSaving(v){
+  document.getElementById('save-dot').className='save-dot'+(v?' saving':'')
+  document.getElementById('save-label').textContent=v?'Salvando…':'Salvo'
+}
+
+function updateStats(){
+  const txt=(document.getElementById('content-input').value||'').trim()
+  const words=txt?txt.split(/\s+/).length:0
+  const chars=(document.getElementById('content-input').value||'').length
+  const secs=Math.ceil(words/2.5)
+  document.getElementById('stat-words').textContent=words.toLocaleString('pt-BR')+' palavras'
+  document.getElementById('stat-chars').textContent=chars.toLocaleString('pt-BR')+' chars'
+  document.getElementById('stat-time').textContent='~'+(secs>=60?Math.floor(secs/60)+'min '+(secs%60)+'s':secs+'s')
+}
+
+// Settings controls
+function initSettingsUI(){
+  const s=settings
+  const set=(id,val,suffix='')=>{
+    document.getElementById(id).value=val
+    const vEl=document.getElementById(id+'-v')
+    if(vEl)vEl.textContent=val+suffix
+  }
+  set('s-font',s.fontSize,'')
+  set('s-speed',s.speed,'')
+  set('s-lh',s.lineHeight,'')
+  set('s-width',s.blockWidth,'%')
+  document.getElementById('s-focus').value=s.focusLines
+  document.getElementById('s-theme').value=s.theme
+  document.getElementById('s-mirror').textContent=s.mirrored?'ON':'OFF'
+  document.getElementById('s-mirror').className='toggle-btn'+(s.mirrored?' on':'')
+  document.getElementById('s-cd').value=s.countdown
+
+  document.getElementById('s-font').oninput=function(){settings.fontSize=+this.value;document.getElementById('s-font-v').textContent=this.value;save(KEY_SETTINGS,settings)}
+  document.getElementById('s-speed').oninput=function(){settings.speed=+this.value;document.getElementById('s-speed-v').textContent=this.value;save(KEY_SETTINGS,settings)}
+  document.getElementById('s-lh').oninput=function(){settings.lineHeight=+this.value;document.getElementById('s-lh-v').textContent=(+this.value).toFixed(1);save(KEY_SETTINGS,settings)}
+  document.getElementById('s-width').oninput=function(){settings.blockWidth=+this.value;document.getElementById('s-width-v').textContent=this.value+'%';save(KEY_SETTINGS,settings)}
+  document.getElementById('s-focus').onchange=function(){settings.focusLines=+this.value;save(KEY_SETTINGS,settings)}
+  document.getElementById('s-theme').onchange=function(){settings.theme=this.value;save(KEY_SETTINGS,settings)}
+  document.getElementById('s-mirror').onclick=function(){settings.mirrored=!settings.mirrored;this.textContent=settings.mirrored?'ON':'OFF';this.className='toggle-btn'+(settings.mirrored?' on':'');save(KEY_SETTINGS,settings)}
+  document.getElementById('s-cd').onchange=function(){settings.countdown=+this.value;save(KEY_SETTINGS,settings)}
+}
+
+// ══════════════════════════════════════
+// TELEPROMPTER
+// ══════════════════════════════════════
+let tpLines=[]
+let tpActive=0
+let tpPlaying=false
+let tpRaf=null
+let tpLastTs=null
+let tpOffsets=[]  // cache de offsetTop
+
+// Controls hide timer
+let barTimer=null
+function showBar(){
+  const bar=document.getElementById('tp-bar')
+  const hint=document.getElementById('tp-hint')
+  bar.classList.remove('hidden')
+  hint.classList.remove('hidden')
+  document.getElementById('teleprompter').classList.add('cursor-visible')
+  clearTimeout(barTimer)
+  if(tpPlaying){
+    barTimer=setTimeout(()=>{
+      bar.classList.add('hidden')
+      hint.classList.add('hidden')
+      document.getElementById('teleprompter').classList.remove('cursor-visible')
+    },3000)
+  }
+}
+
+function parseLines(content){
+  return content.split('\n').map((t,i)=>({index:i,text:t.trim(),empty:t.trim()===''}))
+}
+
+function renderTp(){
+  flushSave()
+  const sc=getActive();if(!sc)return
+  tpLines=parseLines(sc.content)
+  const scroll=document.getElementById('tp-scroll')
+  scroll.innerHTML=''
+  const s=settings
+
+  const wrap=document.createElement('div')
+  wrap.className='tp-content'
+  wrap.style.width=s.blockWidth+'%'
+  wrap.style.margin='0 auto'
+
+  tpLines.forEach(line=>{
+    const el=document.createElement(line.empty?'div':'p')
+    el.className=line.empty?'tp-spacer':'tp-line'
+    if(!line.empty){
+      el.dataset.idx=line.index
+      el.textContent=line.text
+      el.style.fontSize=s.fontSize+'px'
+      el.style.lineHeight=s.lineHeight
+      el.addEventListener('click',()=>{tpGoTo(line.index);smootherReset(line.index)})
+    }
+    wrap.appendChild(el)
+  })
+  scroll.appendChild(wrap)
+
+  // Theme + mirror
+  const tp=document.getElementById('teleprompter')
+  tp.className='screen dark'  // reset
+  if(s.theme==='light') tp.classList.add('light')
+  else if(s.theme==='hc') tp.classList.add('hc')
+  else tp.classList.add('dark')
+  if(s.mirrored) tp.style.transform='scaleX(-1)'
+  else tp.style.transform=''
+
+  // Text color
+  const isDark=s.theme!=='light'
+  const textColor=s.theme==='hc'?'#ffe600':isDark?'#fff':'#000'
+  const dimColor=s.theme==='hc'?'rgba(255,230,0,0.2)':isDark?'rgba(255,255,255,0.18)':'rgba(0,0,0,0.18)'
+  wrap._textColor=textColor
+  wrap._dimColor=dimColor
+
+  tpActive=0
+  setTimeout(()=>{rebuildOffsets();updateActiveStyles();updateProgress()},80)
+}
+
+function rebuildOffsets(){
+  const els=document.querySelectorAll('.tp-line')
+  tpOffsets=[]
+  els.forEach(el=>{
+    const idx=+el.dataset.idx
+    tpOffsets[idx]=el.offsetTop+el.offsetHeight/2
+  })
+}
+
+function getEl(idx){return document.querySelector(`.tp-line[data-idx="${idx}"]`)}
+
+function updateActiveStyles(){
+  const s=settings
+  const scroll=document.getElementById('tp-scroll')
+  const isDark=s.theme!=='light'
+  const textColor=s.theme==='hc'?'#ffe600':isDark?'#fff':'#000'
+  const dimColor=s.theme==='hc'?'rgba(255,230,0,0.2)':isDark?'rgba(255,255,255,0.18)':'rgba(0,0,0,0.18)'
+  const focusR=s.focusLines>0?Math.floor(s.focusLines/2):999
+
+  document.querySelectorAll('.tp-line').forEach(el=>{
+    const idx=+el.dataset.idx
+    const dist=Math.abs(idx-tpActive)
+    const active=dist===0
+    const inFocus=dist<=focusR
+    const opacity=active?1:!inFocus?0:Math.max(0.12,0.55-dist*0.12)
+    el.style.color=textColor
+    el.style.opacity=opacity
+    el.style.fontWeight=active?700:400
+    el.style.transform=active?'scale(1.04)':'scale(1)'
+    el.style.visibility=(!inFocus&&s.focusLines>0)?'hidden':'visible'
+  })
+}
+
+function computeActiveLine(){
+  const scroll=document.getElementById('tp-scroll')
+  if(!scroll)return
+  const readingY=scroll.scrollTop+scroll.clientHeight*0.38
+  let best=tpActive,min=Infinity
+  tpOffsets.forEach((top,i)=>{
+    if(top==null)return
+    const d=Math.abs(top-readingY)
+    if(d<min){min=d;best=i}
+  })
+  if(best!==tpActive){tpActive=best;updateActiveStyles();updateProgress()}
+}
+
+function updateProgress(){
+  const nonEmpty=tpLines.filter(l=>!l.empty)
+  const pct=nonEmpty.length>0?tpActive/Math.max(nonEmpty.length-1,1):0
+  document.getElementById('tp-prog').style.width=(pct*100)+'%'
+  document.getElementById('tp-rail-fill').style.height=(pct*100)+'%'
+  document.getElementById('tp-rail-marker').style.top=(pct*100)+'%'
+  document.getElementById('ctrl-info').textContent=Math.round(pct*100)+'% · '+(tpActive+1)+'/'+nonEmpty.length
+}
+
+// Speed → px/s
+function speedToPx(s){return Math.round(28*Math.pow(s,1.35))}
+
+function startRaf(){
+  tpLastTs=null
+  const tick=ts=>{
+    if(!tpPlaying){tpRaf=null;return}
+    const scroll=document.getElementById('tp-scroll')
+    if(!scroll){tpRaf=null;return}
+    if(tpLastTs!==null){
+      const dt=Math.min(ts-tpLastTs,100)/1000
+      const px=speedToPx(settings.speed)*dt
+      const max=scroll.scrollHeight-scroll.clientHeight
+      if(scroll.scrollTop>=max){tpPause();return}
+      scroll.scrollTop=Math.min(scroll.scrollTop+px,max)
+      computeActiveLine()
+    }
+    tpLastTs=ts
+    tpRaf=requestAnimationFrame(tick)
+  }
+  tpRaf=requestAnimationFrame(tick)
+}
+
+function stopRaf(){if(tpRaf){cancelAnimationFrame(tpRaf);tpRaf=null}tpLastTs=null}
+
+function tpPlay(){tpPlaying=true;document.getElementById('tp-play-btn').innerHTML='⏸';startRaf();showBar()}
+function tpPause(){tpPlaying=false;document.getElementById('tp-play-btn').innerHTML='▶';stopRaf();showBar()}
+function tpToggle(){tpPlaying?tpPause():tpPlay()}
+
+function tpRestart(){
+  stopRaf();tpPlaying=false
+  document.getElementById('tp-play-btn').innerHTML='▶'
+  document.getElementById('tp-scroll').scrollTop=0
+  tpActive=0;updateActiveStyles();updateProgress()
+  smootherReset(0)
+  showBar()
+}
+
+function tpGoTo(idx){
+  const scroll=document.getElementById('tp-scroll')
+  const el=getEl(idx)
+  if(!scroll||!el)return
+  scroll.scrollTo({top:Math.max(0,el.offsetTop-scroll.clientHeight*0.38),behavior:'smooth'})
+}
+
+function tpRecenter(){tpGoTo(tpActive)}
+
+function tpStepSpeed(d){
+  settings.speed=Math.min(10,Math.max(1,settings.speed+d))
+  save(KEY_SETTINGS,settings)
+  updateSpeedDisplay()
+  showBar()
+}
+
+function updateSpeedDisplay(){
+  const s=settings.speed
+  document.getElementById('speed-label').textContent='vel. '+s
+  const bars=document.getElementById('speed-bars')
+  bars.innerHTML=''
+  const isDark=document.getElementById('teleprompter').classList.contains('light')?false:true
+  const activeCol=document.getElementById('teleprompter').classList.contains('hc')?'#ffe600':'#fff'
+  const inactiveCol=document.getElementById('teleprompter').classList.contains('light')?'rgba(0,0,0,0.12)':'rgba(255,255,255,0.12)'
+  for(let i=0;i<10;i++){
+    const b=document.createElement('div')
+    b.className='speed-bar-seg'
+    b.style.height=(4+i*0.8)+'px'
+    b.style.background=i<s?activeCol:inactiveCol
+    bars.appendChild(b)
+  }
+}
+
+// Reading guide position
+function updateGuide(){
+  const tp=document.getElementById('teleprompter')
+  const guide=document.getElementById('tp-guide')
+  guide.style.top=(tp.clientHeight*0.38)+'px'
+}
+
+// Countdown
+let cdInterval=null
+function startCountdown(cb){
+  if(settings.countdown<=0){cb();return}
+  let rem=settings.countdown
+  const el=document.getElementById('tp-countdown')
+  const num=document.getElementById('cd-num')
+  el.classList.remove('hidden')
+  num.textContent=rem
+  // Force reflow for animation
+  void num.offsetWidth
+  cdInterval=setInterval(()=>{
+    rem--
+    if(rem<=0){
+      clearInterval(cdInterval)
+      el.classList.add('hidden')
+      cb()
+    } else {
+      num.style.animation='none'
+      void num.offsetWidth
+      num.style.animation=''
+      num.textContent=rem
+    }
+  },1000)
+}
+
+function openTeleprompter(){
+  flushSave()
+  const sc=getActive()
+  if(!sc||!sc.content.trim()){alert('Escreva algo no roteiro antes de iniciar.');return}
+  document.getElementById('editor').classList.add('hidden')
+  document.getElementById('teleprompter').classList.remove('hidden')
+  renderTp()
+  updateGuide()
+  updateSpeedDisplay()
+  showBar()
+  tpActive=0
+  setTimeout(()=>{
+    startCountdown(()=>{tpPlay()})
+  },100)
+}
+
+function closeTeleprompter(){
+  stopRaf()
+  tpPlaying=false
+  if(cdInterval){clearInterval(cdInterval);cdInterval=null}
+  document.getElementById('tp-countdown').classList.add('hidden')
+  micStop()
+  document.getElementById('teleprompter').classList.add('hidden')
+  document.getElementById('editor').classList.remove('hidden')
+  if(document.fullscreenElement)document.exitFullscreen()
+}
+
+function toggleFullscreen(){
+  if(!document.fullscreenElement){
+    document.getElementById('teleprompter').requestFullscreen?.().catch(()=>{})
+    document.getElementById('fs-btn').textContent='⛶'
+  } else {
+    document.exitFullscreen()
+    document.getElementById('fs-btn').textContent='⛶'
+  }
+}
+
+// Scroll manual → recalcula linha ativa
+document.getElementById('tp-scroll').addEventListener('scroll',()=>{
+  if(!tpPlaying)computeActiveLine()
+},{passive:true})
+
+// Resize → rebuild offsets
+new ResizeObserver(()=>{rebuildOffsets();updateGuide()}).observe(document.getElementById('tp-scroll'))
+
+// ══════════════════════════════════════
+// KEYBOARD
+// ══════════════════════════════════════
+document.addEventListener('keydown',e=>{
+  const tag=e.target.tagName
+  if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT')return
+
+  // Teleprompter keys
+  if(!document.getElementById('teleprompter').classList.contains('hidden')){
+    switch(e.key){
+      case ' ':     e.preventDefault();tpToggle();break
+      case 'ArrowUp':e.preventDefault();tpStepSpeed(-1);break
+      case 'ArrowDown':e.preventDefault();tpStepSpeed(1);break
+      case 'ArrowLeft':e.preventDefault();skipLines(-1);break
+      case 'ArrowRight':e.preventDefault();skipLines(1);break
+      case 'f':case 'F':e.preventDefault();toggleFullscreen();break
+      case 'r':case 'R':e.preventDefault();tpRestart();break
+      case 'c':case 'C':e.preventDefault();tpRecenter();break
+      case 'm':case 'M':e.preventDefault();micToggle();break
+      case 'Escape':closeTeleprompter();break
+    }
+    showBar()
+  }
+})
+
+function skipLines(dir){
+  const nonEmpty=tpLines.filter(l=>!l.empty)
+  const cur=nonEmpty.findIndex(l=>l.index===tpActive)
+  const next=Math.min(Math.max(0,cur+dir*3),nonEmpty.length-1)
+  tpGoTo(nonEmpty[next].index)
+  smootherReset(nonEmpty[next].index)
+}
+
+// ══════════════════════════════════════
+// SPEECH RECOGNITION
+// ══════════════════════════════════════
+const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition
+let recognizer=null
+let micActive=false
+let sessionTimer=null
+let restartTimer=null
+let micIntentionalStop=false
+let reconnectCount=0
+const MAX_RECONNECTS=10
+
+function micSupported(){return!!SpeechRecognition}
+
+function micStart(){
+  if(!micSupported()){setMicState('unsupported');return}
+  micIntentionalStop=false
+  micActive=true
+  reconnectCount=0
+  startSession()
+}
+
+function micStop(){
+  micIntentionalStop=true
+  micActive=false
+  clearTimeout(sessionTimer)
+  clearTimeout(restartTimer)
+  destroyRecognizer()
+  setMicState('idle')
+}
+
+function micToggle(){micActive?micStop():micStart()}
+
+function destroyRecognizer(){
+  if(!recognizer)return
+  recognizer.onresult=null;recognizer.onerror=null;recognizer.onend=null;recognizer.onstart=null
+  try{recognizer.abort()}catch{}
+  recognizer=null
+}
+
+function startSession(){
+  if(micIntentionalStop)return
+  destroyRecognizer()
+  recognizer=new SpeechRecognition()
+  recognizer.lang=settings.lang||'pt-BR'
+  recognizer.continuous=false
+  recognizer.interimResults=true
+  recognizer.maxAlternatives=1
+
+  recognizer.onstart=()=>{
+    reconnectCount=0
+    setMicState('listening')
+    sessionTimer=setTimeout(()=>{
+      if(!micIntentionalStop)destroyRecognizer()
+    },25000)
+  }
+
+  recognizer.onresult=e=>{
+    const r=e.results[e.results.length-1]
+    const transcript=r[0].transcript
+    const isFinal=r.isFinal
+    processTranscript(transcript,isFinal)
+  }
+
+  recognizer.onerror=e=>{
+    if(e.error==='aborted'||e.error==='no-speech')return
+    if(e.error==='not-allowed'||e.error==='service-not-allowed'){
+      micIntentionalStop=true
+      setMicState('error')
+      showConfToast('Permissão de microfone negada')
+      return
+    }
+  }
+
+  recognizer.onend=()=>{
+    clearTimeout(sessionTimer)
+    if(micIntentionalStop)return
+    if(reconnectCount>=MAX_RECONNECTS){setMicState('error');return}
+    reconnectCount++
+    setMicState('reconnecting')
+    restartTimer=setTimeout(startSession,400)
+  }
+
+  try{recognizer.start();setMicState('requesting')}
+  catch{setMicState('error')}
+}
+
+function setMicState(state){
+  const btn=document.getElementById('mic-btn')
+  const lbl=document.getElementById('mic-label')
+  btn.className='mic-btn'
+  if(!micSupported()){btn.classList.add('unsupported');lbl.textContent='SEM SUPORTE';return}
+  if(state==='listening'){btn.classList.add('listening');lbl.className='mic-label on';lbl.textContent='ON'}
+  else if(state==='error'){btn.classList.add('error');lbl.className='mic-label off';lbl.textContent='ERRO'}
+  else if(state==='reconnecting'){btn.classList.add('idle');lbl.className='mic-label off';lbl.textContent='...'}
+  else{btn.classList.add('idle');lbl.className='mic-label off';lbl.textContent='VOZ'}
+}
+
+// ══════════════════════════════════════
+// TEXT MATCHING
+// ══════════════════════════════════════
+const FILLERS=new Set(['então','tipo','assim','né','aí','ahn','hmm','bom','ok','tá','uh','um','like','so','well','right'])
+
+function normalize(t){
+  return t.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^\w\s]/g,' ')
+    .split(/\s+/).filter(w=>w.length>0&&!FILLERS.has(w)).join(' ').trim()
+}
+
+function bigrams(t){
+  const w=t.split(' ').filter(Boolean)
+  if(w.length<2)return w
+  const r=[]
+  for(let i=0;i<w.length-1;i++)r.push(w[i]+' '+w[i+1])
+  return r
+}
+
+// Pré-computa chunks e bigramSets ao abrir o teleprompter
+let tpChunks=[]
+
+function buildChunks(){
+  tpChunks=tpLines.map(line=>{
+    const text=normalize(line.text)
+    return{index:line.index,empty:line.empty,text,bigramSet:new Set(bigrams(text)),wc:text.split(' ').filter(Boolean).length}
+  })
+}
+
+function diceFromSets(a,b){
+  if(!a.size||!b.size)return 0
+  let inter=0
+  const [small,large]=a.size<=b.size?[a,b]:[b,a]
+  for(const bg of small)if(large.has(bg))inter++
+  return(2*inter)/(a.size+b.size)
+}
+
+function transcriptBigramSet(transcript){
+  return new Set(bigrams(normalize(transcript)))
+}
+
+function adaptiveThreshold(wc){
+  if(wc<=2)return 0.72
+  if(wc<=4)return 0.48
+  if(wc<=6)return 0.36
+  return 0.28
+}
+
+function scoreChunk(tSet,idx){
+  const c=tpChunks[idx]
+  if(!c||c.empty)return 0
+  const s1=diceFromSets(tSet,c.bigramSet)
+  // Merge com próxima linha
+  let s2=0
+  if(idx+1<tpChunks.length&&!tpChunks[idx+1].empty){
+    const merged=new Set([...c.bigramSet,...tpChunks[idx+1].bigramSet])
+    s2=diceFromSets(tSet,merged)
+  }
+  return Math.max(s1,s2)
+}
+
+function findMatch(transcript){
+  const tSet=transcriptBigramSet(transcript)
+  if(!tSet.size)return{found:false,index:tpActive,score:0}
+
+  const eligible=tpChunks.filter(c=>!c.empty)
+  const curEIdx=Math.max(0,eligible.findIndex(c=>c.index>=tpActive))
+
+  const WB=4,WA=12,BIAS=1.15
+  const start=Math.max(0,curEIdx-WB),end=Math.min(eligible.length-1,curEIdx+WA)
+
+  let best=null
+  for(let i=start;i<=end;i++){
+    const score=scoreChunk(tSet,eligible[i].index)
+    const boosted=i>=curEIdx?score*BIAS:score
+    if(!best||boosted>best.boosted)best={index:eligible[i].index,score,boosted,wc:eligible[i].wc}
+  }
+
+  if(best&&best.score>=adaptiveThreshold(best.wc))return{found:true,index:best.index,score:best.score}
+
+  // Global fallback
+  let gbest=null
+  for(let i=0;i<eligible.length;i++){
+    const score=scoreChunk(tSet,eligible[i].index)
+    if(!gbest||score>gbest.score)gbest={index:eligible[i].index,score,wc:eligible[i].wc}
+  }
+  if(gbest&&gbest.score>=adaptiveThreshold(gbest.wc))return{found:true,index:gbest.index,score:gbest.score}
+
+  return{found:false,index:tpActive,score:best?.score||0}
+}
+
+// ══════════════════════════════════════
+// SMOOTHER
+// ══════════════════════════════════════
+let smoother={confirmed:0,pending:0,count:0}
+
+function smootherReset(idx){smoother={confirmed:idx,pending:idx,count:0}}
+
+function applySmoothing(match){
+  const CONFIRM=2,HIGH=0.72,BACKTRACK=3
+  if(!match.found)return smoother.confirmed
+
+  const cand=match.index
+  if(cand<smoother.confirmed-BACKTRACK)return smoother.confirmed
+  if(match.score>=HIGH){smoother={confirmed:cand,pending:cand,count:0};return cand}
+
+  if(cand===smoother.pending){
+    smoother.count++
+    if(smoother.count>=CONFIRM){smoother={confirmed:cand,pending:cand,count:0};return cand}
+    return smoother.confirmed
+  }
+  smoother={confirmed:smoother.confirmed,pending:cand,count:1}
+  return smoother.confirmed
+}
+
+let confToastTimer=null
+function updateMicScore(score){
+  const fill=document.getElementById('mic-score-fill')
+  const pct=Math.round(score*100)
+  fill.style.width=pct+'%'
+  fill.style.background=pct>=60?'#22c55e':pct>=35?'#f59e0b':'#ef4444'
+  if(score>0&&score<0.35)showConfToast('Sincronização imprecisa ('+pct+'%)')
+}
+
+function showConfToast(msg){
+  const el=document.getElementById('conf-toast')
+  el.textContent='◈ '+msg
+  el.classList.remove('hidden')
+  clearTimeout(confToastTimer)
+  confToastTimer=setTimeout(()=>el.classList.add('hidden'),4000)
+}
+
+function processTranscript(transcript,isFinal){
+  const match=findMatch(transcript)
+  updateMicScore(match.score)
+  const accepted=applySmoothing(match)
+  if(accepted!==tpActive){
+    tpActive=accepted
+    updateActiveStyles()
+    updateProgress()
+    tpGoTo(accepted)
+  }
+}
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+// Patch renderTp to also build chunks
+const _renderTp=renderTp
+window.renderTp=function(){_renderTp();setTimeout(buildChunks,150)}
+
+// Mouse move → show bar in TP
+document.getElementById('teleprompter').addEventListener('mousemove',showBar)
+document.getElementById('teleprompter').addEventListener('touchstart',showBar,{passive:true})
+
+// Initialize
+renderSidebar()
+loadActiveToEditor()
+initSettingsUI()
+updateStats()
+</script>
 </body>
 </html>
