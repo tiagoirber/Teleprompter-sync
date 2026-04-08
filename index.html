@@ -9,44 +9,43 @@
 :root{
   --bg:#000;--text:#fff;--dim:rgba(255,255,255,0.18);
   --muted:rgba(255,255,255,0.45);--faint:rgba(255,255,255,0.12);
-  --border:rgba(255,255,255,0.08);--card:#0d0d0d;--accent:#fff;
-  --green:#22c55e;--amber:#f59e0b;--red:#ef4444;
+  --border:rgba(255,255,255,0.08);--card:#0d0d0d;
+  --green:#22c55e;--amber:#f59e0b;--red:#ef4444;--blue:#3b82f6;
 }
 html,body{height:100%;overflow:hidden}
 body{background:#111;color:#eee;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;-webkit-font-smoothing:antialiased}
-
-/* ── SCREENS ── */
 .screen{position:fixed;inset:0;display:flex;flex-direction:column;transition:opacity .2s}
 .screen.hidden{opacity:0;pointer-events:none}
 
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid rgba(255,255,255,0.18);background:transparent;color:#fff;transition:background .15s,border-color .15s;white-space:nowrap}
+.btn:hover{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.3)}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:#fff;color:#000;border-color:#fff}
+.btn.primary:hover{background:rgba(255,255,255,0.88)}
+.btn.icon{padding:7px;border-radius:6px}
+.btn.green{background:rgba(34,197,94,.15);border-color:rgba(34,197,94,.4);color:#22c55e}
+.btn.green:hover{background:rgba(34,197,94,.25)}
+
 /* ── EDITOR ── */
 #editor{background:#111}
-.editor-header{
-  display:flex;align-items:center;justify-content:space-between;
-  height:52px;padding:0 16px;
-  border-bottom:1px solid rgba(255,255,255,0.07);
-  background:#0d0d0d;flex-shrink:0;gap:8px;
-}
+.editor-header{display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,0.07);background:#0d0d0d;flex-shrink:0;gap:8px}
 .editor-logo{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#fff;white-space:nowrap}
 .logo-mark{width:26px;height:26px;border:1.5px solid rgba(255,255,255,0.5);border-radius:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:5px}
 .logo-mark span{display:block;height:1.5px;background:#fff;border-radius:1px}
 .logo-mark span:nth-child(1){width:12px}
 .logo-mark span:nth-child(2){width:8px;opacity:.5}
 .logo-mark span:nth-child(3){width:10px;opacity:.25}
-
-.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid rgba(255,255,255,0.18);background:transparent;color:#fff;transition:background .15s,border-color .15s;white-space:nowrap}
-.btn:hover{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.3)}
-.btn:active{transform:scale(.97)}
-.btn.primary{background:#fff;color:#000;border-color:#fff}
-.btn.primary:hover{background:rgba(255,255,255,0.88)}
-.btn.danger{border-color:rgba(239,68,68,.4);color:#ef4444}
-.btn.danger:hover{background:rgba(239,68,68,.1)}
-.btn.icon{padding:7px;border-radius:6px}
-
-/* Sidebar */
+.settings-row{display:flex;align-items:center;flex-wrap:wrap;gap:10px;padding:8px 16px;border-bottom:1px solid rgba(255,255,255,0.07);background:#0d0d0d;flex-shrink:0}
+.setting{display:flex;align-items:center;gap:6px}
+.setting label{font-size:11px;color:var(--muted);white-space:nowrap}
+.setting input[type=range]{width:72px;accent-color:#fff;cursor:pointer}
+.setting select{background:#1a1a1a;border:1px solid rgba(255,255,255,0.12);color:#fff;font-size:12px;padding:3px 8px;border-radius:5px;cursor:pointer;outline:none}
+.setting-val{font-size:11px;color:#fff;min-width:26px;text-align:right}
+.toggle-btn{font-size:11px;padding:4px 10px;border-radius:5px;cursor:pointer;border:1px solid rgba(255,255,255,0.18);background:transparent;color:var(--muted);transition:all .15s}
+.toggle-btn.on{background:rgba(255,255,255,0.12);color:#fff;border-color:rgba(255,255,255,0.3)}
 .editor-body{display:flex;flex:1;overflow:hidden}
 .sidebar{width:220px;min-width:220px;border-right:1px solid rgba(255,255,255,0.07);background:#0a0a0a;display:flex;flex-direction:column;transition:width .25s,min-width .25s}
-.sidebar.collapsed{width:0;min-width:0;overflow:hidden}
 .sidebar-head{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0}
 .sidebar-head span{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .script-list{flex:1;overflow-y:auto;padding:4px 0}
@@ -59,8 +58,6 @@ body{background:#111;color:#eee;font-family:-apple-system,BlinkMacSystemFont,'Se
 .script-item:hover .script-item-del{opacity:1}
 .script-item-del:hover{color:#ef4444;background:rgba(239,68,68,.1)}
 .sidebar-foot{padding:10px 12px;border-top:1px solid rgba(255,255,255,0.07);font-size:11px;color:var(--muted)}
-
-/* Main edit area */
 .editor-main{flex:1;display:flex;flex-direction:column;overflow:hidden}
 .title-bar{padding:12px 20px 0;flex-shrink:0}
 .title-input{width:100%;background:transparent;border:none;outline:none;font-size:20px;font-weight:700;color:#fff;padding:4px 0}
@@ -73,372 +70,708 @@ textarea::placeholder{color:rgba(255,255,255,0.18)}
 .save-dot.saving{background:var(--amber);animation:blink 1s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* ── SETTINGS ROW ── */
-.settings-row{display:flex;align-items:center;flex-wrap:wrap;gap:10px;padding:8px 16px;border-bottom:1px solid rgba(255,255,255,0.07);background:#0d0d0d;flex-shrink:0}
-.setting{display:flex;align-items:center;gap:6px}
-.setting label{font-size:11px;color:var(--muted);white-space:nowrap}
-.setting input[type=range]{width:72px;accent-color:#fff;cursor:pointer}
-.setting select{background:#1a1a1a;border:1px solid rgba(255,255,255,0.12);color:#fff;font-size:12px;padding:3px 8px;border-radius:5px;cursor:pointer;outline:none}
-.setting-val{font-size:11px;color:#fff;min-width:26px;text-align:right}
-.toggle-btn{font-size:11px;padding:4px 10px;border-radius:5px;cursor:pointer;border:1px solid rgba(255,255,255,0.18);background:transparent;color:var(--muted);transition:all .15s}
-.toggle-btn.on{background:rgba(255,255,255,0.12);color:#fff;border-color:rgba(255,255,255,0.3)}
+/* ══════════════════════════════════════
+   CALIBRATION MODAL
+══════════════════════════════════════ */
+.modal-overlay{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,0.92);
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+  transition:opacity .25s;
+}
+.modal-overlay.hidden{opacity:0;pointer-events:none}
+.modal{
+  width:100%;max-width:560px;max-height:90vh;overflow-y:auto;
+  background:#0d0d0d;border:1px solid rgba(255,255,255,0.1);
+  border-radius:16px;padding:32px;
+  display:flex;flex-direction:column;gap:24px;
+}
+.modal h2{font-size:20px;font-weight:700;color:#fff}
+.modal p{font-size:14px;color:var(--muted);line-height:1.65}
+
+/* Steps indicator */
+.cal-steps{display:flex;gap:6px;align-items:center}
+.cal-step-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(255,255,255,0.15);transition:background .2s
+}
+.cal-step-dot.done{background:var(--green)}
+.cal-step-dot.active{background:#fff}
+.cal-step-label{font-size:11px;color:var(--muted);margin-left:6px}
+
+/* Sentence card */
+.sentence-card{
+  background:#161616;border:1px solid rgba(255,255,255,0.07);
+  border-radius:12px;padding:20px;
+}
+.sentence-text{
+  font-size:17px;font-weight:600;color:#fff;line-height:1.6;
+  text-align:center;letter-spacing:.01em;
+  min-height:56px;display:flex;align-items:center;justify-content:center;
+}
+.sentence-num{font-size:11px;color:var(--muted);text-align:center;margin-bottom:10px;letter-spacing:.08em;text-transform:uppercase}
+
+/* Waveform / listening indicator */
+.listen-indicator{
+  display:flex;align-items:center;justify-content:center;gap:3px;
+  height:40px;margin:8px 0;
+}
+.wave-bar{
+  width:3px;border-radius:2px;background:rgba(255,255,255,0.2);
+  animation:none;transition:background .2s;
+}
+.listen-indicator.active .wave-bar{background:var(--green)}
+.listen-indicator.active .wave-bar:nth-child(1){animation:wave 1.1s ease infinite 0s}
+.listen-indicator.active .wave-bar:nth-child(2){animation:wave 1.1s ease infinite .15s}
+.listen-indicator.active .wave-bar:nth-child(3){animation:wave 1.1s ease infinite .07s}
+.listen-indicator.active .wave-bar:nth-child(4){animation:wave 1.1s ease infinite .22s}
+.listen-indicator.active .wave-bar:nth-child(5){animation:wave 1.1s ease infinite .04s}
+.listen-indicator.active .wave-bar:nth-child(6){animation:wave 1.1s ease infinite .18s}
+.listen-indicator.active .wave-bar:nth-child(7){animation:wave 1.1s ease infinite .11s}
+@keyframes wave{0%,100%{height:4px}50%{height:28px}}
+
+/* Transcript live */
+.transcript-box{
+  background:#1a1a1a;border:1px solid rgba(255,255,255,0.07);
+  border-radius:8px;padding:12px 14px;min-height:48px;
+  font-size:13px;color:rgba(255,255,255,0.7);line-height:1.6;
+  font-style:italic;
+}
+.transcript-box .interim{color:rgba(255,255,255,0.35)}
+
+/* Score bar */
+.score-row{display:flex;align-items:center;gap:10px;margin-top:4px}
+.score-bar-wrap{flex:1;height:6px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:3px;transition:width .4s,background .4s}
+.score-val{font-size:12px;font-weight:600;min-width:36px;text-align:right}
+
+/* Results */
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.result-card{
+  background:#161616;border:1px solid rgba(255,255,255,0.07);
+  border-radius:10px;padding:14px;
+}
+.result-card .rc-label{font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em}
+.result-card .rc-val{font-size:22px;font-weight:700;color:#fff}
+.result-card .rc-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.cal-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;font-weight:600;padding:4px 12px;
+  border-radius:100px;
+}
+.cal-badge.good{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:var(--green)}
+.cal-badge.ok{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:var(--amber)}
+.cal-badge.bad{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:var(--red)}
+
+.cal-profile-row{
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:12px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.06)
+}
+.cal-profile-row:last-child{border-bottom:none}
+.cal-profile-row span:first-child{color:var(--muted)}
+.cal-profile-row span:last-child{color:#fff;font-weight:500}
+
+/* Cal status badge in header */
+.cal-status{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:11px;padding:4px 10px;border-radius:6px;
+  border:1px solid rgba(255,255,255,0.12);color:var(--muted);
+  cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.cal-status:hover{border-color:rgba(255,255,255,.25);color:#fff}
+.cal-status.calibrated{border-color:rgba(34,197,94,.3);color:var(--green);background:rgba(34,197,94,.08)}
+.cal-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
 
 /* ── TELEPROMPTER ── */
 #teleprompter{background:#000;cursor:none}
 #teleprompter.light{background:#fff}
 #teleprompter.hc{background:#000}
 #teleprompter.cursor-visible{cursor:default}
-
 .tp-scroll{position:absolute;inset:0;overflow-y:scroll;scrollbar-width:none}
 .tp-scroll::-webkit-scrollbar{display:none}
-.tp-content{padding:45vh 0;display:flex;flex-direction:column;align-items:center;gap:0}
-.tp-line{
-  text-align:center;cursor:pointer;
-  transition:opacity .25s, transform .2s, color .2s;
-  padding:2px 0;
-}
+.tp-content{padding:45vh 0;display:flex;flex-direction:column;align-items:center}
+.tp-line{text-align:center;cursor:pointer;transition:opacity .25s,transform .2s;padding:2px 0}
 .tp-spacer{height:1em}
-
-/* Reading guide */
 .tp-guide{position:fixed;left:0;right:0;height:1px;background:rgba(255,255,255,0.07);pointer-events:none;z-index:5;transition:opacity .4s}
 #teleprompter.light .tp-guide{background:rgba(0,0,0,0.07)}
-
-/* Progress rail */
 .tp-rail{position:fixed;right:0;top:0;bottom:0;width:3px;z-index:5;pointer-events:none}
 .tp-rail-bg{position:absolute;inset:0;background:rgba(255,255,255,0.05)}
 .tp-rail-fill{position:absolute;top:0;left:0;right:0;background:rgba(255,255,255,0.35);transition:height .3s}
 .tp-rail-marker{position:absolute;left:0;right:0;height:3px;background:#fff;transition:top .3s}
-#teleprompter.light .tp-rail-bg{background:rgba(0,0,0,0.05)}
-#teleprompter.light .tp-rail-fill{background:rgba(0,0,0,0.25)}
+#teleprompter.light .tp-rail-fill{background:rgba(0,0,0,.25)}
 #teleprompter.light .tp-rail-marker{background:#000}
 #teleprompter.hc .tp-rail-marker{background:#ffe600}
 #teleprompter.hc .tp-rail-fill{background:rgba(255,230,0,.3)}
-
-/* Edge faders */
 .tp-fade-top,.tp-fade-bot{position:fixed;left:0;right:0;height:120px;pointer-events:none;z-index:4}
 .tp-fade-top{top:0;background:linear-gradient(to bottom,#000 0%,transparent 100%)}
 .tp-fade-bot{bottom:0;background:linear-gradient(to top,#000 0%,transparent 100%)}
 #teleprompter.light .tp-fade-top{background:linear-gradient(to bottom,#fff 0%,transparent 100%)}
 #teleprompter.light .tp-fade-bot{background:linear-gradient(to top,#fff 0%,transparent 100%)}
-#teleprompter.hc .tp-fade-top{background:linear-gradient(to bottom,#000 0%,transparent 100%)}
-#teleprompter.hc .tp-fade-bot{background:linear-gradient(to top,#000 0%,transparent 100%)}
-
-/* Countdown */
-.tp-countdown{
-  position:fixed;inset:0;z-index:50;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:rgba(0,0,0,.92);
-  transition:opacity .3s;
-}
+.tp-countdown{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.92);transition:opacity .3s}
 .tp-countdown.hidden{opacity:0;pointer-events:none}
-.cd-num{
-  font-size:clamp(80px,20vw,180px);font-weight:800;line-height:1;
-  animation:cd-pop .35s cubic-bezier(.34,1.56,.64,1) both;
-}
+.cd-num{font-size:clamp(80px,20vw,180px);font-weight:800;line-height:1;animation:cd-pop .35s cubic-bezier(.34,1.56,.64,1) both}
 @keyframes cd-pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
 .cd-label{margin-top:16px;font-size:13px;letter-spacing:.25em;text-transform:uppercase;opacity:.4}
-
-/* Control bar */
-.tp-bar{
-  position:fixed;bottom:0;left:0;right:0;z-index:20;
-  transition:opacity .4s,transform .4s;
-}
+.tp-bar{position:fixed;bottom:0;left:0;right:0;z-index:20;transition:opacity .4s,transform .4s}
 .tp-bar.hidden{opacity:0;pointer-events:none;transform:translateY(8px)}
 .tp-progress{height:1px;background:rgba(255,255,255,0.1)}
 .tp-progress-fill{height:100%;background:rgba(255,255,255,.5);transition:width .5s}
-.tp-controls{
-  display:flex;align-items:center;gap:6px;
-  padding:10px 16px 12px;
-  background:rgba(0,0,0,.88);
-  backdrop-filter:blur(12px);
-  border-top:1px solid rgba(255,255,255,.07);
-  flex-wrap:wrap;
-}
-#teleprompter.light .tp-progress{background:rgba(0,0,0,.1)}
-#teleprompter.light .tp-progress-fill{background:rgba(0,0,0,.4)}
+.tp-controls{display:flex;align-items:center;gap:6px;padding:10px 16px 12px;background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,.07);flex-wrap:wrap}
 #teleprompter.light .tp-controls{background:rgba(255,255,255,.9);border-top-color:rgba(0,0,0,.08)}
 #teleprompter.light .tp-controls .btn{color:#000;border-color:rgba(0,0,0,.18)}
 #teleprompter.light .tp-controls .btn:hover{background:rgba(0,0,0,.07)}
 #teleprompter.light .tp-controls .ctrl-info{color:rgba(0,0,0,.45)}
-#teleprompter.hc .tp-controls{background:rgba(0,0,0,.95);border-top-color:rgba(255,230,0,.15)}
-
-.tp-play-btn{
-  width:48px;height:48px;border-radius:50%;
-  background:#fff;color:#000;border:none;
-  display:flex;align-items:center;justify-content:center;cursor:pointer;
-  font-size:18px;transition:opacity .15s,transform .1s;flex-shrink:0;
-}
+.tp-play-btn{width:48px;height:48px;border-radius:50%;background:#fff;color:#000;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;transition:opacity .15s,transform .1s;flex-shrink:0}
 .tp-play-btn:hover{opacity:.88}
 .tp-play-btn:active{transform:scale(.94)}
 #teleprompter.light .tp-play-btn{background:#000;color:#fff}
 #teleprompter.hc .tp-play-btn{background:#ffe600;color:#000}
-
 .speed-display{display:flex;flex-direction:column;align-items:center;gap:2px}
 .speed-bars{display:flex;gap:2px;align-items:flex-end;height:12px}
 .speed-bar-seg{width:3px;border-radius:1px;transition:background .15s}
 .speed-label{font-size:10px;color:var(--muted)}
-
 .ctrl-sep{width:1px;height:20px;background:rgba(255,255,255,.1);margin:0 2px;flex-shrink:0}
 #teleprompter.light .ctrl-sep{background:rgba(0,0,0,.1)}
 .ctrl-info{font-size:11px;color:var(--muted);margin-left:auto;white-space:nowrap}
-
-/* Mic button */
 .mic-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;position:relative}
-.mic-btn{
-  width:36px;height:36px;border-radius:9px;
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;border:1px solid transparent;
-  transition:all .2s;background:transparent;font-size:16px;
-}
+.mic-btn{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid transparent;transition:all .2s;background:transparent;font-size:16px}
 .mic-btn.idle{border-color:rgba(255,255,255,.18);color:rgba(255,255,255,.4)}
 .mic-btn.idle:hover{border-color:rgba(255,255,255,.35);color:rgba(255,255,255,.7)}
 .mic-btn.listening{border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.1);color:#22c55e}
+.mic-btn.listening{animation:mic-pulse 2s ease infinite}
+@keyframes mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.0)}50%{box-shadow:0 0 0 5px rgba(34,197,94,.15)}}
 .mic-btn.error{border-color:rgba(239,68,68,.3);color:#ef4444}
 .mic-btn.unsupported{opacity:.3;cursor:not-allowed}
 .mic-label{font-size:9px;letter-spacing:.05em;font-weight:600}
 .mic-label.on{color:#22c55e}
 .mic-label.off{color:var(--muted)}
-.mic-score{
-  position:absolute;bottom:-6px;left:0;right:0;height:2px;
-  border-radius:1px;overflow:hidden;background:rgba(255,255,255,.08)
-}
+.mic-score{position:absolute;bottom:-6px;left:0;right:0;height:2px;border-radius:1px;overflow:hidden;background:rgba(255,255,255,.08)}
 .mic-score-fill{height:100%;border-radius:1px;transition:width .3s,background .3s}
-
-/* Confidence toast */
-.conf-toast{
-  position:fixed;top:16px;left:50%;transform:translateX(-50%);
-  z-index:40;padding:8px 16px;border-radius:100px;
-  background:rgba(0,0,0,.9);border:1px solid rgba(255,160,0,.3);
-  font-size:12px;color:rgba(255,200,0,.9);
-  display:flex;align-items:center;gap:8px;
-  transition:opacity .3s;white-space:nowrap;backdrop-filter:blur(8px);
-}
+.conf-toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:40;padding:8px 16px;border-radius:100px;background:rgba(0,0,0,.9);border:1px solid rgba(255,160,0,.3);font-size:12px;color:rgba(255,200,0,.9);display:flex;align-items:center;gap:8px;transition:opacity .3s;white-space:nowrap;backdrop-filter:blur(8px)}
 .conf-toast.hidden{opacity:0;pointer-events:none}
-
-/* Keyboard hint */
-.tp-hint{
-  position:fixed;bottom:0;left:0;right:0;z-index:19;
-  text-align:center;padding:6px;font-size:10px;color:rgba(255,255,255,.2);
-  letter-spacing:.05em;background:rgba(0,0,0,.88);
-  transition:opacity .4s;
-}
+.tp-hint{position:fixed;bottom:0;left:0;right:0;z-index:19;text-align:center;padding:6px;font-size:10px;color:rgba(255,255,255,.2);letter-spacing:.05em;background:rgba(0,0,0,.88);transition:opacity .4s}
 .tp-hint.hidden{opacity:0;pointer-events:none}
 #teleprompter.light .tp-hint{background:rgba(255,255,255,.9);color:rgba(0,0,0,.25)}
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════
-     TELA 1 — EDITOR
-══════════════════════════════════════ -->
+<!-- ══ EDITOR ══ -->
 <div id="editor" class="screen">
-
   <div class="editor-header">
     <div class="editor-logo">
       <div class="logo-mark"><span></span><span></span><span></span></div>
       TelePrompter
     </div>
-
-    <!-- Settings inline -->
     <div class="settings-row" style="flex:1;border:none;padding:0 12px;background:transparent">
-      <div class="setting">
-        <label>Fonte</label>
-        <input type="range" id="s-font" min="28" max="88" step="2" value="52">
-        <span class="setting-val" id="s-font-v">52</span>
-      </div>
-      <div class="setting">
-        <label>Vel.</label>
-        <input type="range" id="s-speed" min="1" max="10" step="1" value="3">
-        <span class="setting-val" id="s-speed-v">3</span>
-      </div>
-      <div class="setting">
-        <label>Espaço</label>
-        <input type="range" id="s-lh" min="1.2" max="3" step="0.1" value="1.9">
-        <span class="setting-val" id="s-lh-v">1.9</span>
-      </div>
-      <div class="setting">
-        <label>Largura</label>
-        <input type="range" id="s-width" min="40" max="100" step="2" value="72">
-        <span class="setting-val" id="s-width-v">72%</span>
-      </div>
-      <div class="setting">
-        <label>Foco</label>
-        <select id="s-focus">
-          <option value="0">Todas</option>
-          <option value="3">3 linhas</option>
-          <option value="5">5 linhas</option>
-          <option value="7">7 linhas</option>
-        </select>
-      </div>
-      <div class="setting">
-        <label>Tema</label>
-        <select id="s-theme">
-          <option value="dark">Escuro</option>
-          <option value="light">Claro</option>
-          <option value="hc">Contraste</option>
-        </select>
-      </div>
-      <div class="setting">
-        <label>Espelhar</label>
-        <button class="toggle-btn" id="s-mirror">OFF</button>
-      </div>
-      <div class="setting">
-        <label>Contagem</label>
-        <select id="s-cd">
-          <option value="0">Off</option>
-          <option value="3" selected>3s</option>
-          <option value="5">5s</option>
-        </select>
-      </div>
+      <div class="setting"><label>Fonte</label><input type="range" id="s-font" min="28" max="88" step="2" value="52"><span class="setting-val" id="s-font-v">52</span></div>
+      <div class="setting"><label>Vel.</label><input type="range" id="s-speed" min="1" max="10" step="1" value="3"><span class="setting-val" id="s-speed-v">3</span></div>
+      <div class="setting"><label>Espaço</label><input type="range" id="s-lh" min="1.2" max="3" step="0.1" value="1.9"><span class="setting-val" id="s-lh-v">1.9</span></div>
+      <div class="setting"><label>Largura</label><input type="range" id="s-width" min="40" max="100" step="2" value="72"><span class="setting-val" id="s-width-v">72%</span></div>
+      <div class="setting"><label>Foco</label><select id="s-focus"><option value="0">Todas</option><option value="3">3 linhas</option><option value="5">5 linhas</option><option value="7">7 linhas</option></select></div>
+      <div class="setting"><label>Tema</label><select id="s-theme"><option value="dark">Escuro</option><option value="light">Claro</option><option value="hc">Contraste</option></select></div>
+      <div class="setting"><label>Espelhar</label><button class="toggle-btn" id="s-mirror">OFF</button></div>
+      <div class="setting"><label>Contagem</label><select id="s-cd"><option value="0">Off</option><option value="3" selected>3s</option><option value="5">5s</option></select></div>
+      <div class="setting"><label>Idioma</label><select id="s-lang"><option value="pt-BR">PT-BR</option><option value="en-US">EN-US</option><option value="es-ES">ES</option></select></div>
     </div>
-
-    <button class="btn primary" id="btn-open-tp" onclick="openTeleprompter()">
-      ▶ Iniciar
-    </button>
+    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+      <div class="cal-status" id="cal-status-btn" onclick="openCalibration()">
+        <span class="cal-dot"></span>
+        <span id="cal-status-label">Calibrar voz</span>
+      </div>
+      <button class="btn primary" onclick="openTeleprompter()">▶ Iniciar</button>
+    </div>
   </div>
 
   <div class="editor-body">
-    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-      <div class="sidebar-head">
-        <span>Roteiros</span>
-        <button class="btn icon" onclick="newScript()" title="Novo roteiro" style="padding:4px 7px;font-size:16px;line-height:1">+</button>
-      </div>
+      <div class="sidebar-head"><span>Roteiros</span><button class="btn icon" onclick="newScript()" style="padding:4px 7px;font-size:16px;line-height:1">+</button></div>
       <div class="script-list" id="script-list"></div>
       <div class="sidebar-foot" id="sidebar-foot"></div>
     </div>
-
-    <!-- Edit area -->
     <div class="editor-main">
-      <div class="title-bar">
-        <input class="title-input" id="title-input" placeholder="Título do roteiro…" oninput="onTitleChange()">
-      </div>
-      <div class="textarea-wrap">
-        <textarea id="content-input" placeholder="Escreva seu roteiro aqui…&#10;&#10;Cada linha ou parágrafo vira uma entrada no teleprompter." oninput="onContentChange()"></textarea>
-      </div>
+      <div class="title-bar"><input class="title-input" id="title-input" placeholder="Título do roteiro…" oninput="onTitleChange()"></div>
+      <div class="textarea-wrap"><textarea id="content-input" placeholder="Escreva seu roteiro aqui…&#10;&#10;Cada linha vira uma entrada no teleprompter." oninput="onContentChange()"></textarea></div>
       <div class="status-bar">
         <span class="save-dot" id="save-dot"></span>
-        <span id="stat-words">0 palavras</span>
-        <span>·</span>
-        <span id="stat-chars">0 caracteres</span>
-        <span>·</span>
-        <span id="stat-time">~0s</span>
+        <span id="stat-words">0 palavras</span>·<span id="stat-chars">0 chars</span>·<span id="stat-time">~0s</span>
         <span id="save-label" style="margin-left:auto">Salvo</span>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     TELA 2 — TELEPROMPTER
-══════════════════════════════════════ -->
-<div id="teleprompter" class="screen hidden dark">
+<!-- ══ CALIBRATION MODAL ══ -->
+<div class="modal-overlay hidden" id="cal-overlay">
+  <div class="modal">
 
+    <!-- Header -->
+    <div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <h2 id="cal-title">Calibragem de Voz</h2>
+        <button class="btn icon" onclick="closeCalibration()" style="font-size:18px;opacity:.5">✕</button>
+      </div>
+      <p id="cal-desc">O app vai aprender como você fala para sincronizar melhor durante a gravação. Leva menos de 2 minutos.</p>
+    </div>
+
+    <!-- Step dots -->
+    <div class="cal-steps">
+      <div class="cal-step-dot active" id="cdot-0"></div>
+      <div class="cal-step-dot" id="cdot-1"></div>
+      <div class="cal-step-dot" id="cdot-2"></div>
+      <div class="cal-step-dot" id="cdot-3"></div>
+      <span class="cal-step-label" id="cal-step-label">Passo 1 de 4</span>
+    </div>
+
+    <!-- Step content -->
+    <div id="cal-step-content"></div>
+
+    <!-- Footer buttons -->
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn" id="cal-btn-skip" onclick="calSkip()">Pular</button>
+      <button class="btn primary" id="cal-btn-next" onclick="calNext()">Começar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TELEPROMPTER ══ -->
+<div id="teleprompter" class="screen hidden dark">
   <div class="tp-fade-top"></div>
   <div class="tp-fade-bot"></div>
-
   <div class="tp-guide" id="tp-guide"></div>
-
   <div class="tp-rail">
     <div class="tp-rail-bg"></div>
     <div class="tp-rail-fill" id="tp-rail-fill"></div>
     <div class="tp-rail-marker" id="tp-rail-marker"></div>
   </div>
-
-  <!-- Scroll container -->
   <div class="tp-scroll" id="tp-scroll"></div>
-
-  <!-- Countdown -->
   <div class="tp-countdown hidden" id="tp-countdown">
     <div class="cd-num" id="cd-num">3</div>
     <div class="cd-label">preparando…</div>
   </div>
-
-  <!-- Confidence toast -->
-  <div class="conf-toast hidden" id="conf-toast">
-    ◈ Sincronização imprecisa
-  </div>
-
-  <!-- Control bar -->
+  <div class="conf-toast hidden" id="conf-toast">◈ Sincronização imprecisa</div>
   <div class="tp-bar" id="tp-bar">
     <div class="tp-progress"><div class="tp-progress-fill" id="tp-prog"></div></div>
     <div class="tp-controls">
-      <!-- Back to editor -->
       <button class="btn icon" onclick="closeTeleprompter()" title="Voltar (Esc)">←</button>
-      <!-- Restart -->
       <button class="btn icon" onclick="tpRestart()" title="Reiniciar (R)">↺</button>
-
       <div class="ctrl-sep"></div>
-
-      <!-- Speed down -->
-      <button class="btn icon" onclick="tpStepSpeed(-1)" title="Menos velocidade (↑)">−</button>
+      <button class="btn icon" onclick="tpStepSpeed(-1)" title="Menos vel. (↑)">−</button>
       <div class="speed-display">
         <div class="speed-bars" id="speed-bars"></div>
         <div class="speed-label" id="speed-label">vel. 3</div>
       </div>
-      <!-- Speed up -->
-      <button class="btn icon" onclick="tpStepSpeed(1)" title="Mais velocidade (↓)">+</button>
-
+      <button class="btn icon" onclick="tpStepSpeed(1)" title="Mais vel. (↓)">+</button>
       <div class="ctrl-sep"></div>
-
-      <!-- Play/Pause -->
       <button class="tp-play-btn" id="tp-play-btn" onclick="tpToggle()">▶</button>
-
       <div class="ctrl-sep"></div>
-
-      <!-- Mic -->
       <div class="mic-wrap">
         <button class="mic-btn idle" id="mic-btn" onclick="micToggle()" title="Microfone (M)">🎤</button>
         <span class="mic-label off" id="mic-label">VOZ</span>
         <div class="mic-score"><div class="mic-score-fill" id="mic-score-fill"></div></div>
       </div>
-
       <div class="ctrl-sep"></div>
-
-      <!-- Recenter -->
       <button class="btn icon" onclick="tpRecenter()" title="Recentralizar (C)">⊙</button>
-      <!-- Fullscreen -->
       <button class="btn icon" id="fs-btn" onclick="toggleFullscreen()" title="Tela cheia (F)">⛶</button>
-
       <span class="ctrl-info" id="ctrl-info">0% · 0/0</span>
     </div>
   </div>
-
-  <div class="tp-hint" id="tp-hint">
-    Espaço · Play &nbsp;|&nbsp; ↑↓ · Velocidade &nbsp;|&nbsp; ←→ · Navegar &nbsp;|&nbsp; M · Mic &nbsp;|&nbsp; F · Fullscreen &nbsp;|&nbsp; Esc · Sair
-  </div>
+  <div class="tp-hint" id="tp-hint">Espaço · Play &nbsp;|&nbsp; ↑↓ · Vel. &nbsp;|&nbsp; ←→ · Navegar &nbsp;|&nbsp; M · Mic &nbsp;|&nbsp; F · Full &nbsp;|&nbsp; Esc · Sair</div>
 </div>
 
 <script>
 // ══════════════════════════════════════
-// STORAGE
+// STORAGE & STATE
 // ══════════════════════════════════════
-const KEY_SCRIPTS  = 'tp:scripts'
-const KEY_ACTIVE   = 'tp:active'
-const KEY_SETTINGS = 'tp:settings'
+const K = {scripts:'tp:scripts',active:'tp:active',settings:'tp:settings',cal:'tp:calibration'}
+const load=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch{return d}}
+const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
 
-function load(k,def){try{const v=localStorage.getItem(k);return v?JSON.parse(v):def}catch{return def}}
-function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
+let scripts  = load(K.scripts, [{id:'demo',title:'Roteiro de Exemplo',content:'Bem-vindo ao TelePrompter.\n\nEste é um roteiro de demonstração para você testar todas as funcionalidades.\n\nA rolagem automática por voz detecta o que você está falando e sincroniza o texto em tempo real.\n\nMesmo se você pausar, improvisar ou pular um trecho, o sistema se reposiciona automaticamente.\n\nUse as teclas de seta para navegar manualmente. A barra de espaço pausa e retoma.\n\nConfigure fonte, velocidade e espaçamento conforme sua preferência.\n\nAtive o espelhamento se estiver usando um vidro refletor.\n\nBoa gravação!',createdAt:Date.now(),updatedAt:Date.now()}])
+let activeId = load(K.active, scripts[0]?.id)
+let settings = load(K.settings, {fontSize:52,lineHeight:1.9,speed:3,blockWidth:72,focusLines:0,theme:'dark',mirrored:false,countdown:3,lang:'pt-BR'})
+
+// Calibration profile — adjusts matching algorithm
+let calProfile = load(K.cal, {
+  done: false,
+  accuracy: 0,       // 0–1 average dice score during calibration
+  wpm: 0,            // words per minute measured
+  thresholdScale: 1, // multiplier applied to adaptive thresholds
+  confirmNeeded: 2,  // consecutive matches needed before accepting
+  fillers: [],       // personal filler words detected
+  lang: 'pt-BR',
+})
+
+const genId=()=>Date.now()+'-'+Math.random().toString(36).slice(2,7)
+const getActive=()=>scripts.find(s=>s.id===activeId)||scripts[0]
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
 
 // ══════════════════════════════════════
-// STATE
+// TEXT PROCESSING
 // ══════════════════════════════════════
-let scripts  = load(KEY_SCRIPTS, [{id:'demo',title:'Roteiro de Exemplo',content:'Bem-vindo ao TelePrompter.\n\nEste é um roteiro de demonstração para você testar todas as funcionalidades.\n\nA rolagem automática por voz detecta o que você está falando e sincroniza o texto em tempo real.\n\nMesmo se você pausar, improvisar ou pular um trecho, o sistema se reposiciona automaticamente.\n\nUse as teclas de seta para navegar manualmente. A barra de espaço pausa e retoma.\n\nConfigure fonte, velocidade e espaçamento conforme sua preferência.\n\nAtive o espelhamento se estiver usando um vidro refletor.\n\nBoa gravação!',createdAt:Date.now(),updatedAt:Date.now()}])
-let activeId = load(KEY_ACTIVE, scripts[0]?.id)
-let settings = load(KEY_SETTINGS, {fontSize:52,lineHeight:1.9,speed:3,blockWidth:72,focusLines:0,theme:'dark',mirrored:false,countdown:3})
+const FILLERS_DEFAULT=new Set(['então','tipo','assim','né','aí','ahn','hmm','bom','ok','tá','uh','um','like','so','well','right','basicamente','literalmente'])
 
-function getActive(){return scripts.find(s=>s.id===activeId)||scripts[0]}
+function normalize(t,extraFillers=[]){
+  const allFillers=new Set([...FILLERS_DEFAULT,...(calProfile.fillers||[]),...extraFillers])
+  return t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^\w\s]/g,' ').split(/\s+/)
+    .filter(w=>w.length>0&&!allFillers.has(w)).join(' ').trim()
+}
 
-function genId(){return Date.now()+'-'+Math.random().toString(36).slice(2,7)}
+function bigrams(t){
+  const w=t.split(' ').filter(Boolean)
+  if(w.length<2)return w
+  const r=[]
+  for(let i=0;i<w.length-1;i++)r.push(w[i]+' '+w[i+1])
+  return r
+}
 
-function persistAll(){
-  save(KEY_SCRIPTS,scripts)
-  save(KEY_ACTIVE,activeId)
-  save(KEY_SETTINGS,settings)
+function diceFromSets(a,b){
+  if(!a.size||!b.size)return 0
+  let inter=0
+  const[sm,lg]=a.size<=b.size?[a,b]:[b,a]
+  for(const bg of sm)if(lg.has(bg))inter++
+  return(2*inter)/(a.size+b.size)
+}
+
+// Adaptive threshold — scaled by calibration result
+function adaptiveThreshold(wc){
+  const scale=calProfile.done?calProfile.thresholdScale:1
+  const base = wc<=2?0.72 : wc<=4?0.48 : wc<=6?0.36 : 0.28
+  return Math.max(0.15, base * scale)
 }
 
 // ══════════════════════════════════════
-// EDITOR UI
+// CALIBRATION
+// ══════════════════════════════════════
+const CAL_SENTENCES = {
+  'pt-BR': [
+    'A tecnologia está transformando a forma como nos comunicamos.',
+    'Cada palavra dita com clareza ajuda o sistema a te acompanhar melhor.',
+    'O teleprompter sincroniza automaticamente com a sua voz durante a gravação.',
+    'Fale em ritmo natural, como se estivesse apresentando para uma câmera.',
+  ],
+  'en-US': [
+    'Technology is transforming the way we communicate with each other.',
+    'Speaking clearly helps the system follow your voice more accurately.',
+    'The teleprompter automatically synchronizes with your speech during recording.',
+    'Speak at a natural pace, as if you were presenting to a camera.',
+  ],
+  'es-ES': [
+    'La tecnología está transformando la forma en que nos comunicamos.',
+    'Hablar con claridad ayuda al sistema a seguir tu voz con más precisión.',
+    'El teleprompter se sincroniza automáticamente con tu voz durante la grabación.',
+    'Habla a un ritmo natural, como si estuvieras presentando ante una cámara.',
+  ],
+}
+
+let calState = {
+  step: 0,          // 0=intro 1-4=sentences 5=results
+  sentenceIdx: 0,
+  scores: [],
+  timestamps: [],   // to measure WPM
+  recognizer: null,
+  listening: false,
+  currentTranscript: '',
+  detectedFillers: [],
+}
+
+function openCalibration(){
+  calState={step:0,sentenceIdx:0,scores:[],timestamps:[],recognizer:null,listening:false,currentTranscript:'',detectedFillers:[]}
+  document.getElementById('cal-overlay').classList.remove('hidden')
+  renderCalStep()
+}
+
+function closeCalibration(){
+  calStop()
+  document.getElementById('cal-overlay').classList.add('hidden')
+}
+
+function getSentences(){
+  return CAL_SENTENCES[settings.lang]||CAL_SENTENCES['pt-BR']
+}
+
+function renderCalStep(){
+  const step=calState.step
+  const sentences=getSentences()
+  const content=document.getElementById('cal-step-content')
+  const dots=[0,1,2,3]
+  dots.forEach(i=>{
+    const el=document.getElementById('cdot-'+i)
+    el.className='cal-step-dot'+(i<step?' done':i===Math.min(step,3)?' active':'')
+  })
+
+  if(step===0){
+    document.getElementById('cal-title').textContent='Calibragem de Voz'
+    document.getElementById('cal-desc').textContent='O app vai aprender como você fala para sincronizar melhor. Leia 4 frases em voz alta — leva menos de 2 minutos.'
+    document.getElementById('cal-step-label').textContent='Pronto para começar'
+    document.getElementById('cal-btn-skip').textContent='Pular calibragem'
+    document.getElementById('cal-btn-next').textContent='Começar ▶'
+    content.innerHTML=`
+      <div style="background:#161616;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:20px;">
+        <p style="font-size:13px;color:var(--muted);line-height:1.7">
+          ✓ &nbsp;Fale em ritmo normal — não precisa articular excessivamente<br>
+          ✓ &nbsp;Ambiente silencioso dá resultados melhores<br>
+          ✓ &nbsp;O microfone será ativado automaticamente em cada frase<br>
+          ✓ &nbsp;A calibragem ajusta os thresholds de reconhecimento para a sua voz
+        </p>
+      </div>`
+  }
+
+  else if(step>=1&&step<=4){
+    const idx=step-1
+    const sentence=sentences[idx]
+    document.getElementById('cal-title').textContent='Leia em voz alta'
+    document.getElementById('cal-desc').textContent='Fale a frase abaixo naturalmente. O microfone está ouvindo.'
+    document.getElementById('cal-step-label').textContent=`Frase ${step} de 4`
+    document.getElementById('cal-btn-skip').textContent='Pular esta frase'
+    document.getElementById('cal-btn-next').textContent=step<4?'Próxima →':'Ver resultado'
+    document.getElementById('cal-btn-next').disabled=true
+    content.innerHTML=`
+      <div class="sentence-card">
+        <div class="sentence-num">Frase ${step} de 4</div>
+        <div class="sentence-text" id="cal-sentence-text">${esc(sentence)}</div>
+      </div>
+      <div class="listen-indicator active" id="cal-wave">
+        ${Array(7).fill('<div class="wave-bar" style="height:4px"></div>').join('')}
+      </div>
+      <div class="transcript-box" id="cal-transcript"><span style="opacity:.3">Ouvindo…</span></div>
+      <div class="score-row" id="cal-score-row" style="display:none">
+        <span style="font-size:12px;color:var(--muted);min-width:80px">Similaridade</span>
+        <div class="score-bar-wrap"><div class="score-bar-fill" id="cal-score-fill" style="width:0%"></div></div>
+        <span class="score-val" id="cal-score-val" style="color:#fff">0%</span>
+      </div>`
+    calState.currentTranscript=''
+    calState.timestamps[idx]=Date.now()
+    setTimeout(()=>calStartListening(sentence,idx),300)
+  }
+
+  else if(step===5){
+    calStop()
+    const scores=calState.scores.filter(s=>s!=null)
+    const avg=scores.length?scores.reduce((a,b)=>a+b,0)/scores.length:0
+
+    // Compute WPM from timestamps
+    const sentences_=getSentences()
+    let totalWords=0,totalSecs=0
+    calState.timestamps.forEach((t,i)=>{
+      if(calState.scores[i]!=null&&calState.timestamps[i+1]){
+        totalWords+=sentences_[i].split(' ').length
+        totalSecs+=(calState.timestamps[i+1]-t)/1000
+      }
+    })
+    const wpm=totalSecs>0?Math.round(totalWords/(totalSecs/60)):130
+
+    // Threshold scale: if accuracy is low, lower the thresholds proportionally
+    // so the algorithm still accepts imperfect matches
+    let thresholdScale=1
+    let confirmNeeded=2
+    if(avg>0.7){thresholdScale=1.0;confirmNeeded=2}       // great mic/pronunciation
+    else if(avg>0.55){thresholdScale=0.75;confirmNeeded=2} // good
+    else if(avg>0.4){thresholdScale=0.55;confirmNeeded=1}  // ok — lower bar, less confirmation
+    else if(avg>0.25){thresholdScale=0.4;confirmNeeded=1}  // poor — be lenient
+    else{thresholdScale=0.3;confirmNeeded=1}               // very poor — accept almost anything
+
+    // Suggested speed based on WPM
+    const suggestedSpeed=wpm<100?2:wpm<130?3:wpm<160?4:wpm<200?5:6
+
+    const quality=avg>=0.65?{label:'Excelente',cls:'good'}:avg>=0.45?{label:'Boa',cls:'ok'}:{label:'Fraca',cls:'bad'}
+
+    // Save profile
+    calProfile={
+      done:true,accuracy:Math.round(avg*100)/100,wpm,
+      thresholdScale,confirmNeeded,
+      fillers:[...calState.detectedFillers],lang:settings.lang,
+    }
+    save(K.cal,calProfile)
+    updateCalStatusBadge()
+
+    // Auto-suggest speed
+    const oldSpeed=settings.speed
+    settings.speed=suggestedSpeed
+    save(K.settings,settings)
+    document.getElementById('s-speed').value=suggestedSpeed
+    document.getElementById('s-speed-v').textContent=suggestedSpeed
+
+    document.getElementById('cal-title').textContent='Calibragem concluída'
+    document.getElementById('cal-desc').textContent='O perfil da sua voz foi salvo. As configurações de sincronização foram ajustadas automaticamente.'
+    document.getElementById('cal-step-label').textContent='Concluído'
+    document.getElementById('cal-btn-skip').style.display='none'
+    document.getElementById('cal-btn-next').textContent='Fechar'
+    document.getElementById('cal-btn-next').disabled=false
+
+    content.innerHTML=`
+      <div class="result-grid">
+        <div class="result-card">
+          <div class="rc-label">Precisão do reconhecimento</div>
+          <div class="rc-val">${Math.round(avg*100)}%</div>
+          <div class="rc-sub" style="margin-top:6px"><span class="cal-badge ${quality.cls}">${quality.label}</span></div>
+        </div>
+        <div class="result-card">
+          <div class="rc-label">Velocidade de fala</div>
+          <div class="rc-val">${wpm}</div>
+          <div class="rc-sub">palavras/minuto</div>
+        </div>
+      </div>
+      <div style="background:#161616;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px;margin-top:4px">
+        <div class="cal-profile-row"><span>Threshold de aceitação</span><span>${Math.round(0.28*thresholdScale*100)}% (era 28%)</span></div>
+        <div class="cal-profile-row"><span>Confirmações necessárias</span><span>${confirmNeeded} resultado${confirmNeeded>1?'s':''}</span></div>
+        <div class="cal-profile-row"><span>Velocidade sugerida</span><span>${suggestedSpeed} ${suggestedSpeed!==oldSpeed?'(era '+oldSpeed+')':''}</span></div>
+        <div class="cal-profile-row"><span>Frases avaliadas</span><span>${scores.length} de 4</span></div>
+      </div>
+      ${avg<0.4?`<div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:12px;font-size:13px;color:rgba(239,68,68,.9)">
+        ⚠ Precisão baixa detectada. Verifique se o microfone está funcionando bem e se o ambiente está silencioso. Você pode recalibrar a qualquer momento.
+      </div>`:''}
+    `
+  }
+}
+
+function calNext(){
+  if(calState.step===0){
+    calState.step=1; renderCalStep(); return
+  }
+  if(calState.step>=1&&calState.step<=4){
+    calStop()
+    calState.step++
+    if(calState.step>4)calState.step=5
+    document.getElementById('cal-btn-next').disabled=false
+    renderCalStep(); return
+  }
+  if(calState.step===5){closeCalibration();return}
+}
+
+function calSkip(){
+  if(calState.step===0){closeCalibration();return}
+  calStop()
+  calState.scores[calState.step-1]=null
+  calState.step++
+  if(calState.step>4)calState.step=5
+  document.getElementById('cal-btn-next').disabled=false
+  renderCalStep()
+}
+
+function calStop(){
+  if(calState.recognizer){
+    try{calState.recognizer.abort()}catch{}
+    calState.recognizer.onresult=null
+    calState.recognizer.onerror=null
+    calState.recognizer.onend=null
+    calState.recognizer=null
+  }
+  calState.listening=false
+}
+
+function calStartListening(targetSentence,sentenceIdx){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition
+  if(!SR){
+    document.getElementById('cal-transcript').innerHTML='<span style="color:var(--red)">Reconhecimento de voz não suportado neste browser.</span>'
+    document.getElementById('cal-btn-next').disabled=false
+    return
+  }
+
+  calStop()
+  const r=new SR()
+  r.lang=settings.lang
+  r.continuous=false
+  r.interimResults=true
+  r.maxAlternatives=1
+  calState.recognizer=r
+  calState.listening=true
+
+  const targetNorm=normalize(targetSentence)
+  const targetSet=new Set(bigrams(targetNorm))
+  let bestScore=0
+  let finalTranscript=''
+
+  r.onresult=e=>{
+    const res=e.results[e.results.length-1]
+    const t=res[0].transcript
+    const isFinal=res.isFinal
+
+    if(isFinal){
+      finalTranscript=t
+      calState.timestamps[sentenceIdx+1]=Date.now()
+
+      // Detect personal filler words — words in transcript not in target
+      const transcriptWords=normalize(t).split(' ').filter(Boolean)
+      const targetWords=new Set(targetNorm.split(' ').filter(Boolean))
+      transcriptWords.forEach(w=>{
+        if(!targetWords.has(w)&&w.length>1&&!FILLERS_DEFAULT.has(w)){
+          if(!calState.detectedFillers.includes(w))calState.detectedFillers.push(w)
+        }
+      })
+    }
+
+    const transcriptNorm=normalize(t)
+    const transcriptSet=new Set(bigrams(transcriptNorm))
+    const score=diceFromSets(targetSet,transcriptSet)
+    if(score>bestScore)bestScore=score
+
+    // Update UI
+    const box=document.getElementById('cal-transcript')
+    if(box){
+      box.innerHTML=isFinal
+        ?`<span style="color:#fff">${esc(t)}</span>`
+        :`<span style="color:#fff">${esc(finalTranscript)} </span><span class="interim">${esc(t)}</span>`
+    }
+
+    if(isFinal||score>0){
+      const pct=Math.round(bestScore*100)
+      const col=pct>=60?'var(--green)':pct>=35?'var(--amber)':'var(--red)'
+      const sr=document.getElementById('cal-score-row')
+      const sf=document.getElementById('cal-score-fill')
+      const sv=document.getElementById('cal-score-val')
+      if(sr){sr.style.display='flex'}
+      if(sf){sf.style.width=pct+'%';sf.style.background=col}
+      if(sv){sv.textContent=pct+'%';sv.style.color=col}
+    }
+
+    if(isFinal){
+      calState.scores[sentenceIdx]=bestScore
+      calState.listening=false
+      const wave=document.getElementById('cal-wave')
+      if(wave)wave.classList.remove('active')
+      document.getElementById('cal-btn-next').disabled=false
+    }
+  }
+
+  r.onerror=e=>{
+    if(e.error==='aborted')return
+    const box=document.getElementById('cal-transcript')
+    if(box)box.innerHTML=`<span style="color:var(--red)">Erro: ${e.error}. Verifique o microfone.</span>`
+    document.getElementById('cal-btn-next').disabled=false
+  }
+
+  r.onend=()=>{
+    const wave=document.getElementById('cal-wave')
+    if(wave)wave.classList.remove('active')
+    if(calState.listening&&bestScore===0){
+      document.getElementById('cal-btn-next').disabled=false
+    }
+  }
+
+  try{r.start()}catch(e){
+    const box=document.getElementById('cal-transcript')
+    if(box)box.innerHTML=`<span style="color:var(--red)">Não foi possível iniciar o microfone.</span>`
+    document.getElementById('cal-btn-next').disabled=false
+  }
+}
+
+function updateCalStatusBadge(){
+  const btn=document.getElementById('cal-status-btn')
+  const lbl=document.getElementById('cal-status-label')
+  if(calProfile.done){
+    btn.className='cal-status calibrated'
+    lbl.textContent='Voz calibrada ✓'
+  } else {
+    btn.className='cal-status'
+    lbl.textContent='Calibrar voz'
+  }
+}
+
+// ══════════════════════════════════════
+// EDITOR
 // ══════════════════════════════════════
 function renderSidebar(){
   const list=document.getElementById('script-list')
@@ -446,87 +779,60 @@ function renderSidebar(){
   ;[...scripts].sort((a,b)=>b.updatedAt-a.updatedAt).forEach(sc=>{
     const div=document.createElement('div')
     div.className='script-item'+(sc.id===activeId?' active':'')
-    div.innerHTML=`<span class="script-item-title">${esc(sc.title||'Sem título')}</span><button class="script-item-del" onclick="deleteScript('${sc.id}',event)" title="Excluir">✕</button>`
+    div.innerHTML=`<span class="script-item-title">${esc(sc.title||'Sem título')}</span><button class="script-item-del" onclick="deleteScript('${sc.id}',event)">✕</button>`
     div.addEventListener('click',()=>selectScript(sc.id))
     list.appendChild(div)
   })
   document.getElementById('sidebar-foot').textContent=scripts.length+' roteiro'+(scripts.length!==1?'s':'')
 }
 
-function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-
 function loadActiveToEditor(){
-  const sc=getActive()
-  if(!sc)return
+  const sc=getActive(); if(!sc)return
   document.getElementById('title-input').value=sc.title||''
   document.getElementById('content-input').value=sc.content||''
   updateStats()
 }
 
-function selectScript(id){
-  flushSave()
-  activeId=id
-  save(KEY_ACTIVE,id)
-  renderSidebar()
-  loadActiveToEditor()
-}
+function selectScript(id){flushSave();activeId=id;save(K.active,id);renderSidebar();loadActiveToEditor()}
 
 function newScript(){
   const sc={id:genId(),title:'Novo Roteiro',content:'',createdAt:Date.now(),updatedAt:Date.now()}
-  scripts.push(sc)
-  activeId=sc.id
-  persistAll()
-  renderSidebar()
-  loadActiveToEditor()
+  scripts.push(sc);activeId=sc.id;persistAll();renderSidebar();loadActiveToEditor()
   setTimeout(()=>document.getElementById('title-input').focus(),50)
 }
 
 function deleteScript(id,e){
   e.stopPropagation()
-  if(scripts.length<=1){alert('Precisa ter pelo menos um roteiro.');return}
+  if(scripts.length<=1){alert('Precisa ter ao menos um roteiro.');return}
   if(!confirm('Excluir este roteiro?'))return
   scripts=scripts.filter(s=>s.id!==id)
   if(activeId===id)activeId=scripts[0].id
-  persistAll()
-  renderSidebar()
-  loadActiveToEditor()
+  persistAll();renderSidebar();loadActiveToEditor()
 }
 
-// Auto-save
 let saveTimer=null
 function onContentChange(){
   const sc=getActive();if(!sc)return
-  sc.content=document.getElementById('content-input').value
-  sc.updatedAt=Date.now()
-  setSaving(true)
-  clearTimeout(saveTimer)
-  saveTimer=setTimeout(()=>{persistAll();setSaving(false)},600)
-  updateStats()
+  sc.content=document.getElementById('content-input').value;sc.updatedAt=Date.now()
+  setSaving(true);clearTimeout(saveTimer)
+  saveTimer=setTimeout(()=>{persistAll();setSaving(false)},600);updateStats()
 }
-
 function onTitleChange(){
   const sc=getActive();if(!sc)return
-  sc.title=document.getElementById('title-input').value
-  sc.updatedAt=Date.now()
-  setSaving(true)
-  clearTimeout(saveTimer)
+  sc.title=document.getElementById('title-input').value;sc.updatedAt=Date.now()
+  setSaving(true);clearTimeout(saveTimer)
   saveTimer=setTimeout(()=>{persistAll();setSaving(false);renderSidebar()},800)
 }
-
 function flushSave(){
-  clearTimeout(saveTimer)
-  const sc=getActive();if(!sc)return
+  clearTimeout(saveTimer);const sc=getActive();if(!sc)return
   sc.content=document.getElementById('content-input').value
   sc.title=document.getElementById('title-input').value
-  persistAll()
-  setSaving(false)
+  persistAll();setSaving(false)
 }
-
 function setSaving(v){
   document.getElementById('save-dot').className='save-dot'+(v?' saving':'')
   document.getElementById('save-label').textContent=v?'Salvando…':'Salvo'
 }
-
 function updateStats(){
   const txt=(document.getElementById('content-input').value||'').trim()
   const words=txt?txt.split(/\s+/).length:0
@@ -536,141 +842,94 @@ function updateStats(){
   document.getElementById('stat-chars').textContent=chars.toLocaleString('pt-BR')+' chars'
   document.getElementById('stat-time').textContent='~'+(secs>=60?Math.floor(secs/60)+'min '+(secs%60)+'s':secs+'s')
 }
+function persistAll(){save(K.scripts,scripts);save(K.active,activeId);save(K.settings,settings)}
 
-// Settings controls
 function initSettingsUI(){
   const s=settings
-  const set=(id,val,suffix='')=>{
-    document.getElementById(id).value=val
-    const vEl=document.getElementById(id+'-v')
-    if(vEl)vEl.textContent=val+suffix
-  }
-  set('s-font',s.fontSize,'')
-  set('s-speed',s.speed,'')
-  set('s-lh',s.lineHeight,'')
-  set('s-width',s.blockWidth,'%')
+  const set=(id,val,suffix='')=>{document.getElementById(id).value=val;const v=document.getElementById(id+'-v');if(v)v.textContent=val+suffix}
+  set('s-font',s.fontSize);set('s-speed',s.speed);set('s-lh',s.lineHeight);set('s-width',s.blockWidth,'%')
   document.getElementById('s-focus').value=s.focusLines
   document.getElementById('s-theme').value=s.theme
   document.getElementById('s-mirror').textContent=s.mirrored?'ON':'OFF'
   document.getElementById('s-mirror').className='toggle-btn'+(s.mirrored?' on':'')
   document.getElementById('s-cd').value=s.countdown
+  document.getElementById('s-lang').value=s.lang||'pt-BR'
 
-  document.getElementById('s-font').oninput=function(){settings.fontSize=+this.value;document.getElementById('s-font-v').textContent=this.value;save(KEY_SETTINGS,settings)}
-  document.getElementById('s-speed').oninput=function(){settings.speed=+this.value;document.getElementById('s-speed-v').textContent=this.value;save(KEY_SETTINGS,settings)}
-  document.getElementById('s-lh').oninput=function(){settings.lineHeight=+this.value;document.getElementById('s-lh-v').textContent=(+this.value).toFixed(1);save(KEY_SETTINGS,settings)}
-  document.getElementById('s-width').oninput=function(){settings.blockWidth=+this.value;document.getElementById('s-width-v').textContent=this.value+'%';save(KEY_SETTINGS,settings)}
-  document.getElementById('s-focus').onchange=function(){settings.focusLines=+this.value;save(KEY_SETTINGS,settings)}
-  document.getElementById('s-theme').onchange=function(){settings.theme=this.value;save(KEY_SETTINGS,settings)}
-  document.getElementById('s-mirror').onclick=function(){settings.mirrored=!settings.mirrored;this.textContent=settings.mirrored?'ON':'OFF';this.className='toggle-btn'+(settings.mirrored?' on':'');save(KEY_SETTINGS,settings)}
-  document.getElementById('s-cd').onchange=function(){settings.countdown=+this.value;save(KEY_SETTINGS,settings)}
+  document.getElementById('s-font').oninput=function(){settings.fontSize=+this.value;document.getElementById('s-font-v').textContent=this.value;save(K.settings,settings)}
+  document.getElementById('s-speed').oninput=function(){settings.speed=+this.value;document.getElementById('s-speed-v').textContent=this.value;save(K.settings,settings)}
+  document.getElementById('s-lh').oninput=function(){settings.lineHeight=+this.value;document.getElementById('s-lh-v').textContent=(+this.value).toFixed(1);save(K.settings,settings)}
+  document.getElementById('s-width').oninput=function(){settings.blockWidth=+this.value;document.getElementById('s-width-v').textContent=this.value+'%';save(K.settings,settings)}
+  document.getElementById('s-focus').onchange=function(){settings.focusLines=+this.value;save(K.settings,settings)}
+  document.getElementById('s-theme').onchange=function(){settings.theme=this.value;save(K.settings,settings)}
+  document.getElementById('s-mirror').onclick=function(){settings.mirrored=!settings.mirrored;this.textContent=settings.mirrored?'ON':'OFF';this.className='toggle-btn'+(settings.mirrored?' on':'');save(K.settings,settings)}
+  document.getElementById('s-cd').onchange=function(){settings.countdown=+this.value;save(K.settings,settings)}
+  document.getElementById('s-lang').onchange=function(){settings.lang=this.value;save(K.settings,settings)}
 }
 
 // ══════════════════════════════════════
-// TELEPROMPTER
+// TELEPROMPTER ENGINE
 // ══════════════════════════════════════
-let tpLines=[]
-let tpActive=0
-let tpPlaying=false
-let tpRaf=null
-let tpLastTs=null
-let tpOffsets=[]  // cache de offsetTop
+let tpLines=[],tpActive=0,tpPlaying=false,tpRaf=null,tpLastTs=null,tpOffsets=[]
 
-// Controls hide timer
 let barTimer=null
 function showBar(){
-  const bar=document.getElementById('tp-bar')
-  const hint=document.getElementById('tp-hint')
-  bar.classList.remove('hidden')
-  hint.classList.remove('hidden')
+  document.getElementById('tp-bar').classList.remove('hidden')
+  document.getElementById('tp-hint').classList.remove('hidden')
   document.getElementById('teleprompter').classList.add('cursor-visible')
   clearTimeout(barTimer)
-  if(tpPlaying){
-    barTimer=setTimeout(()=>{
-      bar.classList.add('hidden')
-      hint.classList.add('hidden')
-      document.getElementById('teleprompter').classList.remove('cursor-visible')
-    },3000)
-  }
+  if(tpPlaying)barTimer=setTimeout(()=>{
+    document.getElementById('tp-bar').classList.add('hidden')
+    document.getElementById('tp-hint').classList.add('hidden')
+    document.getElementById('teleprompter').classList.remove('cursor-visible')
+  },3000)
 }
 
-function parseLines(content){
-  return content.split('\n').map((t,i)=>({index:i,text:t.trim(),empty:t.trim()===''}))
-}
+function parseLines(c){return c.split('\n').map((t,i)=>({index:i,text:t.trim(),empty:t.trim()===''})) }
 
 function renderTp(){
-  flushSave()
-  const sc=getActive();if(!sc)return
+  flushSave();const sc=getActive();if(!sc)return
   tpLines=parseLines(sc.content)
   const scroll=document.getElementById('tp-scroll')
   scroll.innerHTML=''
   const s=settings
-
   const wrap=document.createElement('div')
-  wrap.className='tp-content'
-  wrap.style.width=s.blockWidth+'%'
-  wrap.style.margin='0 auto'
-
+  wrap.className='tp-content';wrap.style.width=s.blockWidth+'%';wrap.style.margin='0 auto'
   tpLines.forEach(line=>{
     const el=document.createElement(line.empty?'div':'p')
     el.className=line.empty?'tp-spacer':'tp-line'
     if(!line.empty){
-      el.dataset.idx=line.index
-      el.textContent=line.text
-      el.style.fontSize=s.fontSize+'px'
-      el.style.lineHeight=s.lineHeight
+      el.dataset.idx=line.index;el.textContent=line.text
+      el.style.fontSize=s.fontSize+'px';el.style.lineHeight=s.lineHeight
       el.addEventListener('click',()=>{tpGoTo(line.index);smootherReset(line.index)})
     }
     wrap.appendChild(el)
   })
   scroll.appendChild(wrap)
-
-  // Theme + mirror
   const tp=document.getElementById('teleprompter')
-  tp.className='screen dark'  // reset
-  if(s.theme==='light') tp.classList.add('light')
-  else if(s.theme==='hc') tp.classList.add('hc')
-  else tp.classList.add('dark')
-  if(s.mirrored) tp.style.transform='scaleX(-1)'
-  else tp.style.transform=''
-
-  // Text color
-  const isDark=s.theme!=='light'
-  const textColor=s.theme==='hc'?'#ffe600':isDark?'#fff':'#000'
-  const dimColor=s.theme==='hc'?'rgba(255,230,0,0.2)':isDark?'rgba(255,255,255,0.18)':'rgba(0,0,0,0.18)'
-  wrap._textColor=textColor
-  wrap._dimColor=dimColor
-
+  tp.className='screen'
+  tp.classList.add(s.theme==='light'?'light':s.theme==='hc'?'hc':'dark')
+  tp.style.transform=s.mirrored?'scaleX(-1)':''
   tpActive=0
-  setTimeout(()=>{rebuildOffsets();updateActiveStyles();updateProgress()},80)
+  setTimeout(()=>{rebuildOffsets();updateActiveStyles();updateProgress();buildChunks()},80)
 }
 
 function rebuildOffsets(){
-  const els=document.querySelectorAll('.tp-line')
   tpOffsets=[]
-  els.forEach(el=>{
-    const idx=+el.dataset.idx
-    tpOffsets[idx]=el.offsetTop+el.offsetHeight/2
+  document.querySelectorAll('.tp-line').forEach(el=>{
+    tpOffsets[+el.dataset.idx]=el.offsetTop+el.offsetHeight/2
   })
 }
 
-function getEl(idx){return document.querySelector(`.tp-line[data-idx="${idx}"]`)}
-
 function updateActiveStyles(){
   const s=settings
-  const scroll=document.getElementById('tp-scroll')
   const isDark=s.theme!=='light'
   const textColor=s.theme==='hc'?'#ffe600':isDark?'#fff':'#000'
-  const dimColor=s.theme==='hc'?'rgba(255,230,0,0.2)':isDark?'rgba(255,255,255,0.18)':'rgba(0,0,0,0.18)'
   const focusR=s.focusLines>0?Math.floor(s.focusLines/2):999
-
   document.querySelectorAll('.tp-line').forEach(el=>{
-    const idx=+el.dataset.idx
-    const dist=Math.abs(idx-tpActive)
-    const active=dist===0
-    const inFocus=dist<=focusR
+    const dist=Math.abs(+el.dataset.idx-tpActive)
+    const active=dist===0,inFocus=dist<=focusR
     const opacity=active?1:!inFocus?0:Math.max(0.12,0.55-dist*0.12)
-    el.style.color=textColor
-    el.style.opacity=opacity
+    el.style.color=textColor;el.style.opacity=opacity
     el.style.fontWeight=active?700:400
     el.style.transform=active?'scale(1.04)':'scale(1)'
     el.style.visibility=(!inFocus&&s.focusLines>0)?'hidden':'visible'
@@ -678,36 +937,29 @@ function updateActiveStyles(){
 }
 
 function computeActiveLine(){
-  const scroll=document.getElementById('tp-scroll')
-  if(!scroll)return
+  const scroll=document.getElementById('tp-scroll');if(!scroll)return
   const readingY=scroll.scrollTop+scroll.clientHeight*0.38
   let best=tpActive,min=Infinity
-  tpOffsets.forEach((top,i)=>{
-    if(top==null)return
-    const d=Math.abs(top-readingY)
-    if(d<min){min=d;best=i}
-  })
+  tpOffsets.forEach((top,i)=>{if(top==null)return;const d=Math.abs(top-readingY);if(d<min){min=d;best=i}})
   if(best!==tpActive){tpActive=best;updateActiveStyles();updateProgress()}
 }
 
 function updateProgress(){
-  const nonEmpty=tpLines.filter(l=>!l.empty)
-  const pct=nonEmpty.length>0?tpActive/Math.max(nonEmpty.length-1,1):0
+  const ne=tpLines.filter(l=>!l.empty)
+  const pct=ne.length>0?tpActive/Math.max(ne.length-1,1):0
   document.getElementById('tp-prog').style.width=(pct*100)+'%'
   document.getElementById('tp-rail-fill').style.height=(pct*100)+'%'
   document.getElementById('tp-rail-marker').style.top=(pct*100)+'%'
-  document.getElementById('ctrl-info').textContent=Math.round(pct*100)+'% · '+(tpActive+1)+'/'+nonEmpty.length
+  document.getElementById('ctrl-info').textContent=Math.round(pct*100)+'% · '+(tpActive+1)+'/'+ne.length
 }
 
-// Speed → px/s
 function speedToPx(s){return Math.round(28*Math.pow(s,1.35))}
 
 function startRaf(){
   tpLastTs=null
   const tick=ts=>{
     if(!tpPlaying){tpRaf=null;return}
-    const scroll=document.getElementById('tp-scroll')
-    if(!scroll){tpRaf=null;return}
+    const scroll=document.getElementById('tp-scroll');if(!scroll){tpRaf=null;return}
     if(tpLastTs!==null){
       const dt=Math.min(ts-tpLastTs,100)/1000
       const px=speedToPx(settings.speed)*dt
@@ -716,112 +968,69 @@ function startRaf(){
       scroll.scrollTop=Math.min(scroll.scrollTop+px,max)
       computeActiveLine()
     }
-    tpLastTs=ts
-    tpRaf=requestAnimationFrame(tick)
+    tpLastTs=ts;tpRaf=requestAnimationFrame(tick)
   }
   tpRaf=requestAnimationFrame(tick)
 }
 
 function stopRaf(){if(tpRaf){cancelAnimationFrame(tpRaf);tpRaf=null}tpLastTs=null}
-
 function tpPlay(){tpPlaying=true;document.getElementById('tp-play-btn').innerHTML='⏸';startRaf();showBar()}
 function tpPause(){tpPlaying=false;document.getElementById('tp-play-btn').innerHTML='▶';stopRaf();showBar()}
 function tpToggle(){tpPlaying?tpPause():tpPlay()}
 
 function tpRestart(){
-  stopRaf();tpPlaying=false
-  document.getElementById('tp-play-btn').innerHTML='▶'
-  document.getElementById('tp-scroll').scrollTop=0
-  tpActive=0;updateActiveStyles();updateProgress()
-  smootherReset(0)
-  showBar()
+  stopRaf();tpPlaying=false;document.getElementById('tp-play-btn').innerHTML='▶'
+  document.getElementById('tp-scroll').scrollTop=0;tpActive=0
+  updateActiveStyles();updateProgress();smootherReset(0);showBar()
 }
 
 function tpGoTo(idx){
-  const scroll=document.getElementById('tp-scroll')
-  const el=getEl(idx)
+  const scroll=document.getElementById('tp-scroll'),el=document.querySelector(`.tp-line[data-idx="${idx}"]`)
   if(!scroll||!el)return
   scroll.scrollTo({top:Math.max(0,el.offsetTop-scroll.clientHeight*0.38),behavior:'smooth'})
 }
 
 function tpRecenter(){tpGoTo(tpActive)}
-
-function tpStepSpeed(d){
-  settings.speed=Math.min(10,Math.max(1,settings.speed+d))
-  save(KEY_SETTINGS,settings)
-  updateSpeedDisplay()
-  showBar()
-}
+function tpStepSpeed(d){settings.speed=Math.min(10,Math.max(1,settings.speed+d));save(K.settings,settings);updateSpeedDisplay();showBar()}
 
 function updateSpeedDisplay(){
   const s=settings.speed
   document.getElementById('speed-label').textContent='vel. '+s
-  const bars=document.getElementById('speed-bars')
+  const bars=document.getElementById('speed-bars'),isHC=document.getElementById('teleprompter').classList.contains('hc')
   bars.innerHTML=''
-  const isDark=document.getElementById('teleprompter').classList.contains('light')?false:true
-  const activeCol=document.getElementById('teleprompter').classList.contains('hc')?'#ffe600':'#fff'
-  const inactiveCol=document.getElementById('teleprompter').classList.contains('light')?'rgba(0,0,0,0.12)':'rgba(255,255,255,0.12)'
-  for(let i=0;i<10;i++){
-    const b=document.createElement('div')
-    b.className='speed-bar-seg'
-    b.style.height=(4+i*0.8)+'px'
-    b.style.background=i<s?activeCol:inactiveCol
-    bars.appendChild(b)
-  }
+  const ac=isHC?'#ffe600':document.getElementById('teleprompter').classList.contains('light')?'#000':'#fff'
+  const ia=document.getElementById('teleprompter').classList.contains('light')?'rgba(0,0,0,0.12)':'rgba(255,255,255,0.12)'
+  for(let i=0;i<10;i++){const b=document.createElement('div');b.className='speed-bar-seg';b.style.height=(4+i*0.8)+'px';b.style.background=i<s?ac:ia;bars.appendChild(b)}
 }
 
-// Reading guide position
 function updateGuide(){
   const tp=document.getElementById('teleprompter')
-  const guide=document.getElementById('tp-guide')
-  guide.style.top=(tp.clientHeight*0.38)+'px'
+  document.getElementById('tp-guide').style.top=(tp.clientHeight*0.38)+'px'
 }
 
-// Countdown
 let cdInterval=null
 function startCountdown(cb){
   if(settings.countdown<=0){cb();return}
   let rem=settings.countdown
-  const el=document.getElementById('tp-countdown')
-  const num=document.getElementById('cd-num')
-  el.classList.remove('hidden')
-  num.textContent=rem
-  // Force reflow for animation
-  void num.offsetWidth
+  const el=document.getElementById('tp-countdown'),num=document.getElementById('cd-num')
+  el.classList.remove('hidden');num.textContent=rem;void num.offsetWidth
   cdInterval=setInterval(()=>{
-    rem--
-    if(rem<=0){
-      clearInterval(cdInterval)
-      el.classList.add('hidden')
-      cb()
-    } else {
-      num.style.animation='none'
-      void num.offsetWidth
-      num.style.animation=''
-      num.textContent=rem
-    }
+    rem--;if(rem<=0){clearInterval(cdInterval);cdInterval=null;el.classList.add('hidden');cb()}
+    else{num.style.animation='none';void num.offsetWidth;num.style.animation='';num.textContent=rem}
   },1000)
 }
 
 function openTeleprompter(){
-  flushSave()
-  const sc=getActive()
+  flushSave();const sc=getActive()
   if(!sc||!sc.content.trim()){alert('Escreva algo no roteiro antes de iniciar.');return}
   document.getElementById('editor').classList.add('hidden')
   document.getElementById('teleprompter').classList.remove('hidden')
-  renderTp()
-  updateGuide()
-  updateSpeedDisplay()
-  showBar()
-  tpActive=0
-  setTimeout(()=>{
-    startCountdown(()=>{tpPlay()})
-  },100)
+  renderTp();updateGuide();updateSpeedDisplay();showBar();tpActive=0
+  setTimeout(()=>startCountdown(()=>tpPlay()),100)
 }
 
 function closeTeleprompter(){
-  stopRaf()
-  tpPlaying=false
+  stopRaf();tpPlaying=false
   if(cdInterval){clearInterval(cdInterval);cdInterval=null}
   document.getElementById('tp-countdown').classList.add('hidden')
   micStop()
@@ -831,22 +1040,157 @@ function closeTeleprompter(){
 }
 
 function toggleFullscreen(){
-  if(!document.fullscreenElement){
-    document.getElementById('teleprompter').requestFullscreen?.().catch(()=>{})
-    document.getElementById('fs-btn').textContent='⛶'
-  } else {
-    document.exitFullscreen()
-    document.getElementById('fs-btn').textContent='⛶'
-  }
+  if(!document.fullscreenElement)document.getElementById('teleprompter').requestFullscreen?.().catch(()=>{})
+  else document.exitFullscreen()
 }
 
-// Scroll manual → recalcula linha ativa
-document.getElementById('tp-scroll').addEventListener('scroll',()=>{
-  if(!tpPlaying)computeActiveLine()
-},{passive:true})
-
-// Resize → rebuild offsets
+document.getElementById('tp-scroll').addEventListener('scroll',()=>{if(!tpPlaying)computeActiveLine()},{passive:true})
 new ResizeObserver(()=>{rebuildOffsets();updateGuide()}).observe(document.getElementById('tp-scroll'))
+
+// ══════════════════════════════════════
+// SPEECH + MATCHING
+// ══════════════════════════════════════
+const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition
+let recognizer=null,micActive=false,micIntentionalStop=false,reconnectCount=0
+let sessionTimer=null,restartTimer=null
+const MAX_RECONNECTS=10
+
+function micStart(){
+  if(!SpeechRecognition){setMicState('unsupported');return}
+  micIntentionalStop=false;micActive=true;reconnectCount=0;startSession()
+}
+function micStop(){
+  micIntentionalStop=true;micActive=false
+  clearTimeout(sessionTimer);clearTimeout(restartTimer);destroyRec();setMicState('idle')
+}
+function micToggle(){micActive?micStop():micStart()}
+
+function destroyRec(){
+  if(!recognizer)return
+  recognizer.onresult=null;recognizer.onerror=null;recognizer.onend=null;recognizer.onstart=null
+  try{recognizer.abort()}catch{}
+  recognizer=null
+}
+
+function startSession(){
+  if(micIntentionalStop)return
+  destroyRec()
+  const r=new SpeechRecognition()
+  r.lang=settings.lang||'pt-BR';r.continuous=false;r.interimResults=true;r.maxAlternatives=1
+  recognizer=r
+
+  r.onstart=()=>{reconnectCount=0;setMicState('listening');sessionTimer=setTimeout(()=>{if(!micIntentionalStop)destroyRec()},25000)}
+
+  r.onresult=e=>{
+    const res=e.results[e.results.length-1]
+    processTranscript(res[0].transcript,res.isFinal)
+  }
+
+  r.onerror=e=>{
+    if(e.error==='aborted'||e.error==='no-speech')return
+    if(e.error==='not-allowed'||e.error==='service-not-allowed'){
+      micIntentionalStop=true;setMicState('error');showConfToast('Permissão negada');return
+    }
+  }
+
+  r.onend=()=>{
+    clearTimeout(sessionTimer)
+    if(micIntentionalStop)return
+    if(reconnectCount>=MAX_RECONNECTS){setMicState('error');return}
+    reconnectCount++;setMicState('reconnecting')
+    restartTimer=setTimeout(startSession,400)
+  }
+
+  try{r.start();setMicState('requesting')}catch{setMicState('error')}
+}
+
+function setMicState(state){
+  const btn=document.getElementById('mic-btn'),lbl=document.getElementById('mic-label')
+  btn.className='mic-btn'
+  if(!SpeechRecognition){btn.classList.add('unsupported');lbl.textContent='N/A';return}
+  if(state==='listening'){btn.classList.add('listening');lbl.className='mic-label on';lbl.textContent='ON'}
+  else if(state==='error'){btn.classList.add('error');lbl.className='mic-label off';lbl.textContent='ERRO'}
+  else if(state==='reconnecting'){btn.classList.add('idle');lbl.className='mic-label off';lbl.textContent='...'}
+  else{btn.classList.add('idle');lbl.className='mic-label off';lbl.textContent='VOZ'}
+}
+
+// ── Chunks ──
+let tpChunks=[]
+function buildChunks(){
+  tpChunks=tpLines.map(line=>{
+    const text=normalize(line.text)
+    return{index:line.index,empty:line.empty,text,bigramSet:new Set(bigrams(text)),wc:text.split(' ').filter(Boolean).length}
+  })
+}
+
+function scoreChunk(tSet,idx){
+  const c=tpChunks[idx];if(!c||c.empty)return 0
+  const s1=diceFromSets(tSet,c.bigramSet)
+  let s2=0
+  if(idx+1<tpChunks.length&&!tpChunks[idx+1].empty){
+    const m=new Set([...c.bigramSet,...tpChunks[idx+1].bigramSet]);s2=diceFromSets(tSet,m)
+  }
+  return Math.max(s1,s2)
+}
+
+function findMatch(transcript){
+  const tSet=new Set(bigrams(normalize(transcript)))
+  if(!tSet.size)return{found:false,index:tpActive,score:0}
+  const eligible=tpChunks.filter(c=>!c.empty)
+  const curI=Math.max(0,eligible.findIndex(c=>c.index>=tpActive))
+  const WB=4,WA=12,BIAS=1.15
+  let best=null
+  for(let i=Math.max(0,curI-WB);i<=Math.min(eligible.length-1,curI+WA);i++){
+    const score=scoreChunk(tSet,eligible[i].index)
+    const boosted=i>=curI?score*BIAS:score
+    if(!best||boosted>best.boosted)best={index:eligible[i].index,score,boosted,wc:eligible[i].wc}
+  }
+  if(best&&best.score>=adaptiveThreshold(best.wc))return{found:true,index:best.index,score:best.score}
+  // Global fallback
+  let gb=null
+  for(let i=0;i<eligible.length;i++){const score=scoreChunk(tSet,eligible[i].index);if(!gb||score>gb.score)gb={index:eligible[i].index,score,wc:eligible[i].wc}}
+  if(gb&&gb.score>=adaptiveThreshold(gb.wc))return{found:true,index:gb.index,score:gb.score}
+  return{found:false,index:tpActive,score:best?.score||0}
+}
+
+// ── Smoother — uses calibrated confirmNeeded ──
+let smoother={confirmed:0,pending:0,count:0}
+function smootherReset(i){smoother={confirmed:i,pending:i,count:0}}
+
+function applySmoothing(match){
+  const CONFIRM=calProfile.done?calProfile.confirmNeeded:2
+  const HIGH=0.72,BACKTRACK=3
+  if(!match.found)return smoother.confirmed
+  const cand=match.index
+  if(cand<smoother.confirmed-BACKTRACK)return smoother.confirmed
+  if(match.score>=HIGH){smoother={confirmed:cand,pending:cand,count:0};return cand}
+  if(cand===smoother.pending){
+    smoother.count++
+    if(smoother.count>=CONFIRM){smoother={confirmed:cand,pending:cand,count:0};return cand}
+    return smoother.confirmed
+  }
+  smoother={confirmed:smoother.confirmed,pending:cand,count:1}
+  return smoother.confirmed
+}
+
+let confToastTimer=null
+function showConfToast(msg){
+  const el=document.getElementById('conf-toast');el.textContent='◈ '+msg
+  el.classList.remove('hidden');clearTimeout(confToastTimer)
+  confToastTimer=setTimeout(()=>el.classList.add('hidden'),4000)
+}
+
+function processTranscript(transcript){
+  const match=findMatch(transcript)
+  // Update mic score bar
+  const pct=Math.round(match.score*100)
+  const fill=document.getElementById('mic-score-fill')
+  fill.style.width=pct+'%'
+  fill.style.background=pct>=60?'#22c55e':pct>=35?'#f59e0b':'#ef4444'
+  if(match.score>0&&match.score<0.3)showConfToast('Sincronização imprecisa ('+pct+'%)')
+  const accepted=applySmoothing(match)
+  if(accepted!==tpActive){tpActive=accepted;updateActiveStyles();updateProgress();tpGoTo(accepted)}
+}
 
 // ══════════════════════════════════════
 // KEYBOARD
@@ -854,11 +1198,9 @@ new ResizeObserver(()=>{rebuildOffsets();updateGuide()}).observe(document.getEle
 document.addEventListener('keydown',e=>{
   const tag=e.target.tagName
   if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT')return
-
-  // Teleprompter keys
   if(!document.getElementById('teleprompter').classList.contains('hidden')){
     switch(e.key){
-      case ' ':     e.preventDefault();tpToggle();break
+      case ' ':e.preventDefault();tpToggle();break
       case 'ArrowUp':e.preventDefault();tpStepSpeed(-1);break
       case 'ArrowDown':e.preventDefault();tpStepSpeed(1);break
       case 'ArrowLeft':e.preventDefault();skipLines(-1);break
@@ -874,272 +1216,23 @@ document.addEventListener('keydown',e=>{
 })
 
 function skipLines(dir){
-  const nonEmpty=tpLines.filter(l=>!l.empty)
-  const cur=nonEmpty.findIndex(l=>l.index===tpActive)
-  const next=Math.min(Math.max(0,cur+dir*3),nonEmpty.length-1)
-  tpGoTo(nonEmpty[next].index)
-  smootherReset(nonEmpty[next].index)
+  const ne=tpLines.filter(l=>!l.empty)
+  const cur=ne.findIndex(l=>l.index===tpActive)
+  const next=Math.min(Math.max(0,cur+dir*3),ne.length-1)
+  tpGoTo(ne[next].index);smootherReset(ne[next].index)
 }
 
-// ══════════════════════════════════════
-// SPEECH RECOGNITION
-// ══════════════════════════════════════
-const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition
-let recognizer=null
-let micActive=false
-let sessionTimer=null
-let restartTimer=null
-let micIntentionalStop=false
-let reconnectCount=0
-const MAX_RECONNECTS=10
-
-function micSupported(){return!!SpeechRecognition}
-
-function micStart(){
-  if(!micSupported()){setMicState('unsupported');return}
-  micIntentionalStop=false
-  micActive=true
-  reconnectCount=0
-  startSession()
-}
-
-function micStop(){
-  micIntentionalStop=true
-  micActive=false
-  clearTimeout(sessionTimer)
-  clearTimeout(restartTimer)
-  destroyRecognizer()
-  setMicState('idle')
-}
-
-function micToggle(){micActive?micStop():micStart()}
-
-function destroyRecognizer(){
-  if(!recognizer)return
-  recognizer.onresult=null;recognizer.onerror=null;recognizer.onend=null;recognizer.onstart=null
-  try{recognizer.abort()}catch{}
-  recognizer=null
-}
-
-function startSession(){
-  if(micIntentionalStop)return
-  destroyRecognizer()
-  recognizer=new SpeechRecognition()
-  recognizer.lang=settings.lang||'pt-BR'
-  recognizer.continuous=false
-  recognizer.interimResults=true
-  recognizer.maxAlternatives=1
-
-  recognizer.onstart=()=>{
-    reconnectCount=0
-    setMicState('listening')
-    sessionTimer=setTimeout(()=>{
-      if(!micIntentionalStop)destroyRecognizer()
-    },25000)
-  }
-
-  recognizer.onresult=e=>{
-    const r=e.results[e.results.length-1]
-    const transcript=r[0].transcript
-    const isFinal=r.isFinal
-    processTranscript(transcript,isFinal)
-  }
-
-  recognizer.onerror=e=>{
-    if(e.error==='aborted'||e.error==='no-speech')return
-    if(e.error==='not-allowed'||e.error==='service-not-allowed'){
-      micIntentionalStop=true
-      setMicState('error')
-      showConfToast('Permissão de microfone negada')
-      return
-    }
-  }
-
-  recognizer.onend=()=>{
-    clearTimeout(sessionTimer)
-    if(micIntentionalStop)return
-    if(reconnectCount>=MAX_RECONNECTS){setMicState('error');return}
-    reconnectCount++
-    setMicState('reconnecting')
-    restartTimer=setTimeout(startSession,400)
-  }
-
-  try{recognizer.start();setMicState('requesting')}
-  catch{setMicState('error')}
-}
-
-function setMicState(state){
-  const btn=document.getElementById('mic-btn')
-  const lbl=document.getElementById('mic-label')
-  btn.className='mic-btn'
-  if(!micSupported()){btn.classList.add('unsupported');lbl.textContent='SEM SUPORTE';return}
-  if(state==='listening'){btn.classList.add('listening');lbl.className='mic-label on';lbl.textContent='ON'}
-  else if(state==='error'){btn.classList.add('error');lbl.className='mic-label off';lbl.textContent='ERRO'}
-  else if(state==='reconnecting'){btn.classList.add('idle');lbl.className='mic-label off';lbl.textContent='...'}
-  else{btn.classList.add('idle');lbl.className='mic-label off';lbl.textContent='VOZ'}
-}
-
-// ══════════════════════════════════════
-// TEXT MATCHING
-// ══════════════════════════════════════
-const FILLERS=new Set(['então','tipo','assim','né','aí','ahn','hmm','bom','ok','tá','uh','um','like','so','well','right'])
-
-function normalize(t){
-  return t.toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-    .replace(/[^\w\s]/g,' ')
-    .split(/\s+/).filter(w=>w.length>0&&!FILLERS.has(w)).join(' ').trim()
-}
-
-function bigrams(t){
-  const w=t.split(' ').filter(Boolean)
-  if(w.length<2)return w
-  const r=[]
-  for(let i=0;i<w.length-1;i++)r.push(w[i]+' '+w[i+1])
-  return r
-}
-
-// Pré-computa chunks e bigramSets ao abrir o teleprompter
-let tpChunks=[]
-
-function buildChunks(){
-  tpChunks=tpLines.map(line=>{
-    const text=normalize(line.text)
-    return{index:line.index,empty:line.empty,text,bigramSet:new Set(bigrams(text)),wc:text.split(' ').filter(Boolean).length}
-  })
-}
-
-function diceFromSets(a,b){
-  if(!a.size||!b.size)return 0
-  let inter=0
-  const [small,large]=a.size<=b.size?[a,b]:[b,a]
-  for(const bg of small)if(large.has(bg))inter++
-  return(2*inter)/(a.size+b.size)
-}
-
-function transcriptBigramSet(transcript){
-  return new Set(bigrams(normalize(transcript)))
-}
-
-function adaptiveThreshold(wc){
-  if(wc<=2)return 0.72
-  if(wc<=4)return 0.48
-  if(wc<=6)return 0.36
-  return 0.28
-}
-
-function scoreChunk(tSet,idx){
-  const c=tpChunks[idx]
-  if(!c||c.empty)return 0
-  const s1=diceFromSets(tSet,c.bigramSet)
-  // Merge com próxima linha
-  let s2=0
-  if(idx+1<tpChunks.length&&!tpChunks[idx+1].empty){
-    const merged=new Set([...c.bigramSet,...tpChunks[idx+1].bigramSet])
-    s2=diceFromSets(tSet,merged)
-  }
-  return Math.max(s1,s2)
-}
-
-function findMatch(transcript){
-  const tSet=transcriptBigramSet(transcript)
-  if(!tSet.size)return{found:false,index:tpActive,score:0}
-
-  const eligible=tpChunks.filter(c=>!c.empty)
-  const curEIdx=Math.max(0,eligible.findIndex(c=>c.index>=tpActive))
-
-  const WB=4,WA=12,BIAS=1.15
-  const start=Math.max(0,curEIdx-WB),end=Math.min(eligible.length-1,curEIdx+WA)
-
-  let best=null
-  for(let i=start;i<=end;i++){
-    const score=scoreChunk(tSet,eligible[i].index)
-    const boosted=i>=curEIdx?score*BIAS:score
-    if(!best||boosted>best.boosted)best={index:eligible[i].index,score,boosted,wc:eligible[i].wc}
-  }
-
-  if(best&&best.score>=adaptiveThreshold(best.wc))return{found:true,index:best.index,score:best.score}
-
-  // Global fallback
-  let gbest=null
-  for(let i=0;i<eligible.length;i++){
-    const score=scoreChunk(tSet,eligible[i].index)
-    if(!gbest||score>gbest.score)gbest={index:eligible[i].index,score,wc:eligible[i].wc}
-  }
-  if(gbest&&gbest.score>=adaptiveThreshold(gbest.wc))return{found:true,index:gbest.index,score:gbest.score}
-
-  return{found:false,index:tpActive,score:best?.score||0}
-}
-
-// ══════════════════════════════════════
-// SMOOTHER
-// ══════════════════════════════════════
-let smoother={confirmed:0,pending:0,count:0}
-
-function smootherReset(idx){smoother={confirmed:idx,pending:idx,count:0}}
-
-function applySmoothing(match){
-  const CONFIRM=2,HIGH=0.72,BACKTRACK=3
-  if(!match.found)return smoother.confirmed
-
-  const cand=match.index
-  if(cand<smoother.confirmed-BACKTRACK)return smoother.confirmed
-  if(match.score>=HIGH){smoother={confirmed:cand,pending:cand,count:0};return cand}
-
-  if(cand===smoother.pending){
-    smoother.count++
-    if(smoother.count>=CONFIRM){smoother={confirmed:cand,pending:cand,count:0};return cand}
-    return smoother.confirmed
-  }
-  smoother={confirmed:smoother.confirmed,pending:cand,count:1}
-  return smoother.confirmed
-}
-
-let confToastTimer=null
-function updateMicScore(score){
-  const fill=document.getElementById('mic-score-fill')
-  const pct=Math.round(score*100)
-  fill.style.width=pct+'%'
-  fill.style.background=pct>=60?'#22c55e':pct>=35?'#f59e0b':'#ef4444'
-  if(score>0&&score<0.35)showConfToast('Sincronização imprecisa ('+pct+'%)')
-}
-
-function showConfToast(msg){
-  const el=document.getElementById('conf-toast')
-  el.textContent='◈ '+msg
-  el.classList.remove('hidden')
-  clearTimeout(confToastTimer)
-  confToastTimer=setTimeout(()=>el.classList.add('hidden'),4000)
-}
-
-function processTranscript(transcript,isFinal){
-  const match=findMatch(transcript)
-  updateMicScore(match.score)
-  const accepted=applySmoothing(match)
-  if(accepted!==tpActive){
-    tpActive=accepted
-    updateActiveStyles()
-    updateProgress()
-    tpGoTo(accepted)
-  }
-}
+document.getElementById('teleprompter').addEventListener('mousemove',showBar)
+document.getElementById('teleprompter').addEventListener('touchstart',showBar,{passive:true})
 
 // ══════════════════════════════════════
 // INIT
 // ══════════════════════════════════════
-// Patch renderTp to also build chunks
-const _renderTp=renderTp
-window.renderTp=function(){_renderTp();setTimeout(buildChunks,150)}
-
-// Mouse move → show bar in TP
-document.getElementById('teleprompter').addEventListener('mousemove',showBar)
-document.getElementById('teleprompter').addEventListener('touchstart',showBar,{passive:true})
-
-// Initialize
 renderSidebar()
 loadActiveToEditor()
 initSettingsUI()
 updateStats()
+updateCalStatusBadge()
 </script>
 </body>
 </html>
