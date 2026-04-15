@@ -788,6 +788,24 @@ function flushSave(){clearTimeout(saveTimer);const sc=getActive();if(!sc)return;
 function setSaving(v){document.getElementById('save-dot').className='save-dot'+(v?' saving':'');document.getElementById('save-label').textContent=v?'Salvando…':'Salvo'}
 function updateStats(){const txt=(document.getElementById('content-input').value||'').trim();const words=txt?txt.split(/\s+/).length:0;const chars=(document.getElementById('content-input').value||'').length;const secs=Math.ceil(words/2.5);document.getElementById('stat-words').textContent=words.toLocaleString('pt-BR')+' palavras';document.getElementById('stat-chars').textContent=chars.toLocaleString('pt-BR')+' chars';document.getElementById('stat-time').textContent='~'+(secs>=60?Math.floor(secs/60)+'min '+(secs%60)+'s':secs+'s')}
 
+// aplica configurações de display nas linhas já renderizadas
+function applyDisplaySettings(){
+  const s=settings
+  const wrap=document.querySelector('.tp-content')
+  if(!wrap)return
+  wrap.style.width=s.blockWidth+'%'
+  document.querySelectorAll('.tp-line').forEach(el=>{
+    el.style.fontSize=s.fontSize+'px'
+    el.style.lineHeight=s.lineHeight
+  })
+  document.querySelectorAll('.tp-spacer').forEach(el=>{
+    el.style.height=(s.fontSize*s.lineHeight*0.5)+'px'
+  })
+  updateActiveStyles()
+  // rebuild offsets pois tamanhos mudaram
+  setTimeout(rebuildOffsets,50)
+}
+
 function initSettingsUI(){
   const s=settings
   const set=(id,val,sfx='')=>{document.getElementById(id).value=val;const v=document.getElementById(id+'-v');if(v)v.textContent=val+sfx}
@@ -799,11 +817,35 @@ function initSettingsUI(){
   document.getElementById('s-mirror').className='toggle-btn'+(s.mirrored?' on':'')
   document.getElementById('s-cd').value=s.countdown
   document.getElementById('s-lang').value=s.lang||'pt-BR'
-  document.getElementById('s-font').oninput=function(){settings.fontSize=+this.value;document.getElementById('s-font-v').textContent=this.value;save(K.settings,settings)}
-  document.getElementById('s-speed').oninput=function(){settings.speed=+this.value;document.getElementById('s-speed-v').textContent=this.value;save(K.settings,settings)}
-  document.getElementById('s-lh').oninput=function(){settings.lineHeight=+this.value;document.getElementById('s-lh-v').textContent=(+this.value).toFixed(1);save(K.settings,settings)}
-  document.getElementById('s-width').oninput=function(){settings.blockWidth=+this.value;document.getElementById('s-width-v').textContent=this.value+'%';save(K.settings,settings)}
-  document.getElementById('s-focus').onchange=function(){settings.focusLines=+this.value;save(K.settings,settings)}
+  document.getElementById('s-font').oninput=function(){
+    settings.fontSize=+this.value
+    document.getElementById('s-font-v').textContent=this.value
+    save(K.settings,settings)
+    applyDisplaySettings()
+  }
+  document.getElementById('s-speed').oninput=function(){
+    settings.speed=+this.value
+    document.getElementById('s-speed-v').textContent=this.value
+    save(K.settings,settings)
+    updateSpeedDisplay()
+  }
+  document.getElementById('s-lh').oninput=function(){
+    settings.lineHeight=+this.value
+    document.getElementById('s-lh-v').textContent=(+this.value).toFixed(1)
+    save(K.settings,settings)
+    applyDisplaySettings()
+  }
+  document.getElementById('s-width').oninput=function(){
+    settings.blockWidth=+this.value
+    document.getElementById('s-width-v').textContent=this.value+'%'
+    save(K.settings,settings)
+    applyDisplaySettings()
+  }
+  document.getElementById('s-focus').onchange=function(){
+    settings.focusLines=+this.value
+    save(K.settings,settings)
+    applyDisplaySettings()
+  }
   document.getElementById('s-bg').oninput=function(){
     settings.bgColor=this.value;save(K.settings,settings)
     // preview imediato no editor
