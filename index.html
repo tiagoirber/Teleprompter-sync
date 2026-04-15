@@ -135,9 +135,7 @@ textarea::placeholder{color:rgba(255,255,255,0.18)}
 .profile-actions{display:flex;gap:6px;align-items:center}
 
 /* TELEPROMPTER */
-#teleprompter{background:#000;cursor:none}
-#teleprompter.light{background:#fff}
-#teleprompter.hc{background:#000}
+#teleprompter{cursor:none}
 #teleprompter.cursor-visible{cursor:default}
 .tp-scroll{position:absolute;inset:0;overflow-y:scroll;scrollbar-width:none}
 .tp-scroll::-webkit-scrollbar{display:none}
@@ -147,19 +145,12 @@ textarea::placeholder{color:rgba(255,255,255,0.18)}
 .tp-guide{position:fixed;left:0;right:0;height:1px;background:rgba(255,255,255,0.07);pointer-events:none;z-index:5}
 #teleprompter.light .tp-guide{background:rgba(0,0,0,0.07)}
 .tp-rail{position:fixed;right:0;top:0;bottom:0;width:3px;z-index:5;pointer-events:none}
-.tp-rail-bg{position:absolute;inset:0;background:rgba(255,255,255,0.05)}
-.tp-rail-fill{position:absolute;top:0;left:0;right:0;background:rgba(255,255,255,0.35);transition:height .3s}
-.tp-rail-marker{position:absolute;left:0;right:0;height:3px;background:#fff;transition:top .3s}
-#teleprompter.light .tp-rail-bg{background:rgba(0,0,0,0.05)}
-#teleprompter.light .tp-rail-fill{background:rgba(0,0,0,.25)}
-#teleprompter.light .tp-rail-marker{background:#000}
-#teleprompter.hc .tp-rail-marker{background:#ffe600}
-#teleprompter.hc .tp-rail-fill{background:rgba(255,230,0,.3)}
+.tp-rail-bg{position:absolute;inset:0;background:rgba(128,128,128,0.1)}
+.tp-rail-fill{position:absolute;top:0;left:0;right:0;transition:height .3s}
+.tp-rail-marker{position:absolute;left:0;right:0;height:3px;transition:top .3s}
 .tp-fade-top,.tp-fade-bot{position:fixed;left:0;right:0;height:120px;pointer-events:none;z-index:4}
-.tp-fade-top{top:0;background:linear-gradient(to bottom,#000 0%,transparent 100%)}
-.tp-fade-bot{bottom:0;background:linear-gradient(to top,#000 0%,transparent 100%)}
-#teleprompter.light .tp-fade-top{background:linear-gradient(to bottom,#fff 0%,transparent 100%)}
-#teleprompter.light .tp-fade-bot{background:linear-gradient(to top,#fff 0%,transparent 100%)}
+.tp-fade-top{top:0}
+.tp-fade-bot{bottom:0}
 .tp-countdown{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.92);transition:opacity .3s}
 .tp-countdown.hidden{opacity:0;pointer-events:none}
 .cd-num{font-size:clamp(80px,20vw,180px);font-weight:800;line-height:1;animation:cd-pop .35s cubic-bezier(.34,1.56,.64,1) both}
@@ -888,31 +879,44 @@ function renderTp(){
   tp.className='screen'
   const bg=s.bgColor||'#000000'
   const fg=s.fgColor||'#ffffff'
-  tp.style.background=bg
-  if(s.mirrored)tp.style.transform='scaleX(-1)';else tp.style.removeProperty('transform')
 
-  // Fade gradients use bg color
+  // aplica cores diretamente via style — sem depender de classe CSS
+  tp.style.background=bg
+  tp.style.color=fg
+
+  // fades usam a cor de fundo
   document.querySelector('.tp-fade-top').style.background=`linear-gradient(to bottom,${bg} 0%,transparent 100%)`
   document.querySelector('.tp-fade-bot').style.background=`linear-gradient(to top,${bg} 0%,transparent 100%)`
 
-  // Rail colors
-  document.getElementById('tp-rail-fill').style.background=fg+'60'
+  // rail
+  document.getElementById('tp-rail-fill').style.background=hexToRgba(fg,0.35)
   document.getElementById('tp-rail-marker').style.background=fg
 
-  // Controls bar bg — darken/lighten the bg color slightly
-  const isLight=isLightColor(bg)
-  const ctrlBg=isLight?'rgba(255,255,255,0.92)':'rgba(0,0,0,0.88)'
-  const ctrlBorder=isLight?'rgba(0,0,0,0.08)':'rgba(255,255,255,0.07)'
-  document.querySelector('.tp-controls').style.background=ctrlBg
-  document.querySelector('.tp-controls').style.borderTopColor=ctrlBorder
-  document.querySelector('.tp-progress').style.background=isLight?'rgba(0,0,0,0.1)':'rgba(255,255,255,0.1)'
-  document.getElementById('tp-prog').style.background=isLight?'rgba(0,0,0,0.4)':'rgba(255,255,255,0.5)'
-  document.getElementById('tp-hint').style.background=ctrlBg
-  document.getElementById('tp-hint').style.color=isLight?'rgba(0,0,0,0.25)':'rgba(255,255,255,0.2)'
+  // barra de controles adapta ao brilho do fundo
+  const light=isLightColor(bg)
+  const ctrlBg=light?'rgba(255,255,255,0.93)':'rgba(0,0,0,0.88)'
+  const ctrlBorder=light?'rgba(0,0,0,0.08)':'rgba(255,255,255,0.07)'
+  const ctrlText=light?'#000':'#fff'
+  const ctrlMuted=light?'rgba(0,0,0,0.45)':'rgba(255,255,255,0.45)'
+  const ctrl=document.querySelector('.tp-controls')
+  ctrl.style.background=ctrlBg
+  ctrl.style.borderTopColor=ctrlBorder
+  // botões dentro da barra
+  ctrl.querySelectorAll('.btn,.speed-label,.ctrl-info,.mic-label').forEach(el=>{
+    el.style.color=ctrlMuted
+  })
+  document.querySelector('.tp-progress').style.background=light?'rgba(0,0,0,0.1)':'rgba(255,255,255,0.1)'
+  document.getElementById('tp-prog').style.background=light?'rgba(0,0,0,0.4)':'rgba(255,255,255,0.5)'
+  document.getElementById('tp-hint').style.cssText=`background:${ctrlBg};color:${ctrlMuted}`
 
-  // Play button
+  // botão play usa as cores invertidas
   const pb=document.getElementById('tp-play-btn')
   pb.style.background=fg;pb.style.color=bg
+
+  // guide line
+  document.getElementById('tp-guide').style.background=hexToRgba(fg,0.08)
+
+  if(s.mirrored)tp.style.transform='scaleX(-1)';else tp.style.removeProperty('transform')
   tpActive=0;micIsOn=false
   setTimeout(()=>{
     rebuildOffsets()
@@ -933,6 +937,10 @@ function rebuildOffsets(){
 function isLightColor(hex){
   const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16)
   return(r*299+g*587+b*114)/1000>128
+}
+function hexToRgba(hex,alpha){
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16)
+  return`rgba(${r},${g},${b},${alpha})`
 }
 
 function updateActiveStyles(){
