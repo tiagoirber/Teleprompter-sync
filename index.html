@@ -17,17 +17,17 @@ body{background:#111;color:#eee;font-family:-apple-system,BlinkMacSystemFont,'Se
 .screen{position:fixed;inset:0;display:flex;flex-direction:column;transition:opacity .2s}
 .screen.hidden{opacity:0;pointer-events:none}
 
-/* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid rgba(255,255,255,0.18);background:transparent;color:#fff;transition:background .15s,border-color .15s;white-space:nowrap}
 .btn:hover{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.3)}
 .btn:active{transform:scale(.97)}
 .btn.primary{background:#fff;color:#000;border-color:#fff}
 .btn.primary:hover{background:rgba(255,255,255,0.88)}
 .btn.icon{padding:7px;border-radius:6px}
-.btn.green{background:rgba(34,197,94,.15);border-color:rgba(34,197,94,.4);color:#22c55e}
-.btn.green:hover{background:rgba(34,197,94,.25)}
+.btn.danger{border-color:rgba(239,68,68,.4);color:#ef4444}
+.btn.danger:hover{background:rgba(239,68,68,.1)}
+.btn:disabled{opacity:.35;cursor:not-allowed;transform:none!important}
 
-/* ── EDITOR ── */
+/* EDITOR */
 #editor{background:#111}
 .editor-header{display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,0.07);background:#0d0d0d;flex-shrink:0;gap:8px}
 .editor-logo{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#fff;white-space:nowrap}
@@ -45,7 +45,7 @@ body{background:#111;color:#eee;font-family:-apple-system,BlinkMacSystemFont,'Se
 .toggle-btn{font-size:11px;padding:4px 10px;border-radius:5px;cursor:pointer;border:1px solid rgba(255,255,255,0.18);background:transparent;color:var(--muted);transition:all .15s}
 .toggle-btn.on{background:rgba(255,255,255,0.12);color:#fff;border-color:rgba(255,255,255,0.3)}
 .editor-body{display:flex;flex:1;overflow:hidden}
-.sidebar{width:220px;min-width:220px;border-right:1px solid rgba(255,255,255,0.07);background:#0a0a0a;display:flex;flex-direction:column;transition:width .25s,min-width .25s}
+.sidebar{width:220px;min-width:220px;border-right:1px solid rgba(255,255,255,0.07);background:#0a0a0a;display:flex;flex-direction:column}
 .sidebar-head{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0}
 .sidebar-head span{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .script-list{flex:1;overflow-y:auto;padding:4px 0}
@@ -70,57 +70,22 @@ textarea::placeholder{color:rgba(255,255,255,0.18)}
 .save-dot.saving{background:var(--amber);animation:blink 1s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* ══════════════════════════════════════
-   CALIBRATION MODAL
-══════════════════════════════════════ */
-.modal-overlay{
-  position:fixed;inset:0;z-index:200;
-  background:rgba(0,0,0,0.92);
-  display:flex;align-items:center;justify-content:center;
-  padding:20px;
-  transition:opacity .25s;
-}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.92);display:flex;align-items:center;justify-content:center;padding:20px;transition:opacity .25s}
 .modal-overlay.hidden{opacity:0;pointer-events:none}
-.modal{
-  width:100%;max-width:560px;max-height:90vh;overflow-y:auto;
-  background:#0d0d0d;border:1px solid rgba(255,255,255,0.1);
-  border-radius:16px;padding:32px;
-  display:flex;flex-direction:column;gap:24px;
-}
-.modal h2{font-size:20px;font-weight:700;color:#fff}
-.modal p{font-size:14px;color:var(--muted);line-height:1.65}
-
-/* Steps indicator */
+.modal{width:100%;max-width:580px;max-height:92vh;overflow-y:auto;background:#0d0d0d;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:20px}
+.modal h2{font-size:19px;font-weight:700;color:#fff}
+.modal p{font-size:13px;color:var(--muted);line-height:1.65}
 .cal-steps{display:flex;gap:6px;align-items:center}
-.cal-step-dot{
-  width:8px;height:8px;border-radius:50%;
-  background:rgba(255,255,255,0.15);transition:background .2s
-}
+.cal-step-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.15);transition:background .2s}
 .cal-step-dot.done{background:var(--green)}
 .cal-step-dot.active{background:#fff}
 .cal-step-label{font-size:11px;color:var(--muted);margin-left:6px}
-
-/* Sentence card */
-.sentence-card{
-  background:#161616;border:1px solid rgba(255,255,255,0.07);
-  border-radius:12px;padding:20px;
-}
-.sentence-text{
-  font-size:17px;font-weight:600;color:#fff;line-height:1.6;
-  text-align:center;letter-spacing:.01em;
-  min-height:56px;display:flex;align-items:center;justify-content:center;
-}
+.sentence-card{background:#161616;border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:20px}
+.sentence-text{font-size:16px;font-weight:600;color:#fff;line-height:1.6;text-align:center;min-height:52px;display:flex;align-items:center;justify-content:center}
 .sentence-num{font-size:11px;color:var(--muted);text-align:center;margin-bottom:10px;letter-spacing:.08em;text-transform:uppercase}
-
-/* Waveform / listening indicator */
-.listen-indicator{
-  display:flex;align-items:center;justify-content:center;gap:3px;
-  height:40px;margin:8px 0;
-}
-.wave-bar{
-  width:3px;border-radius:2px;background:rgba(255,255,255,0.2);
-  animation:none;transition:background .2s;
-}
+.listen-indicator{display:flex;align-items:center;justify-content:center;gap:3px;height:36px;margin:6px 0}
+.wave-bar{width:3px;border-radius:2px;background:rgba(255,255,255,0.15);height:4px}
 .listen-indicator.active .wave-bar{background:var(--green)}
 .listen-indicator.active .wave-bar:nth-child(1){animation:wave 1.1s ease infinite 0s}
 .listen-indicator.active .wave-bar:nth-child(2){animation:wave 1.1s ease infinite .15s}
@@ -129,61 +94,47 @@ textarea::placeholder{color:rgba(255,255,255,0.18)}
 .listen-indicator.active .wave-bar:nth-child(5){animation:wave 1.1s ease infinite .04s}
 .listen-indicator.active .wave-bar:nth-child(6){animation:wave 1.1s ease infinite .18s}
 .listen-indicator.active .wave-bar:nth-child(7){animation:wave 1.1s ease infinite .11s}
-@keyframes wave{0%,100%{height:4px}50%{height:28px}}
-
-/* Transcript live */
-.transcript-box{
-  background:#1a1a1a;border:1px solid rgba(255,255,255,0.07);
-  border-radius:8px;padding:12px 14px;min-height:48px;
-  font-size:13px;color:rgba(255,255,255,0.7);line-height:1.6;
-  font-style:italic;
-}
-.transcript-box .interim{color:rgba(255,255,255,0.35)}
-
-/* Score bar */
+@keyframes wave{0%,100%{height:4px}50%{height:26px}}
+.transcript-box{background:#1a1a1a;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px 14px;min-height:44px;font-size:13px;color:rgba(255,255,255,0.7);line-height:1.6;font-style:italic}
 .score-row{display:flex;align-items:center;gap:10px;margin-top:4px}
 .score-bar-wrap{flex:1;height:6px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden}
 .score-bar-fill{height:100%;border-radius:3px;transition:width .4s,background .4s}
-.score-val{font-size:12px;font-weight:600;min-width:36px;text-align:right}
-
-/* Results */
-.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.result-card{
-  background:#161616;border:1px solid rgba(255,255,255,0.07);
-  border-radius:10px;padding:14px;
-}
-.result-card .rc-label{font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em}
-.result-card .rc-val{font-size:22px;font-weight:700;color:#fff}
-.result-card .rc-sub{font-size:11px;color:var(--muted);margin-top:2px}
-.cal-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  font-size:12px;font-weight:600;padding:4px 12px;
-  border-radius:100px;
-}
+.score-val{font-size:12px;font-weight:600;min-width:34px;text-align:right}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.result-card{background:#161616;border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:14px}
+.rc-label{font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em}
+.rc-val{font-size:22px;font-weight:700;color:#fff}
+.rc-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.cal-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px}
 .cal-badge.good{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:var(--green)}
 .cal-badge.ok{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:var(--amber)}
 .cal-badge.bad{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:var(--red)}
-
-.cal-profile-row{
-  display:flex;align-items:center;justify-content:space-between;
-  font-size:12px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.06)
-}
+.cal-profile-row{display:flex;align-items:center;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
 .cal-profile-row:last-child{border-bottom:none}
 .cal-profile-row span:first-child{color:var(--muted)}
 .cal-profile-row span:last-child{color:#fff;font-weight:500}
+/* name input inside modal */
+.name-input{width:100%;background:#1a1a1a;border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:9px 14px;font-size:14px;color:#fff;outline:none;transition:border-color .15s}
+.name-input:focus{border-color:rgba(255,255,255,0.4)}
+.name-input::placeholder{color:rgba(255,255,255,0.25)}
 
-/* Cal status badge in header */
-.cal-status{
-  display:inline-flex;align-items:center;gap:5px;
-  font-size:11px;padding:4px 10px;border-radius:6px;
-  border:1px solid rgba(255,255,255,0.12);color:var(--muted);
-  cursor:pointer;transition:all .15s;white-space:nowrap;
-}
+/* Voice profiles dropdown */
+.cal-status{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:4px 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.12);color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap;background:transparent;position:relative}
 .cal-status:hover{border-color:rgba(255,255,255,.25);color:#fff}
 .cal-status.calibrated{border-color:rgba(34,197,94,.3);color:var(--green);background:rgba(34,197,94,.08)}
-.cal-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.cal-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
 
-/* ── TELEPROMPTER ── */
+/* Profile list in modal */
+.profile-list{display:flex;flex-direction:column;gap:6px;max-height:240px;overflow-y:auto}
+.profile-item{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#161616;border:1px solid rgba(255,255,255,0.07);border-radius:9px;cursor:pointer;transition:border-color .15s,background .15s}
+.profile-item:hover{background:#1d1d1d;border-color:rgba(255,255,255,0.15)}
+.profile-item.active-profile{border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.06)}
+.profile-info{display:flex;flex-direction:column;gap:2px}
+.profile-name{font-size:13px;font-weight:600;color:#fff}
+.profile-meta{font-size:11px;color:var(--muted)}
+.profile-actions{display:flex;gap:6px;align-items:center}
+
+/* TELEPROMPTER */
 #teleprompter{background:#000;cursor:none}
 #teleprompter.light{background:#fff}
 #teleprompter.hc{background:#000}
@@ -193,12 +144,13 @@ textarea::placeholder{color:rgba(255,255,255,0.18)}
 .tp-content{padding:45vh 0;display:flex;flex-direction:column;align-items:center}
 .tp-line{text-align:center;cursor:pointer;transition:opacity .25s,transform .2s;padding:2px 0}
 .tp-spacer{height:1em}
-.tp-guide{position:fixed;left:0;right:0;height:1px;background:rgba(255,255,255,0.07);pointer-events:none;z-index:5;transition:opacity .4s}
+.tp-guide{position:fixed;left:0;right:0;height:1px;background:rgba(255,255,255,0.07);pointer-events:none;z-index:5}
 #teleprompter.light .tp-guide{background:rgba(0,0,0,0.07)}
 .tp-rail{position:fixed;right:0;top:0;bottom:0;width:3px;z-index:5;pointer-events:none}
 .tp-rail-bg{position:absolute;inset:0;background:rgba(255,255,255,0.05)}
 .tp-rail-fill{position:absolute;top:0;left:0;right:0;background:rgba(255,255,255,0.35);transition:height .3s}
 .tp-rail-marker{position:absolute;left:0;right:0;height:3px;background:#fff;transition:top .3s}
+#teleprompter.light .tp-rail-bg{background:rgba(0,0,0,0.05)}
 #teleprompter.light .tp-rail-fill{background:rgba(0,0,0,.25)}
 #teleprompter.light .tp-rail-marker{background:#000}
 #teleprompter.hc .tp-rail-marker{background:#ffe600}
@@ -218,10 +170,13 @@ textarea::placeholder{color:rgba(255,255,255,0.18)}
 .tp-progress{height:1px;background:rgba(255,255,255,0.1)}
 .tp-progress-fill{height:100%;background:rgba(255,255,255,.5);transition:width .5s}
 .tp-controls{display:flex;align-items:center;gap:6px;padding:10px 16px 12px;background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,.07);flex-wrap:wrap}
+#teleprompter.light .tp-progress{background:rgba(0,0,0,.1)}
+#teleprompter.light .tp-progress-fill{background:rgba(0,0,0,.4)}
 #teleprompter.light .tp-controls{background:rgba(255,255,255,.9);border-top-color:rgba(0,0,0,.08)}
 #teleprompter.light .tp-controls .btn{color:#000;border-color:rgba(0,0,0,.18)}
 #teleprompter.light .tp-controls .btn:hover{background:rgba(0,0,0,.07)}
 #teleprompter.light .tp-controls .ctrl-info{color:rgba(0,0,0,.45)}
+#teleprompter.hc .tp-controls{background:rgba(0,0,0,.95);border-top-color:rgba(255,230,0,.15)}
 .tp-play-btn{width:48px;height:48px;border-radius:50%;background:#fff;color:#000;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;transition:opacity .15s,transform .1s;flex-shrink:0}
 .tp-play-btn:hover{opacity:.88}
 .tp-play-btn:active{transform:scale(.94)}
@@ -238,9 +193,8 @@ textarea::placeholder{color:rgba(255,255,255,0.18)}
 .mic-btn{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid transparent;transition:all .2s;background:transparent;font-size:16px}
 .mic-btn.idle{border-color:rgba(255,255,255,.18);color:rgba(255,255,255,.4)}
 .mic-btn.idle:hover{border-color:rgba(255,255,255,.35);color:rgba(255,255,255,.7)}
-.mic-btn.listening{border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.1);color:#22c55e}
-.mic-btn.listening{animation:mic-pulse 2s ease infinite}
-@keyframes mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.0)}50%{box-shadow:0 0 0 5px rgba(34,197,94,.15)}}
+.mic-btn.listening{border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.1);color:#22c55e;animation:mic-pulse 2s ease infinite}
+@keyframes mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}50%{box-shadow:0 0 0 5px rgba(34,197,94,.15)}}
 .mic-btn.error{border-color:rgba(239,68,68,.3);color:#ef4444}
 .mic-btn.unsupported{opacity:.3;cursor:not-allowed}
 .mic-label{font-size:9px;letter-spacing:.05em;font-weight:600}
@@ -253,11 +207,20 @@ textarea::placeholder{color:rgba(255,255,255,0.18)}
 .tp-hint{position:fixed;bottom:0;left:0;right:0;z-index:19;text-align:center;padding:6px;font-size:10px;color:rgba(255,255,255,.2);letter-spacing:.05em;background:rgba(0,0,0,.88);transition:opacity .4s}
 .tp-hint.hidden{opacity:0;pointer-events:none}
 #teleprompter.light .tp-hint{background:rgba(255,255,255,.9);color:rgba(0,0,0,.25)}
+
+/* Sync mode indicator in TP */
+.sync-mode-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:10px;font-weight:600;padding:3px 9px;border-radius:100px;
+  letter-spacing:.04em;
+}
+.sync-mode-badge.voice{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);color:#22c55e}
+.sync-mode-badge.auto{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.5)}
 </style>
 </head>
 <body>
 
-<!-- ══ EDITOR ══ -->
+<!-- EDITOR -->
 <div id="editor" class="screen">
   <div class="editor-header">
     <div class="editor-logo">
@@ -270,20 +233,20 @@ textarea::placeholder{color:rgba(255,255,255,0.18)}
       <div class="setting"><label>Espaço</label><input type="range" id="s-lh" min="1.2" max="3" step="0.1" value="1.9"><span class="setting-val" id="s-lh-v">1.9</span></div>
       <div class="setting"><label>Largura</label><input type="range" id="s-width" min="40" max="100" step="2" value="72"><span class="setting-val" id="s-width-v">72%</span></div>
       <div class="setting"><label>Foco</label><select id="s-focus"><option value="0">Todas</option><option value="3">3 linhas</option><option value="5">5 linhas</option><option value="7">7 linhas</option></select></div>
-      <div class="setting"><label>Tema</label><select id="s-theme"><option value="dark">Escuro</option><option value="light">Claro</option><option value="hc">Contraste</option></select></div>
+      <div class="setting"><label>Fundo</label><input type="color" id="s-bg" value="#000000" style="width:32px;height:24px;border:1px solid rgba(255,255,255,.2);border-radius:4px;cursor:pointer;padding:1px;background:transparent"></div>
+      <div class="setting"><label>Texto</label><input type="color" id="s-fg" value="#ffffff" style="width:32px;height:24px;border:1px solid rgba(255,255,255,.2);border-radius:4px;cursor:pointer;padding:1px;background:transparent"></div>
       <div class="setting"><label>Espelhar</label><button class="toggle-btn" id="s-mirror">OFF</button></div>
       <div class="setting"><label>Contagem</label><select id="s-cd"><option value="0">Off</option><option value="3" selected>3s</option><option value="5">5s</option></select></div>
       <div class="setting"><label>Idioma</label><select id="s-lang"><option value="pt-BR">PT-BR</option><option value="en-US">EN-US</option><option value="es-ES">ES</option></select></div>
     </div>
     <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
-      <div class="cal-status" id="cal-status-btn" onclick="openCalibration()">
+      <button class="cal-status" id="cal-status-btn" onclick="openVoiceManager()">
         <span class="cal-dot"></span>
         <span id="cal-status-label">Calibrar voz</span>
-      </div>
+      </button>
       <button class="btn primary" onclick="openTeleprompter()">▶ Iniciar</button>
     </div>
   </div>
-
   <div class="editor-body">
     <div class="sidebar" id="sidebar">
       <div class="sidebar-head"><span>Roteiros</span><button class="btn icon" onclick="newScript()" style="padding:4px 7px;font-size:16px;line-height:1">+</button></div>
@@ -302,20 +265,26 @@ textarea::placeholder{color:rgba(255,255,255,0.18)}
   </div>
 </div>
 
-<!-- ══ CALIBRATION MODAL ══ -->
+<!-- VOICE MANAGER MODAL -->
+<div class="modal-overlay hidden" id="vm-overlay">
+  <div class="modal">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <h2 id="vm-title">Perfis de Voz</h2>
+      <button class="btn icon" onclick="closeVoiceManager()" style="font-size:18px;opacity:.5">✕</button>
+    </div>
+    <div id="vm-content"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end" id="vm-footer"></div>
+  </div>
+</div>
+
+<!-- CALIBRATION MODAL -->
 <div class="modal-overlay hidden" id="cal-overlay">
   <div class="modal">
-
-    <!-- Header -->
-    <div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-        <h2 id="cal-title">Calibragem de Voz</h2>
-        <button class="btn icon" onclick="closeCalibration()" style="font-size:18px;opacity:.5">✕</button>
-      </div>
-      <p id="cal-desc">O app vai aprender como você fala para sincronizar melhor durante a gravação. Leva menos de 2 minutos.</p>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+      <h2 id="cal-title">Calibragem de Voz</h2>
+      <button class="btn icon" onclick="closeCalibration()" style="font-size:18px;opacity:.5">✕</button>
     </div>
-
-    <!-- Step dots -->
+    <p id="cal-desc"></p>
     <div class="cal-steps">
       <div class="cal-step-dot active" id="cdot-0"></div>
       <div class="cal-step-dot" id="cdot-1"></div>
@@ -323,11 +292,7 @@ textarea::placeholder{color:rgba(255,255,255,0.18)}
       <div class="cal-step-dot" id="cdot-3"></div>
       <span class="cal-step-label" id="cal-step-label">Passo 1 de 4</span>
     </div>
-
-    <!-- Step content -->
     <div id="cal-step-content"></div>
-
-    <!-- Footer buttons -->
     <div style="display:flex;gap:10px;justify-content:flex-end">
       <button class="btn" id="cal-btn-skip" onclick="calSkip()">Pular</button>
       <button class="btn primary" id="cal-btn-next" onclick="calNext()">Começar</button>
@@ -335,7 +300,7 @@ textarea::placeholder{color:rgba(255,255,255,0.18)}
   </div>
 </div>
 
-<!-- ══ TELEPROMPTER ══ -->
+<!-- TELEPROMPTER -->
 <div id="teleprompter" class="screen hidden dark">
   <div class="tp-fade-top"></div>
   <div class="tp-fade-bot"></div>
@@ -373,7 +338,7 @@ textarea::placeholder{color:rgba(255,255,255,0.18)}
       </div>
       <div class="ctrl-sep"></div>
       <button class="btn icon" onclick="tpRecenter()" title="Recentralizar (C)">⊙</button>
-      <button class="btn icon" id="fs-btn" onclick="toggleFullscreen()" title="Tela cheia (F)">⛶</button>
+      <button class="btn icon" onclick="toggleFullscreen()" title="Tela cheia (F)">⛶</button>
       <span class="ctrl-info" id="ctrl-info">0% · 0/0</span>
     </div>
   </div>
@@ -381,401 +346,416 @@ textarea::placeholder{color:rgba(255,255,255,0.18)}
 </div>
 
 <script>
-// ══════════════════════════════════════
-// STORAGE & STATE
-// ══════════════════════════════════════
-const K = {scripts:'tp:scripts',active:'tp:active',settings:'tp:settings',cal:'tp:calibration'}
+// ══════════════════════════════════
+// STORAGE
+// ══════════════════════════════════
+const K={scripts:'tp:scripts',active:'tp:active',settings:'tp:settings',profiles:'tp:voice_profiles',activeProfile:'tp:active_profile'}
 const load=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch{return d}}
 const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
 
-let scripts  = load(K.scripts, [{id:'demo',title:'Roteiro de Exemplo',content:'Bem-vindo ao TelePrompter.\n\nEste é um roteiro de demonstração para você testar todas as funcionalidades.\n\nA rolagem automática por voz detecta o que você está falando e sincroniza o texto em tempo real.\n\nMesmo se você pausar, improvisar ou pular um trecho, o sistema se reposiciona automaticamente.\n\nUse as teclas de seta para navegar manualmente. A barra de espaço pausa e retoma.\n\nConfigure fonte, velocidade e espaçamento conforme sua preferência.\n\nAtive o espelhamento se estiver usando um vidro refletor.\n\nBoa gravação!',createdAt:Date.now(),updatedAt:Date.now()}])
-let activeId = load(K.active, scripts[0]?.id)
-let settings = load(K.settings, {fontSize:52,lineHeight:1.9,speed:3,blockWidth:72,focusLines:0,theme:'dark',mirrored:false,countdown:3,lang:'pt-BR'})
+// ══════════════════════════════════
+// STATE
+// ══════════════════════════════════
+let scripts  = load(K.scripts,[{id:'demo',title:'Roteiro de Exemplo',content:'Bem-vindo ao TelePrompter.\n\nEste é um roteiro de demonstração para você testar todas as funcionalidades.\n\nA rolagem automática por voz detecta o que você está falando e sincroniza o texto em tempo real.\n\nMesmo se você pausar, improvisar ou pular um trecho, o sistema se reposiciona automaticamente.\n\nUse as teclas de seta para navegar manualmente. A barra de espaço pausa e retoma.\n\nConfigure fonte, velocidade e espaçamento conforme sua preferência.\n\nAtive o espelhamento se estiver usando um vidro refletor.\n\nBoa gravação!',createdAt:Date.now(),updatedAt:Date.now()}])
+let activeId = load(K.active,scripts[0]?.id)
+let settings = load(K.settings,{fontSize:52,lineHeight:1.9,speed:3,blockWidth:72,focusLines:0,bgColor:'#000000',fgColor:'#ffffff',mirrored:false,countdown:3,lang:'pt-BR'})
 
-// Calibration profile — adjusts matching algorithm
-let calProfile = load(K.cal, {
-  done: false,
-  accuracy: 0,       // 0–1 average dice score during calibration
-  wpm: 0,            // words per minute measured
-  thresholdScale: 1, // multiplier applied to adaptive thresholds
-  confirmNeeded: 2,  // consecutive matches needed before accepting
-  fillers: [],       // personal filler words detected
-  lang: 'pt-BR',
-})
+// Voice profiles — each has id, name, calibration data
+let voiceProfiles    = load(K.profiles,[])
+let activeProfileId  = load(K.activeProfile,null)
+
+function getActiveProfile(){return voiceProfiles.find(p=>p.id===activeProfileId)||null}
+function saveProfiles(){save(K.profiles,voiceProfiles);save(K.activeProfile,activeProfileId)}
+
+// Derived calibration — from active profile or defaults
+function getCal(){
+  const p=getActiveProfile()
+  if(p)return p
+  return{done:false,thresholdScale:1,confirmNeeded:2,fillers:[],wpm:130}
+}
 
 const genId=()=>Date.now()+'-'+Math.random().toString(36).slice(2,7)
 const getActive=()=>scripts.find(s=>s.id===activeId)||scripts[0]
 const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+const persistAll=()=>{save(K.scripts,scripts);save(K.active,activeId);save(K.settings,settings)}
 
-// ══════════════════════════════════════
+// ══════════════════════════════════
 // TEXT PROCESSING
-// ══════════════════════════════════════
-const FILLERS_DEFAULT=new Set(['então','tipo','assim','né','aí','ahn','hmm','bom','ok','tá','uh','um','like','so','well','right','basicamente','literalmente'])
+// ══════════════════════════════════
+const FILLERS_BASE=new Set(['então','tipo','assim','né','aí','ahn','hmm','bom','ok','tá','uh','um','like','so','well','right','basicamente','literalmente'])
 
-function normalize(t,extraFillers=[]){
-  const allFillers=new Set([...FILLERS_DEFAULT,...(calProfile.fillers||[]),...extraFillers])
+function normalize(t){
+  const cal=getCal()
+  const extra=new Set(cal.fillers||[])
   return t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
     .replace(/[^\w\s]/g,' ').split(/\s+/)
-    .filter(w=>w.length>0&&!allFillers.has(w)).join(' ').trim()
+    .filter(w=>w.length>0&&!FILLERS_BASE.has(w)&&!extra.has(w))
+    .join(' ').trim()
 }
 
 function bigrams(t){
   const w=t.split(' ').filter(Boolean)
   if(w.length<2)return w
-  const r=[]
-  for(let i=0;i<w.length-1;i++)r.push(w[i]+' '+w[i+1])
+  const r=[];for(let i=0;i<w.length-1;i++)r.push(w[i]+' '+w[i+1])
   return r
 }
 
 function diceFromSets(a,b){
   if(!a.size||!b.size)return 0
-  let inter=0
-  const[sm,lg]=a.size<=b.size?[a,b]:[b,a]
+  let inter=0;const[sm,lg]=a.size<=b.size?[a,b]:[b,a]
   for(const bg of sm)if(lg.has(bg))inter++
   return(2*inter)/(a.size+b.size)
 }
 
-// Adaptive threshold — scaled by calibration result
 function adaptiveThreshold(wc){
-  const scale=calProfile.done?calProfile.thresholdScale:1
-  const base = wc<=2?0.72 : wc<=4?0.48 : wc<=6?0.36 : 0.28
-  return Math.max(0.15, base * scale)
+  const cal=getCal()
+  const scale=cal.done?cal.thresholdScale:1
+  const base=wc<=2?0.65:wc<=4?0.42:wc<=6?0.32:0.24
+  return Math.max(0.12,base*scale)
 }
 
-// ══════════════════════════════════════
-// CALIBRATION
-// ══════════════════════════════════════
-const CAL_SENTENCES = {
-  'pt-BR': [
-    'A tecnologia está transformando a forma como nos comunicamos.',
-    'Cada palavra dita com clareza ajuda o sistema a te acompanhar melhor.',
-    'O teleprompter sincroniza automaticamente com a sua voz durante a gravação.',
-    'Fale em ritmo natural, como se estivesse apresentando para uma câmera.',
-  ],
-  'en-US': [
-    'Technology is transforming the way we communicate with each other.',
-    'Speaking clearly helps the system follow your voice more accurately.',
-    'The teleprompter automatically synchronizes with your speech during recording.',
-    'Speak at a natural pace, as if you were presenting to a camera.',
-  ],
-  'es-ES': [
-    'La tecnología está transformando la forma en que nos comunicamos.',
-    'Hablar con claridad ayuda al sistema a seguir tu voz con más precisión.',
-    'El teleprompter se sincroniza automáticamente con tu voz durante la grabación.',
-    'Habla a un ritmo natural, como si estuvieras presentando ante una cámara.',
-  ],
+// ══════════════════════════════════
+// VOICE MANAGER
+// ══════════════════════════════════
+function openVoiceManager(){
+  document.getElementById('vm-overlay').classList.remove('hidden')
+  renderVoiceManager()
 }
+function closeVoiceManager(){document.getElementById('vm-overlay').classList.add('hidden')}
 
-let calState = {
-  step: 0,          // 0=intro 1-4=sentences 5=results
-  sentenceIdx: 0,
-  scores: [],
-  timestamps: [],   // to measure WPM
-  recognizer: null,
-  listening: false,
-  currentTranscript: '',
-  detectedFillers: [],
-}
+function renderVoiceManager(){
+  const content=document.getElementById('vm-content')
+  const footer=document.getElementById('vm-footer')
+  document.getElementById('vm-title').textContent='Perfis de Voz'
 
-function openCalibration(){
-  calState={step:0,sentenceIdx:0,scores:[],timestamps:[],recognizer:null,listening:false,currentTranscript:'',detectedFillers:[]}
-  document.getElementById('cal-overlay').classList.remove('hidden')
-  renderCalStep()
-}
-
-function closeCalibration(){
-  calStop()
-  document.getElementById('cal-overlay').classList.add('hidden')
-}
-
-function getSentences(){
-  return CAL_SENTENCES[settings.lang]||CAL_SENTENCES['pt-BR']
-}
-
-function renderCalStep(){
-  const step=calState.step
-  const sentences=getSentences()
-  const content=document.getElementById('cal-step-content')
-  const dots=[0,1,2,3]
-  dots.forEach(i=>{
-    const el=document.getElementById('cdot-'+i)
-    el.className='cal-step-dot'+(i<step?' done':i===Math.min(step,3)?' active':'')
-  })
-
-  if(step===0){
-    document.getElementById('cal-title').textContent='Calibragem de Voz'
-    document.getElementById('cal-desc').textContent='O app vai aprender como você fala para sincronizar melhor. Leia 4 frases em voz alta — leva menos de 2 minutos.'
-    document.getElementById('cal-step-label').textContent='Pronto para começar'
-    document.getElementById('cal-btn-skip').textContent='Pular calibragem'
-    document.getElementById('cal-btn-next').textContent='Começar ▶'
+  if(voiceProfiles.length===0){
     content.innerHTML=`
-      <div style="background:#161616;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:20px;">
-        <p style="font-size:13px;color:var(--muted);line-height:1.7">
-          ✓ &nbsp;Fale em ritmo normal — não precisa articular excessivamente<br>
-          ✓ &nbsp;Ambiente silencioso dá resultados melhores<br>
-          ✓ &nbsp;O microfone será ativado automaticamente em cada frase<br>
-          ✓ &nbsp;A calibragem ajusta os thresholds de reconhecimento para a sua voz
-        </p>
+      <div style="text-align:center;padding:32px 0;">
+        <div style="font-size:36px;margin-bottom:12px">🎤</div>
+        <p style="color:var(--muted);font-size:13px">Nenhum perfil calibrado ainda.<br>Calibre sua voz para melhorar a sincronização.</p>
       </div>`
-  }
-
-  else if(step>=1&&step<=4){
-    const idx=step-1
-    const sentence=sentences[idx]
-    document.getElementById('cal-title').textContent='Leia em voz alta'
-    document.getElementById('cal-desc').textContent='Fale a frase abaixo naturalmente. O microfone está ouvindo.'
-    document.getElementById('cal-step-label').textContent=`Frase ${step} de 4`
-    document.getElementById('cal-btn-skip').textContent='Pular esta frase'
-    document.getElementById('cal-btn-next').textContent=step<4?'Próxima →':'Ver resultado'
-    document.getElementById('cal-btn-next').disabled=true
-    content.innerHTML=`
-      <div class="sentence-card">
-        <div class="sentence-num">Frase ${step} de 4</div>
-        <div class="sentence-text" id="cal-sentence-text">${esc(sentence)}</div>
-      </div>
-      <div class="listen-indicator active" id="cal-wave">
-        ${Array(7).fill('<div class="wave-bar" style="height:4px"></div>').join('')}
-      </div>
-      <div class="transcript-box" id="cal-transcript"><span style="opacity:.3">Ouvindo…</span></div>
-      <div class="score-row" id="cal-score-row" style="display:none">
-        <span style="font-size:12px;color:var(--muted);min-width:80px">Similaridade</span>
-        <div class="score-bar-wrap"><div class="score-bar-fill" id="cal-score-fill" style="width:0%"></div></div>
-        <span class="score-val" id="cal-score-val" style="color:#fff">0%</span>
-      </div>`
-    calState.currentTranscript=''
-    calState.timestamps[idx]=Date.now()
-    setTimeout(()=>calStartListening(sentence,idx),300)
-  }
-
-  else if(step===5){
-    calStop()
-    const scores=calState.scores.filter(s=>s!=null)
-    const avg=scores.length?scores.reduce((a,b)=>a+b,0)/scores.length:0
-
-    // Compute WPM from timestamps
-    const sentences_=getSentences()
-    let totalWords=0,totalSecs=0
-    calState.timestamps.forEach((t,i)=>{
-      if(calState.scores[i]!=null&&calState.timestamps[i+1]){
-        totalWords+=sentences_[i].split(' ').length
-        totalSecs+=(calState.timestamps[i+1]-t)/1000
-      }
+  } else {
+    content.innerHTML=`<div class="profile-list" id="profile-list"></div>`
+    const list=document.getElementById('profile-list')
+    voiceProfiles.forEach(p=>{
+      const isActive=p.id===activeProfileId
+      const quality=p.accuracy>=0.65?'Excelente':p.accuracy>=0.45?'Boa':'Fraca'
+      const div=document.createElement('div')
+      div.className='profile-item'+(isActive?' active-profile':'')
+      div.innerHTML=`
+        <div class="profile-info">
+          <div class="profile-name">${esc(p.name)}${isActive?' <span style="font-size:10px;color:var(--green);font-weight:400">● ativo</span>':''}</div>
+          <div class="profile-meta">Precisão ${Math.round(p.accuracy*100)}% · ${p.wpm} wpm · ${quality} · ${p.lang}</div>
+        </div>
+        <div class="profile-actions">
+          ${!isActive?`<button class="btn" style="font-size:11px;padding:5px 10px" onclick="setActiveProfile('${p.id}')">Usar</button>`:''}
+          <button class="btn" style="font-size:11px;padding:5px 10px" onclick="recalibrateProfile('${p.id}')">Recalibrar</button>
+          <button class="btn danger" style="font-size:11px;padding:5px 8px" onclick="deleteProfile('${p.id}')">✕</button>
+        </div>`
+      list.appendChild(div)
     })
-    const wpm=totalSecs>0?Math.round(totalWords/(totalSecs/60)):130
-
-    // Threshold scale: if accuracy is low, lower the thresholds proportionally
-    // so the algorithm still accepts imperfect matches
-    let thresholdScale=1
-    let confirmNeeded=2
-    if(avg>0.7){thresholdScale=1.0;confirmNeeded=2}       // great mic/pronunciation
-    else if(avg>0.55){thresholdScale=0.75;confirmNeeded=2} // good
-    else if(avg>0.4){thresholdScale=0.55;confirmNeeded=1}  // ok — lower bar, less confirmation
-    else if(avg>0.25){thresholdScale=0.4;confirmNeeded=1}  // poor — be lenient
-    else{thresholdScale=0.3;confirmNeeded=1}               // very poor — accept almost anything
-
-    // Suggested speed based on WPM
-    const suggestedSpeed=wpm<100?2:wpm<130?3:wpm<160?4:wpm<200?5:6
-
-    const quality=avg>=0.65?{label:'Excelente',cls:'good'}:avg>=0.45?{label:'Boa',cls:'ok'}:{label:'Fraca',cls:'bad'}
-
-    // Save profile
-    calProfile={
-      done:true,accuracy:Math.round(avg*100)/100,wpm,
-      thresholdScale,confirmNeeded,
-      fillers:[...calState.detectedFillers],lang:settings.lang,
-    }
-    save(K.cal,calProfile)
-    updateCalStatusBadge()
-
-    // Auto-suggest speed
-    const oldSpeed=settings.speed
-    settings.speed=suggestedSpeed
-    save(K.settings,settings)
-    document.getElementById('s-speed').value=suggestedSpeed
-    document.getElementById('s-speed-v').textContent=suggestedSpeed
-
-    document.getElementById('cal-title').textContent='Calibragem concluída'
-    document.getElementById('cal-desc').textContent='O perfil da sua voz foi salvo. As configurações de sincronização foram ajustadas automaticamente.'
-    document.getElementById('cal-step-label').textContent='Concluído'
-    document.getElementById('cal-btn-skip').style.display='none'
-    document.getElementById('cal-btn-next').textContent='Fechar'
-    document.getElementById('cal-btn-next').disabled=false
-
-    content.innerHTML=`
-      <div class="result-grid">
-        <div class="result-card">
-          <div class="rc-label">Precisão do reconhecimento</div>
-          <div class="rc-val">${Math.round(avg*100)}%</div>
-          <div class="rc-sub" style="margin-top:6px"><span class="cal-badge ${quality.cls}">${quality.label}</span></div>
-        </div>
-        <div class="result-card">
-          <div class="rc-label">Velocidade de fala</div>
-          <div class="rc-val">${wpm}</div>
-          <div class="rc-sub">palavras/minuto</div>
-        </div>
-      </div>
-      <div style="background:#161616;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px;margin-top:4px">
-        <div class="cal-profile-row"><span>Threshold de aceitação</span><span>${Math.round(0.28*thresholdScale*100)}% (era 28%)</span></div>
-        <div class="cal-profile-row"><span>Confirmações necessárias</span><span>${confirmNeeded} resultado${confirmNeeded>1?'s':''}</span></div>
-        <div class="cal-profile-row"><span>Velocidade sugerida</span><span>${suggestedSpeed} ${suggestedSpeed!==oldSpeed?'(era '+oldSpeed+')':''}</span></div>
-        <div class="cal-profile-row"><span>Frases avaliadas</span><span>${scores.length} de 4</span></div>
-      </div>
-      ${avg<0.4?`<div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:12px;font-size:13px;color:rgba(239,68,68,.9)">
-        ⚠ Precisão baixa detectada. Verifique se o microfone está funcionando bem e se o ambiente está silencioso. Você pode recalibrar a qualquer momento.
-      </div>`:''}
-    `
   }
+
+  footer.innerHTML=`
+    <button class="btn" onclick="closeVoiceManager()">Fechar</button>
+    <button class="btn primary" onclick="startNewCalibration()">+ Nova calibragem</button>`
 }
 
-function calNext(){
-  if(calState.step===0){
-    calState.step=1; renderCalStep(); return
-  }
-  if(calState.step>=1&&calState.step<=4){
-    calStop()
-    calState.step++
-    if(calState.step>4)calState.step=5
-    document.getElementById('cal-btn-next').disabled=false
-    renderCalStep(); return
-  }
-  if(calState.step===5){closeCalibration();return}
+function setActiveProfile(id){
+  activeProfileId=id;saveProfiles();updateCalStatusBadge();renderVoiceManager()
 }
 
-function calSkip(){
-  if(calState.step===0){closeCalibration();return}
-  calStop()
-  calState.scores[calState.step-1]=null
-  calState.step++
-  if(calState.step>4)calState.step=5
-  document.getElementById('cal-btn-next').disabled=false
-  renderCalStep()
+function deleteProfile(id){
+  if(!confirm('Excluir este perfil de voz?'))return
+  voiceProfiles=voiceProfiles.filter(p=>p.id!==id)
+  if(activeProfileId===id)activeProfileId=voiceProfiles[0]?.id||null
+  saveProfiles();updateCalStatusBadge();renderVoiceManager()
 }
 
-function calStop(){
-  if(calState.recognizer){
-    try{calState.recognizer.abort()}catch{}
-    calState.recognizer.onresult=null
-    calState.recognizer.onerror=null
-    calState.recognizer.onend=null
-    calState.recognizer=null
-  }
-  calState.listening=false
+function recalibrateProfile(id){
+  const p=voiceProfiles.find(x=>x.id===id)
+  if(!p)return
+  closeVoiceManager()
+  startCalibration(p.name,id)
 }
 
-function calStartListening(targetSentence,sentenceIdx){
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition
-  if(!SR){
-    document.getElementById('cal-transcript').innerHTML='<span style="color:var(--red)">Reconhecimento de voz não suportado neste browser.</span>'
-    document.getElementById('cal-btn-next').disabled=false
-    return
-  }
-
-  calStop()
-  const r=new SR()
-  r.lang=settings.lang
-  r.continuous=false
-  r.interimResults=true
-  r.maxAlternatives=1
-  calState.recognizer=r
-  calState.listening=true
-
-  const targetNorm=normalize(targetSentence)
-  const targetSet=new Set(bigrams(targetNorm))
-  let bestScore=0
-  let finalTranscript=''
-
-  r.onresult=e=>{
-    const res=e.results[e.results.length-1]
-    const t=res[0].transcript
-    const isFinal=res.isFinal
-
-    if(isFinal){
-      finalTranscript=t
-      calState.timestamps[sentenceIdx+1]=Date.now()
-
-      // Detect personal filler words — words in transcript not in target
-      const transcriptWords=normalize(t).split(' ').filter(Boolean)
-      const targetWords=new Set(targetNorm.split(' ').filter(Boolean))
-      transcriptWords.forEach(w=>{
-        if(!targetWords.has(w)&&w.length>1&&!FILLERS_DEFAULT.has(w)){
-          if(!calState.detectedFillers.includes(w))calState.detectedFillers.push(w)
-        }
-      })
-    }
-
-    const transcriptNorm=normalize(t)
-    const transcriptSet=new Set(bigrams(transcriptNorm))
-    const score=diceFromSets(targetSet,transcriptSet)
-    if(score>bestScore)bestScore=score
-
-    // Update UI
-    const box=document.getElementById('cal-transcript')
-    if(box){
-      box.innerHTML=isFinal
-        ?`<span style="color:#fff">${esc(t)}</span>`
-        :`<span style="color:#fff">${esc(finalTranscript)} </span><span class="interim">${esc(t)}</span>`
-    }
-
-    if(isFinal||score>0){
-      const pct=Math.round(bestScore*100)
-      const col=pct>=60?'var(--green)':pct>=35?'var(--amber)':'var(--red)'
-      const sr=document.getElementById('cal-score-row')
-      const sf=document.getElementById('cal-score-fill')
-      const sv=document.getElementById('cal-score-val')
-      if(sr){sr.style.display='flex'}
-      if(sf){sf.style.width=pct+'%';sf.style.background=col}
-      if(sv){sv.textContent=pct+'%';sv.style.color=col}
-    }
-
-    if(isFinal){
-      calState.scores[sentenceIdx]=bestScore
-      calState.listening=false
-      const wave=document.getElementById('cal-wave')
-      if(wave)wave.classList.remove('active')
-      document.getElementById('cal-btn-next').disabled=false
-    }
-  }
-
-  r.onerror=e=>{
-    if(e.error==='aborted')return
-    const box=document.getElementById('cal-transcript')
-    if(box)box.innerHTML=`<span style="color:var(--red)">Erro: ${e.error}. Verifique o microfone.</span>`
-    document.getElementById('cal-btn-next').disabled=false
-  }
-
-  r.onend=()=>{
-    const wave=document.getElementById('cal-wave')
-    if(wave)wave.classList.remove('active')
-    if(calState.listening&&bestScore===0){
-      document.getElementById('cal-btn-next').disabled=false
-    }
-  }
-
-  try{r.start()}catch(e){
-    const box=document.getElementById('cal-transcript')
-    if(box)box.innerHTML=`<span style="color:var(--red)">Não foi possível iniciar o microfone.</span>`
-    document.getElementById('cal-btn-next').disabled=false
-  }
+function startNewCalibration(){
+  closeVoiceManager()
+  startCalibration('','new')
 }
 
 function updateCalStatusBadge(){
+  const p=getActiveProfile()
   const btn=document.getElementById('cal-status-btn')
   const lbl=document.getElementById('cal-status-label')
-  if(calProfile.done){
+  if(p){
     btn.className='cal-status calibrated'
-    lbl.textContent='Voz calibrada ✓'
+    lbl.textContent=p.name+' ✓'
   } else {
     btn.className='cal-status'
     lbl.textContent='Calibrar voz'
   }
 }
 
-// ══════════════════════════════════════
+// ══════════════════════════════════
+// CALIBRATION
+// ══════════════════════════════════
+const CAL_SENTENCES={
+  'pt-BR':['A tecnologia está transformando a forma como nos comunicamos.','Cada palavra dita com clareza ajuda o sistema a te acompanhar melhor.','O teleprompter sincroniza automaticamente com a sua voz durante a gravação.','Fale em ritmo natural, como se estivesse apresentando para uma câmera.'],
+  'en-US':['Technology is transforming the way we communicate with each other.','Speaking clearly helps the system follow your voice more accurately.','The teleprompter automatically synchronizes with your speech during recording.','Speak at a natural pace, as if you were presenting to a camera.'],
+  'es-ES':['La tecnología está transformando la forma en que nos comunicamos.','Hablar con claridad ayuda al sistema a seguir tu voz con más precisión.','El teleprompter se sincroniza automáticamente con tu voz durante la grabación.','Habla a un ritmo natural, como si estuvieras presentando ante una cámara.'],
+}
+
+let calState={step:0,profileId:'new',profileName:'',scores:[],timestamps:[],recognizer:null,listening:false,detectedFillers:[]}
+
+function startCalibration(existingName,profileId){
+  calState={step:0,profileId,profileName:existingName,scores:[],timestamps:[],recognizer:null,listening:false,detectedFillers:[]}
+  document.getElementById('cal-overlay').classList.remove('hidden')
+  renderCalStep()
+}
+
+function closeCalibration(){
+  calStopRec()
+  document.getElementById('cal-overlay').classList.add('hidden')
+}
+
+function getSentences(){return CAL_SENTENCES[settings.lang]||CAL_SENTENCES['pt-BR']}
+
+function renderCalStep(){
+  const step=calState.step
+  ;[0,1,2,3].forEach(i=>{
+    const el=document.getElementById('cdot-'+i)
+    el.className='cal-step-dot'+(i<step?' done':i===Math.min(step,3)?' active':'')
+  })
+
+  if(step===0){
+    document.getElementById('cal-title').textContent=calState.profileId==='new'?'Nova Calibragem':'Recalibrar: '+calState.profileName
+    document.getElementById('cal-desc').textContent='Leia 4 frases em voz alta. O sistema aprende o seu padrão de fala para sincronizar melhor.'
+    document.getElementById('cal-step-label').textContent='Pronto para começar'
+    document.getElementById('cal-btn-skip').textContent='Cancelar'
+    document.getElementById('cal-btn-next').textContent='Começar ▶'
+    document.getElementById('cal-btn-next').disabled=false
+
+    // Name input — only for new profiles
+    const nameSection=calState.profileId==='new'?`
+      <div style="margin-bottom:4px">
+        <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em">Nome do perfil</label>
+        <input class="name-input" id="cal-name-input" placeholder="Ex: Minha voz, Voz grave, Estúdio…" value="${esc(calState.profileName)}" maxlength="40" oninput="calState.profileName=this.value">
+      </div>`:
+      `<div style="background:#161616;border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:12px;font-size:13px;color:var(--muted)">Recalibrando perfil: <strong style="color:#fff">${esc(calState.profileName)}</strong></div>`
+
+    document.getElementById('cal-step-content').innerHTML=`
+      ${nameSection}
+      <div style="background:#161616;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:16px;">
+        <p style="font-size:13px;color:var(--muted);line-height:1.75">
+          ✓ &nbsp;Fale em ritmo normal — sem exagerar a dicção<br>
+          ✓ &nbsp;Ambiente silencioso dá melhores resultados<br>
+          ✓ &nbsp;O microfone abre automaticamente em cada frase<br>
+          ✓ &nbsp;Os thresholds do algoritmo são ajustados para a sua voz
+        </p>
+      </div>`
+  }
+
+  else if(step>=1&&step<=4){
+    const idx=step-1
+    const sentence=getSentences()[idx]
+    document.getElementById('cal-title').textContent='Leia em voz alta'
+    document.getElementById('cal-desc').textContent='Fale a frase abaixo naturalmente. O microfone está ouvindo.'
+    document.getElementById('cal-step-label').textContent=`Frase ${step} de 4`
+    document.getElementById('cal-btn-skip').textContent='Pular frase'
+    document.getElementById('cal-btn-next').textContent=step<4?'Próxima →':'Ver resultado'
+    document.getElementById('cal-btn-next').disabled=true
+
+    document.getElementById('cal-step-content').innerHTML=`
+      <div class="sentence-card">
+        <div class="sentence-num">Frase ${step} de 4</div>
+        <div class="sentence-text">${esc(sentence)}</div>
+      </div>
+      <div class="listen-indicator active" id="cal-wave">
+        ${Array(7).fill('<div class="wave-bar"></div>').join('')}
+      </div>
+      <div class="transcript-box" id="cal-transcript"><span style="opacity:.3">Ouvindo…</span></div>
+      <div class="score-row" id="cal-score-row" style="display:none">
+        <span style="font-size:12px;color:var(--muted);min-width:80px">Similaridade</span>
+        <div class="score-bar-wrap"><div class="score-bar-fill" id="cal-score-fill" style="width:0%"></div></div>
+        <span class="score-val" id="cal-score-val">0%</span>
+      </div>`
+
+    calState.timestamps[idx]=Date.now()
+    setTimeout(()=>calStartListening(sentence,idx),200)
+  }
+
+  else if(step===5){
+    calStopRec()
+    const scores=calState.scores.filter(s=>s!=null)
+    const avg=scores.length?scores.reduce((a,b)=>a+b,0)/scores.length:0
+
+    let totalWords=0,totalSecs=0
+    const sents=getSentences()
+    calState.timestamps.forEach((t,i)=>{
+      if(calState.scores[i]!=null&&calState.timestamps[i+1]){
+        totalWords+=sents[i].split(' ').length
+        totalSecs+=(calState.timestamps[i+1]-t)/1000
+      }
+    })
+    const wpm=totalSecs>0?Math.round(totalWords/(totalSecs/60)):130
+
+    let thresholdScale=1,confirmNeeded=2
+    if(avg>0.7){thresholdScale=1.0;confirmNeeded=2}
+    else if(avg>0.55){thresholdScale=0.75;confirmNeeded=2}
+    else if(avg>0.4){thresholdScale=0.55;confirmNeeded=1}
+    else if(avg>0.25){thresholdScale=0.4;confirmNeeded=1}
+    else{thresholdScale=0.3;confirmNeeded=1}
+
+    const sugSpeed=wpm<100?2:wpm<130?3:wpm<160?4:wpm<200?5:6
+    const quality=avg>=0.65?{l:'Excelente',c:'good'}:avg>=0.45?{l:'Boa',c:'ok'}:{l:'Fraca',c:'bad'}
+
+    // Determine profile name
+    let profileName=calState.profileName.trim()
+    if(!profileName)profileName='Perfil '+(voiceProfiles.length+1)
+
+    // Save or update profile
+    const profileData={
+      id:calState.profileId==='new'?genId():calState.profileId,
+      name:profileName,
+      done:true,accuracy:Math.round(avg*100)/100,wpm,
+      thresholdScale,confirmNeeded,fillers:[...calState.detectedFillers],
+      lang:settings.lang,createdAt:Date.now(),
+    }
+
+    if(calState.profileId==='new'){
+      voiceProfiles.push(profileData)
+    } else {
+      voiceProfiles=voiceProfiles.map(p=>p.id===calState.profileId?{...p,...profileData,id:p.id}:p)
+    }
+    activeProfileId=profileData.id
+    saveProfiles();updateCalStatusBadge()
+
+    // Auto-set speed
+    settings.speed=sugSpeed;save(K.settings,settings)
+    document.getElementById('s-speed').value=sugSpeed
+    document.getElementById('s-speed-v').textContent=sugSpeed
+
+    document.getElementById('cal-title').textContent='Calibragem concluída'
+    document.getElementById('cal-desc').textContent='Perfil "'+profileName+'" salvo e ativado.'
+    document.getElementById('cal-step-label').textContent='Concluído'
+    document.getElementById('cal-btn-skip').style.display='none'
+    document.getElementById('cal-btn-next').textContent='Fechar'
+    document.getElementById('cal-btn-next').disabled=false
+
+    document.getElementById('cal-step-content').innerHTML=`
+      <div class="result-grid">
+        <div class="result-card"><div class="rc-label">Precisão</div><div class="rc-val">${Math.round(avg*100)}%</div><div class="rc-sub"><span class="cal-badge ${quality.c}">${quality.l}</span></div></div>
+        <div class="result-card"><div class="rc-label">Velocidade</div><div class="rc-val">${wpm}</div><div class="rc-sub">palavras/min</div></div>
+      </div>
+      <div style="background:#161616;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:14px;margin-top:2px">
+        <div class="cal-profile-row"><span>Threshold ajustado</span><span>${Math.round(0.24*thresholdScale*100)}%</span></div>
+        <div class="cal-profile-row"><span>Confirmações</span><span>${confirmNeeded} resultado${confirmNeeded>1?'s':''}</span></div>
+        <div class="cal-profile-row"><span>Velocidade sugerida</span><span>${sugSpeed}</span></div>
+        <div class="cal-profile-row"><span>Frases avaliadas</span><span>${scores.length}/4</span></div>
+      </div>
+      ${avg<0.35?`<div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:12px;font-size:12px;color:rgba(239,68,68,.9)">⚠ Precisão baixa. Verifique o microfone, tente em ambiente mais silencioso e recalibre.</div>`:''}`
+  }
+}
+
+function calNext(){
+  if(calState.step===0){
+    if(calState.profileId==='new'){
+      const inp=document.getElementById('cal-name-input')
+      if(inp)calState.profileName=inp.value.trim()
+    }
+    calState.step=1;renderCalStep();return
+  }
+  if(calState.step>=1&&calState.step<=4){
+    calStopRec();calState.step++;
+    if(calState.step>4)calState.step=5
+    document.getElementById('cal-btn-next').disabled=false
+    renderCalStep();return
+  }
+  if(calState.step===5){closeCalibration();return}
+}
+
+function calSkip(){
+  if(calState.step===0){closeCalibration();return}
+  calStopRec();calState.scores[calState.step-1]=null;calState.step++
+  if(calState.step>4)calState.step=5
+  document.getElementById('cal-btn-next').disabled=false;renderCalStep()
+}
+
+function calStopRec(){
+  if(calState.recognizer){
+    try{calState.recognizer.abort()}catch{}
+    calState.recognizer.onresult=null;calState.recognizer.onerror=null
+    calState.recognizer.onend=null;calState.recognizer=null
+  }
+  calState.listening=false
+}
+
+function calStartListening(targetSentence,idx){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition
+  if(!SR){
+    document.getElementById('cal-transcript').innerHTML='<span style="color:var(--red)">Reconhecimento não suportado neste browser.</span>'
+    document.getElementById('cal-btn-next').disabled=false;return
+  }
+  calStopRec()
+  const r=new SR()
+  r.lang=settings.lang;r.continuous=false;r.interimResults=true;r.maxAlternatives=1
+  calState.recognizer=r;calState.listening=true
+
+  const targetNorm=normalize(targetSentence)
+  const targetSet=new Set(bigrams(targetNorm))
+  let bestScore=0,finalT=''
+
+  r.onresult=e=>{
+    const res=e.results[e.results.length-1]
+    const t=res[0].transcript;const isFinal=res.isFinal
+    if(isFinal){
+      finalT=t;calState.timestamps[idx+1]=Date.now()
+      const tw=normalize(t).split(' ').filter(Boolean)
+      const tgtW=new Set(targetNorm.split(' ').filter(Boolean))
+      tw.forEach(w=>{if(!tgtW.has(w)&&w.length>1&&!FILLERS_BASE.has(w)&&!calState.detectedFillers.includes(w))calState.detectedFillers.push(w)})
+    }
+    const score=diceFromSets(targetSet,new Set(bigrams(normalize(t))))
+    if(score>bestScore)bestScore=score
+    const box=document.getElementById('cal-transcript')
+    if(box)box.innerHTML=isFinal?`<span style="color:#fff">${esc(t)}</span>`:`<span style="color:#fff">${esc(finalT)} </span><span style="color:rgba(255,255,255,.35)">${esc(t)}</span>`
+    if(score>0||isFinal){
+      const pct=Math.round(bestScore*100),col=pct>=60?'var(--green)':pct>=35?'var(--amber)':'var(--red)'
+      const sr=document.getElementById('cal-score-row')
+      if(sr)sr.style.display='flex'
+      const sf=document.getElementById('cal-score-fill')
+      if(sf){sf.style.width=pct+'%';sf.style.background=col}
+      const sv=document.getElementById('cal-score-val')
+      if(sv){sv.textContent=pct+'%';sv.style.color=col}
+    }
+    if(isFinal){
+      calState.scores[idx]=bestScore;calState.listening=false
+      const wave=document.getElementById('cal-wave')
+      if(wave)wave.classList.remove('active')
+      document.getElementById('cal-btn-next').disabled=false
+    }
+  }
+  r.onerror=e=>{
+    if(e.error==='aborted')return
+    const box=document.getElementById('cal-transcript')
+    if(box)box.innerHTML=`<span style="color:var(--red)">Erro: ${e.error}</span>`
+    document.getElementById('cal-btn-next').disabled=false
+  }
+  r.onend=()=>{
+    const wave=document.getElementById('cal-wave')
+    if(wave)wave.classList.remove('active')
+    if(calState.listening&&bestScore===0)document.getElementById('cal-btn-next').disabled=false
+  }
+  try{r.start()}catch{
+    document.getElementById('cal-btn-next').disabled=false
+  }
+}
+
+// ══════════════════════════════════
 // EDITOR
-// ══════════════════════════════════════
+// ══════════════════════════════════
 function renderSidebar(){
-  const list=document.getElementById('script-list')
-  list.innerHTML=''
+  const list=document.getElementById('script-list');list.innerHTML=''
   ;[...scripts].sort((a,b)=>b.updatedAt-a.updatedAt).forEach(sc=>{
     const div=document.createElement('div')
     div.className='script-item'+(sc.id===activeId?' active':'')
@@ -787,7 +767,7 @@ function renderSidebar(){
 }
 
 function loadActiveToEditor(){
-  const sc=getActive(); if(!sc)return
+  const sc=getActive();if(!sc)return
   document.getElementById('title-input').value=sc.title||''
   document.getElementById('content-input').value=sc.content||''
   updateStats()
@@ -811,65 +791,65 @@ function deleteScript(id,e){
 }
 
 let saveTimer=null
-function onContentChange(){
-  const sc=getActive();if(!sc)return
-  sc.content=document.getElementById('content-input').value;sc.updatedAt=Date.now()
-  setSaving(true);clearTimeout(saveTimer)
-  saveTimer=setTimeout(()=>{persistAll();setSaving(false)},600);updateStats()
-}
-function onTitleChange(){
-  const sc=getActive();if(!sc)return
-  sc.title=document.getElementById('title-input').value;sc.updatedAt=Date.now()
-  setSaving(true);clearTimeout(saveTimer)
-  saveTimer=setTimeout(()=>{persistAll();setSaving(false);renderSidebar()},800)
-}
-function flushSave(){
-  clearTimeout(saveTimer);const sc=getActive();if(!sc)return
-  sc.content=document.getElementById('content-input').value
-  sc.title=document.getElementById('title-input').value
-  persistAll();setSaving(false)
-}
-function setSaving(v){
-  document.getElementById('save-dot').className='save-dot'+(v?' saving':'')
-  document.getElementById('save-label').textContent=v?'Salvando…':'Salvo'
-}
-function updateStats(){
-  const txt=(document.getElementById('content-input').value||'').trim()
-  const words=txt?txt.split(/\s+/).length:0
-  const chars=(document.getElementById('content-input').value||'').length
-  const secs=Math.ceil(words/2.5)
-  document.getElementById('stat-words').textContent=words.toLocaleString('pt-BR')+' palavras'
-  document.getElementById('stat-chars').textContent=chars.toLocaleString('pt-BR')+' chars'
-  document.getElementById('stat-time').textContent='~'+(secs>=60?Math.floor(secs/60)+'min '+(secs%60)+'s':secs+'s')
-}
-function persistAll(){save(K.scripts,scripts);save(K.active,activeId);save(K.settings,settings)}
+function onContentChange(){const sc=getActive();if(!sc)return;sc.content=document.getElementById('content-input').value;sc.updatedAt=Date.now();setSaving(true);clearTimeout(saveTimer);saveTimer=setTimeout(()=>{persistAll();setSaving(false)},600);updateStats()}
+function onTitleChange(){const sc=getActive();if(!sc)return;sc.title=document.getElementById('title-input').value;sc.updatedAt=Date.now();setSaving(true);clearTimeout(saveTimer);saveTimer=setTimeout(()=>{persistAll();setSaving(false);renderSidebar()},800)}
+function flushSave(){clearTimeout(saveTimer);const sc=getActive();if(!sc)return;sc.content=document.getElementById('content-input').value;sc.title=document.getElementById('title-input').value;persistAll();setSaving(false)}
+function setSaving(v){document.getElementById('save-dot').className='save-dot'+(v?' saving':'');document.getElementById('save-label').textContent=v?'Salvando…':'Salvo'}
+function updateStats(){const txt=(document.getElementById('content-input').value||'').trim();const words=txt?txt.split(/\s+/).length:0;const chars=(document.getElementById('content-input').value||'').length;const secs=Math.ceil(words/2.5);document.getElementById('stat-words').textContent=words.toLocaleString('pt-BR')+' palavras';document.getElementById('stat-chars').textContent=chars.toLocaleString('pt-BR')+' chars';document.getElementById('stat-time').textContent='~'+(secs>=60?Math.floor(secs/60)+'min '+(secs%60)+'s':secs+'s')}
 
 function initSettingsUI(){
   const s=settings
-  const set=(id,val,suffix='')=>{document.getElementById(id).value=val;const v=document.getElementById(id+'-v');if(v)v.textContent=val+suffix}
+  const set=(id,val,sfx='')=>{document.getElementById(id).value=val;const v=document.getElementById(id+'-v');if(v)v.textContent=val+sfx}
   set('s-font',s.fontSize);set('s-speed',s.speed);set('s-lh',s.lineHeight);set('s-width',s.blockWidth,'%')
   document.getElementById('s-focus').value=s.focusLines
-  document.getElementById('s-theme').value=s.theme
+  document.getElementById('s-bg').value=s.bgColor||'#000000'
+  document.getElementById('s-fg').value=s.fgColor||'#ffffff'
   document.getElementById('s-mirror').textContent=s.mirrored?'ON':'OFF'
   document.getElementById('s-mirror').className='toggle-btn'+(s.mirrored?' on':'')
   document.getElementById('s-cd').value=s.countdown
   document.getElementById('s-lang').value=s.lang||'pt-BR'
-
   document.getElementById('s-font').oninput=function(){settings.fontSize=+this.value;document.getElementById('s-font-v').textContent=this.value;save(K.settings,settings)}
   document.getElementById('s-speed').oninput=function(){settings.speed=+this.value;document.getElementById('s-speed-v').textContent=this.value;save(K.settings,settings)}
   document.getElementById('s-lh').oninput=function(){settings.lineHeight=+this.value;document.getElementById('s-lh-v').textContent=(+this.value).toFixed(1);save(K.settings,settings)}
   document.getElementById('s-width').oninput=function(){settings.blockWidth=+this.value;document.getElementById('s-width-v').textContent=this.value+'%';save(K.settings,settings)}
   document.getElementById('s-focus').onchange=function(){settings.focusLines=+this.value;save(K.settings,settings)}
-  document.getElementById('s-theme').onchange=function(){settings.theme=this.value;save(K.settings,settings)}
+  document.getElementById('s-bg').oninput=function(){
+    settings.bgColor=this.value;save(K.settings,settings)
+    // preview imediato no editor
+    document.getElementById('editor').style.background=this.value
+    document.getElementById('sidebar').style.background=this.value
+  }
+  document.getElementById('s-fg').oninput=function(){
+    settings.fgColor=this.value;save(K.settings,settings)
+    // preview imediato no editor
+    document.getElementById('content-input').style.color=this.value
+    document.getElementById('title-input').style.color=this.value
+  }
   document.getElementById('s-mirror').onclick=function(){settings.mirrored=!settings.mirrored;this.textContent=settings.mirrored?'ON':'OFF';this.className='toggle-btn'+(settings.mirrored?' on':'');save(K.settings,settings)}
   document.getElementById('s-cd').onchange=function(){settings.countdown=+this.value;save(K.settings,settings)}
   document.getElementById('s-lang').onchange=function(){settings.lang=this.value;save(K.settings,settings)}
+
+  // aplica cores salvas ao carregar
+  if(settings.bgColor&&settings.bgColor!=='#000000'){
+    document.getElementById('editor').style.background=settings.bgColor
+    document.getElementById('sidebar').style.background=settings.bgColor
+  }
+  if(settings.fgColor&&settings.fgColor!=='#ffffff'){
+    document.getElementById('content-input').style.color=settings.fgColor
+    document.getElementById('title-input').style.color=settings.fgColor
+  }
 }
 
-// ══════════════════════════════════════
+// ══════════════════════════════════
 // TELEPROMPTER ENGINE
-// ══════════════════════════════════════
+// ══════════════════════════════════
 let tpLines=[],tpActive=0,tpPlaying=false,tpRaf=null,tpLastTs=null,tpOffsets=[]
+
+// ── SYNC MODE ─────────────────────
+// When mic is ON, auto-scroll STOPS.
+// The scroll only moves when speech sync triggers scrollToLine.
+// When mic is OFF, auto-scroll runs normally.
+let micIsOn=false   // true = voice drives scroll, auto-scroll paused
 
 let barTimer=null
 function showBar(){
@@ -877,7 +857,7 @@ function showBar(){
   document.getElementById('tp-hint').classList.remove('hidden')
   document.getElementById('teleprompter').classList.add('cursor-visible')
   clearTimeout(barTimer)
-  if(tpPlaying)barTimer=setTimeout(()=>{
+  if(tpPlaying&&!micIsOn)barTimer=setTimeout(()=>{
     document.getElementById('tp-bar').classList.add('hidden')
     document.getElementById('tp-hint').classList.add('hidden')
     document.getElementById('teleprompter').classList.remove('cursor-visible')
@@ -889,8 +869,7 @@ function parseLines(c){return c.split('\n').map((t,i)=>({index:i,text:t.trim(),e
 function renderTp(){
   flushSave();const sc=getActive();if(!sc)return
   tpLines=parseLines(sc.content)
-  const scroll=document.getElementById('tp-scroll')
-  scroll.innerHTML=''
+  const scroll=document.getElementById('tp-scroll');scroll.innerHTML=''
   const s=settings
   const wrap=document.createElement('div')
   wrap.className='tp-content';wrap.style.width=s.blockWidth+'%';wrap.style.margin='0 auto'
@@ -907,29 +886,64 @@ function renderTp(){
   scroll.appendChild(wrap)
   const tp=document.getElementById('teleprompter')
   tp.className='screen'
-  tp.classList.add(s.theme==='light'?'light':s.theme==='hc'?'hc':'dark')
-  tp.style.transform=s.mirrored?'scaleX(-1)':''
-  tpActive=0
-  setTimeout(()=>{rebuildOffsets();updateActiveStyles();updateProgress();buildChunks()},80)
+  const bg=s.bgColor||'#000000'
+  const fg=s.fgColor||'#ffffff'
+  tp.style.background=bg
+  if(s.mirrored)tp.style.transform='scaleX(-1)';else tp.style.removeProperty('transform')
+
+  // Fade gradients use bg color
+  document.querySelector('.tp-fade-top').style.background=`linear-gradient(to bottom,${bg} 0%,transparent 100%)`
+  document.querySelector('.tp-fade-bot').style.background=`linear-gradient(to top,${bg} 0%,transparent 100%)`
+
+  // Rail colors
+  document.getElementById('tp-rail-fill').style.background=fg+'60'
+  document.getElementById('tp-rail-marker').style.background=fg
+
+  // Controls bar bg — darken/lighten the bg color slightly
+  const isLight=isLightColor(bg)
+  const ctrlBg=isLight?'rgba(255,255,255,0.92)':'rgba(0,0,0,0.88)'
+  const ctrlBorder=isLight?'rgba(0,0,0,0.08)':'rgba(255,255,255,0.07)'
+  document.querySelector('.tp-controls').style.background=ctrlBg
+  document.querySelector('.tp-controls').style.borderTopColor=ctrlBorder
+  document.querySelector('.tp-progress').style.background=isLight?'rgba(0,0,0,0.1)':'rgba(255,255,255,0.1)'
+  document.getElementById('tp-prog').style.background=isLight?'rgba(0,0,0,0.4)':'rgba(255,255,255,0.5)'
+  document.getElementById('tp-hint').style.background=ctrlBg
+  document.getElementById('tp-hint').style.color=isLight?'rgba(0,0,0,0.25)':'rgba(255,255,255,0.2)'
+
+  // Play button
+  const pb=document.getElementById('tp-play-btn')
+  pb.style.background=fg;pb.style.color=bg
+  tpActive=0;micIsOn=false
+  setTimeout(()=>{
+    rebuildOffsets()
+    // aplica cores explicitamente em cada linha após render
+    const fg=s.fgColor||'#ffffff'
+    document.querySelectorAll('.tp-line').forEach(el=>{ el.style.color=fg })
+    updateActiveStyles()
+    updateProgress()
+    buildChunks()
+  },80)
 }
 
 function rebuildOffsets(){
   tpOffsets=[]
-  document.querySelectorAll('.tp-line').forEach(el=>{
-    tpOffsets[+el.dataset.idx]=el.offsetTop+el.offsetHeight/2
-  })
+  document.querySelectorAll('.tp-line').forEach(el=>{tpOffsets[+el.dataset.idx]=el.offsetTop+el.offsetHeight/2})
+}
+
+function isLightColor(hex){
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16)
+  return(r*299+g*587+b*114)/1000>128
 }
 
 function updateActiveStyles(){
   const s=settings
-  const isDark=s.theme!=='light'
-  const textColor=s.theme==='hc'?'#ffe600':isDark?'#fff':'#000'
+  const fg=s.fgColor||'#ffffff'
   const focusR=s.focusLines>0?Math.floor(s.focusLines/2):999
   document.querySelectorAll('.tp-line').forEach(el=>{
     const dist=Math.abs(+el.dataset.idx-tpActive)
     const active=dist===0,inFocus=dist<=focusR
     const opacity=active?1:!inFocus?0:Math.max(0.12,0.55-dist*0.12)
-    el.style.color=textColor;el.style.opacity=opacity
+    el.style.color=fg;el.style.opacity=opacity
     el.style.fontWeight=active?700:400
     el.style.transform=active?'scale(1.04)':'scale(1)'
     el.style.visibility=(!inFocus&&s.focusLines>0)?'hidden':'visible'
@@ -958,7 +972,8 @@ function speedToPx(s){return Math.round(28*Math.pow(s,1.35))}
 function startRaf(){
   tpLastTs=null
   const tick=ts=>{
-    if(!tpPlaying){tpRaf=null;return}
+    // FIX: stop auto-scroll when mic is on — voice drives scroll instead
+    if(!tpPlaying||micIsOn){tpRaf=null;return}
     const scroll=document.getElementById('tp-scroll');if(!scroll){tpRaf=null;return}
     if(tpLastTs!==null){
       const dt=Math.min(ts-tpLastTs,100)/1000
@@ -974,8 +989,20 @@ function startRaf(){
 }
 
 function stopRaf(){if(tpRaf){cancelAnimationFrame(tpRaf);tpRaf=null}tpLastTs=null}
-function tpPlay(){tpPlaying=true;document.getElementById('tp-play-btn').innerHTML='⏸';startRaf();showBar()}
-function tpPause(){tpPlaying=false;document.getElementById('tp-play-btn').innerHTML='▶';stopRaf();showBar()}
+
+function tpPlay(){
+  tpPlaying=true
+  document.getElementById('tp-play-btn').innerHTML='⏸'
+  // só inicia o scroll automático se o mic NÃO estiver ligado
+  if(!micIsOn) startRaf()
+  showBar()
+}
+function tpPause(){
+  tpPlaying=false
+  document.getElementById('tp-play-btn').innerHTML='▶'
+  stopRaf()
+  showBar()
+}
 function tpToggle(){tpPlaying?tpPause():tpPlay()}
 
 function tpRestart(){
@@ -984,10 +1011,11 @@ function tpRestart(){
   updateActiveStyles();updateProgress();smootherReset(0);showBar()
 }
 
-function tpGoTo(idx){
-  const scroll=document.getElementById('tp-scroll'),el=document.querySelector(`.tp-line[data-idx="${idx}"]`)
+function tpGoTo(idx,smooth=true){
+  const scroll=document.getElementById('tp-scroll')
+  const el=document.querySelector(`.tp-line[data-idx="${idx}"]`)
   if(!scroll||!el)return
-  scroll.scrollTo({top:Math.max(0,el.offsetTop-scroll.clientHeight*0.38),behavior:'smooth'})
+  scroll.scrollTo({top:Math.max(0,el.offsetTop-scroll.clientHeight*0.38),behavior:smooth?'smooth':'instant'})
 }
 
 function tpRecenter(){tpGoTo(tpActive)}
@@ -996,16 +1024,15 @@ function tpStepSpeed(d){settings.speed=Math.min(10,Math.max(1,settings.speed+d))
 function updateSpeedDisplay(){
   const s=settings.speed
   document.getElementById('speed-label').textContent='vel. '+s
-  const bars=document.getElementById('speed-bars'),isHC=document.getElementById('teleprompter').classList.contains('hc')
+  const bars=document.getElementById('speed-bars')
   bars.innerHTML=''
-  const ac=isHC?'#ffe600':document.getElementById('teleprompter').classList.contains('light')?'#000':'#fff'
-  const ia=document.getElementById('teleprompter').classList.contains('light')?'rgba(0,0,0,0.12)':'rgba(255,255,255,0.12)'
-  for(let i=0;i<10;i++){const b=document.createElement('div');b.className='speed-bar-seg';b.style.height=(4+i*0.8)+'px';b.style.background=i<s?ac:ia;bars.appendChild(b)}
+  const fg=settings.fgColor||'#ffffff'
+  const ia=fg+'20'
+  for(let i=0;i<10;i++){const b=document.createElement('div');b.className='speed-bar-seg';b.style.height=(4+i*0.8)+'px';b.style.background=i<s?fg:ia;bars.appendChild(b)}
 }
 
 function updateGuide(){
-  const tp=document.getElementById('teleprompter')
-  document.getElementById('tp-guide').style.top=(tp.clientHeight*0.38)+'px'
+  document.getElementById('tp-guide').style.top=(document.getElementById('teleprompter').clientHeight*0.38)+'px'
 }
 
 let cdInterval=null
@@ -1025,12 +1052,25 @@ function openTeleprompter(){
   if(!sc||!sc.content.trim()){alert('Escreva algo no roteiro antes de iniciar.');return}
   document.getElementById('editor').classList.add('hidden')
   document.getElementById('teleprompter').classList.remove('hidden')
-  renderTp();updateGuide();updateSpeedDisplay();showBar();tpActive=0
-  setTimeout(()=>startCountdown(()=>tpPlay()),100)
+  renderTp();updateGuide();updateSpeedDisplay();showBar();  tpActive=0
+  // começa pausado — usuário decide quando iniciar
+  tpPlaying=false
+  document.getElementById('tp-play-btn').innerHTML='▶'
+  setTimeout(()=>{
+    if(settings.countdown>0){
+      // mostra contagem mas não inicia scroll automaticamente
+      startCountdown(()=>{
+        // após contagem: mostra play mas NÃO rola — espera Espaço ou clique
+        showBar()
+      })
+    } else {
+      showBar()
+    }
+  },100)
 }
 
 function closeTeleprompter(){
-  stopRaf();tpPlaying=false
+  stopRaf();tpPlaying=false;micIsOn=false
   if(cdInterval){clearInterval(cdInterval);cdInterval=null}
   document.getElementById('tp-countdown').classList.add('hidden')
   micStop()
@@ -1044,26 +1084,38 @@ function toggleFullscreen(){
   else document.exitFullscreen()
 }
 
-document.getElementById('tp-scroll').addEventListener('scroll',()=>{if(!tpPlaying)computeActiveLine()},{passive:true})
+document.getElementById('tp-scroll').addEventListener('scroll',()=>{if(!tpPlaying&&!micIsOn)computeActiveLine()},{passive:true})
 new ResizeObserver(()=>{rebuildOffsets();updateGuide()}).observe(document.getElementById('tp-scroll'))
 
-// ══════════════════════════════════════
-// SPEECH + MATCHING
-// ══════════════════════════════════════
+// ══════════════════════════════════
+// SPEECH
+// ══════════════════════════════════
 const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition
-let recognizer=null,micActive=false,micIntentionalStop=false,reconnectCount=0
+let recognizer=null,micIntentionalStop=false,reconnectCount=0
 let sessionTimer=null,restartTimer=null
 const MAX_RECONNECTS=10
 
 function micStart(){
-  if(!SpeechRecognition){setMicState('unsupported');return}
-  micIntentionalStop=false;micActive=true;reconnectCount=0;startSession()
+  if(!SpeechRecognition){setMicUI('unsupported');return}
+  micIntentionalStop=false;micIsOn=true;reconnectCount=0
+  // FIX: when mic turns on, stop the auto-scroll RAF
+  stopRaf()
+  // Keep tpPlaying=true so UI shows pause button, but RAF is off
+  setMicUI('listening')
+  startSession()
+  updateMicModeIndicator()
 }
+
 function micStop(){
-  micIntentionalStop=true;micActive=false
-  clearTimeout(sessionTimer);clearTimeout(restartTimer);destroyRec();setMicState('idle')
+  micIntentionalStop=true;micIsOn=false
+  clearTimeout(sessionTimer);clearTimeout(restartTimer);destroyRec()
+  setMicUI('idle')
+  // FIX: resume auto-scroll if still playing
+  if(tpPlaying)startRaf()
+  updateMicModeIndicator()
 }
-function micToggle(){micActive?micStop():micStart()}
+
+function micToggle(){micIsOn?micStop():micStart()}
 
 function destroyRec(){
   if(!recognizer)return
@@ -1079,7 +1131,7 @@ function startSession(){
   r.lang=settings.lang||'pt-BR';r.continuous=false;r.interimResults=true;r.maxAlternatives=1
   recognizer=r
 
-  r.onstart=()=>{reconnectCount=0;setMicState('listening');sessionTimer=setTimeout(()=>{if(!micIntentionalStop)destroyRec()},25000)}
+  r.onstart=()=>{reconnectCount=0;setMicUI('listening');sessionTimer=setTimeout(()=>{if(!micIntentionalStop)destroyRec()},25000)}
 
   r.onresult=e=>{
     const res=e.results[e.results.length-1]
@@ -1089,22 +1141,23 @@ function startSession(){
   r.onerror=e=>{
     if(e.error==='aborted'||e.error==='no-speech')return
     if(e.error==='not-allowed'||e.error==='service-not-allowed'){
-      micIntentionalStop=true;setMicState('error');showConfToast('Permissão negada');return
+      micIntentionalStop=true;micIsOn=false;setMicUI('error')
+      showConfToast('Permissão de microfone negada');return
     }
   }
 
   r.onend=()=>{
     clearTimeout(sessionTimer)
     if(micIntentionalStop)return
-    if(reconnectCount>=MAX_RECONNECTS){setMicState('error');return}
-    reconnectCount++;setMicState('reconnecting')
+    if(reconnectCount>=MAX_RECONNECTS){micIsOn=false;setMicUI('error');return}
+    reconnectCount++;setMicUI('reconnecting')
     restartTimer=setTimeout(startSession,400)
   }
 
-  try{r.start();setMicState('requesting')}catch{setMicState('error')}
+  try{r.start()}catch{setMicUI('error');micIsOn=false}
 }
 
-function setMicState(state){
+function setMicUI(state){
   const btn=document.getElementById('mic-btn'),lbl=document.getElementById('mic-label')
   btn.className='mic-btn'
   if(!SpeechRecognition){btn.classList.add('unsupported');lbl.textContent='N/A';return}
@@ -1114,7 +1167,26 @@ function setMicState(state){
   else{btn.classList.add('idle');lbl.className='mic-label off';lbl.textContent='VOZ'}
 }
 
-// ── Chunks ──
+function updateMicModeIndicator(){
+  // Show a subtle badge in the controls bar showing current sync mode
+  let badge=document.getElementById('sync-mode-badge')
+  if(!badge){
+    badge=document.createElement('span')
+    badge.id='sync-mode-badge'
+    document.getElementById('tp-controls').insertBefore(badge,document.getElementById('ctrl-info'))
+  }
+  if(micIsOn){
+    badge.className='sync-mode-badge voice'
+    badge.textContent='🎤 voz'
+  } else {
+    badge.className='sync-mode-badge auto'
+    badge.textContent='auto'
+  }
+}
+
+// ══════════════════════════════════
+// MATCHING
+// ══════════════════════════════════
 let tpChunks=[]
 function buildChunks(){
   tpChunks=tpLines.map(line=>{
@@ -1138,27 +1210,25 @@ function findMatch(transcript){
   if(!tSet.size)return{found:false,index:tpActive,score:0}
   const eligible=tpChunks.filter(c=>!c.empty)
   const curI=Math.max(0,eligible.findIndex(c=>c.index>=tpActive))
-  const WB=4,WA=12,BIAS=1.15
   let best=null
-  for(let i=Math.max(0,curI-WB);i<=Math.min(eligible.length-1,curI+WA);i++){
+  for(let i=Math.max(0,curI-4);i<=Math.min(eligible.length-1,curI+12);i++){
     const score=scoreChunk(tSet,eligible[i].index)
-    const boosted=i>=curI?score*BIAS:score
+    const boosted=i>=curI?score*1.15:score
     if(!best||boosted>best.boosted)best={index:eligible[i].index,score,boosted,wc:eligible[i].wc}
   }
   if(best&&best.score>=adaptiveThreshold(best.wc))return{found:true,index:best.index,score:best.score}
-  // Global fallback
   let gb=null
   for(let i=0;i<eligible.length;i++){const score=scoreChunk(tSet,eligible[i].index);if(!gb||score>gb.score)gb={index:eligible[i].index,score,wc:eligible[i].wc}}
   if(gb&&gb.score>=adaptiveThreshold(gb.wc))return{found:true,index:gb.index,score:gb.score}
   return{found:false,index:tpActive,score:best?.score||0}
 }
 
-// ── Smoother — uses calibrated confirmNeeded ──
 let smoother={confirmed:0,pending:0,count:0}
 function smootherReset(i){smoother={confirmed:i,pending:i,count:0}}
 
 function applySmoothing(match){
-  const CONFIRM=calProfile.done?calProfile.confirmNeeded:2
+  const cal=getCal()
+  const CONFIRM=cal.done?cal.confirmNeeded:2
   const HIGH=0.72,BACKTRACK=3
   if(!match.found)return smoother.confirmed
   const cand=match.index
@@ -1181,20 +1251,23 @@ function showConfToast(msg){
 }
 
 function processTranscript(transcript){
+  if(!micIsOn)return   // safety guard
   const match=findMatch(transcript)
-  // Update mic score bar
   const pct=Math.round(match.score*100)
   const fill=document.getElementById('mic-score-fill')
   fill.style.width=pct+'%'
   fill.style.background=pct>=60?'#22c55e':pct>=35?'#f59e0b':'#ef4444'
-  if(match.score>0&&match.score<0.3)showConfToast('Sincronização imprecisa ('+pct+'%)')
+  if(match.score>0&&match.score<0.28)showConfToast('Sincronização imprecisa ('+pct+'%)')
   const accepted=applySmoothing(match)
-  if(accepted!==tpActive){tpActive=accepted;updateActiveStyles();updateProgress();tpGoTo(accepted)}
+  // FIX: only scroll if line actually changed — don't move if no match found
+  if(match.found&&accepted!==tpActive){
+    tpActive=accepted;updateActiveStyles();updateProgress();tpGoTo(accepted)
+  }
 }
 
-// ══════════════════════════════════════
+// ══════════════════════════════════
 // KEYBOARD
-// ══════════════════════════════════════
+// ══════════════════════════════════
 document.addEventListener('keydown',e=>{
   const tag=e.target.tagName
   if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT')return
@@ -1225,9 +1298,9 @@ function skipLines(dir){
 document.getElementById('teleprompter').addEventListener('mousemove',showBar)
 document.getElementById('teleprompter').addEventListener('touchstart',showBar,{passive:true})
 
-// ══════════════════════════════════════
+// ══════════════════════════════════
 // INIT
-// ══════════════════════════════════════
+// ══════════════════════════════════
 renderSidebar()
 loadActiveToEditor()
 initSettingsUI()
